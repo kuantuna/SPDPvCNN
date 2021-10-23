@@ -1,6 +1,6 @@
 # **_SPDPvCNN_**
 
-**_This is the repository for the "Stock Price and Direction Prediction via Deep Attention-Based Convolutional Neural Networks" CS 401 Senior Project in Ozyegin University. This is where you'll find all of the essential materials, such as code, data, and articles._**
+**_This is the repository for the "Stock Price and Direction Prediction via Deep Attention-Based Convolutional Neural Networks" CS 401 Senior Project at Ozyegin University. This is where you'll find all of the essential materials, such as code, data, and articles._**
 
 ## **_Institution_**
 
@@ -15,4 +15,4 @@
 
 ## **_Supervisor_**
 
-**_[Emre Sefer](http://www.emresefer.com/)_**
+**_[Assistant Prof. Emre Sefer](http://www.emresefer.com/)_**

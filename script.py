@@ -13,6 +13,7 @@ endDate = '2021-11-11'
 coins = ['SPY']
 
 spy_data = yf.download('SPY', start = startDate, end = endDate)
+spy_data_copy = spy_data.copy()
 
 # DataFrame Preparation
 rsi = RSI(spy_data["Close"], timeperiod=14).to_frame().reset_index().set_axis(['Date', 'Value'], axis=1)
@@ -67,5 +68,27 @@ for index in range(len(rsi)-11):
     concat_ = concat_.T
     imageList.append(np.array(concat_))
 
-img = Image.fromarray(imageList[0])
-img.show()
+# img = Image.fromarray(imageList[0])
+# img.show()
+
+labeList = []
+spy_data_copy = spy_data_copy.iloc[97:]
+thresHold = 0.003
+for i in range(len(spy_data_copy)-1):
+    spy_data_copy.iloc[i,3]
+    if(spy_data_copy.iloc[i+1,3] - spy_data_copy.iloc[i,3] > 0):
+        if(spy_data_copy.iloc[i+1,3] - spy_data_copy.iloc[i,3] <= thresHold * spy_data_copy.iloc[i,3]):
+            labeList.append('Hold')
+        else:
+            labeList.append('Buy')
+    elif(spy_data_copy.iloc[i+1,3] - spy_data_copy.iloc[i,3] < 0):
+        if(abs(spy_data_copy.iloc[i+1,3] - spy_data_copy.iloc[i,3]) <= thresHold * spy_data_copy.iloc[i,3]):
+            labeList.append('Hold')
+        else:
+            labeList.append('Sell')
+    else:
+        labeList.append('Hold')
+
+# print(labeList.count('Buy'))
+# print(labeList.count('Hold'))
+# print(labeList.count('Sell'))

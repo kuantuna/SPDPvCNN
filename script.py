@@ -60,6 +60,14 @@ tema = tema.iloc[87:]
 willr = willr.iloc[87:]
 macd = macd.iloc[87:]
 
+# Correlation value for each Technical Indicator
+data = [rsi['Value'], wma['Value'], ema['Value'], sma['Value'], roc['Value'], cmo['Value'], cci['Value'], ppo['Value'], tema['Value'], willr['Value'], macd['Value']]
+headers = ['RSI', 'WMA', 'EMA', 'SMA', 'ROC', 'CMO', 'CCI', 'PPO', 'TEMA', 'WILLR', 'MACD']
+
+allData = pd.concat(data, axis=1, keys = headers)
+allDataCor = allData.corr(method = 'pearson')
+
+# Creating Images
 imageList = []
 for index in range(len(rsi)-11):
     concat_ = pd.concat((rsi[index:index+11]['Value'], wma[index:index+11]['Value'], ema[index:index+11]['Value'], sma[index:index+11]['Value'],
@@ -71,9 +79,11 @@ for index in range(len(rsi)-11):
 # img = Image.fromarray(imageList[0])
 # img.show()
 
+# Creating labels for each images
 labeList = []
-spy_data_copy = spy_data_copy.iloc[97:]
 thresHold = 0.003
+spy_data_copy = spy_data_copy.iloc[97:]
+
 for i in range(len(spy_data_copy)-1):
     spy_data_copy.iloc[i,3]
     if(spy_data_copy.iloc[i+1,3] - spy_data_copy.iloc[i,3] > 0):

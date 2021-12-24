@@ -5,18 +5,26 @@ import tensorflow as tf
 from tensorflow.keras import layers
 from tensorflow import keras
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
+
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import classification_report
+from sklearn.metrics import f1_score
 
 imageList = np.load("../S&P/Images.npy")
 labelList = np.load("../S&P/Labels.npy")
+
+unique, counts = np.unique(labelList, return_counts=True)
+print(np.asarray((unique, counts)).T)
 
 '''
 IMPLEMENTING THE CONVMIXER
 Reference: (https://github.com/keras-team/keras-io/blob/master/examples/vision/convmixer.py)
 '''
-learning_rate = 0.001
+learning_rate = 0.01
 weight_decay = 0.0001
 batch_size = 128
-num_epochs = 10
+num_epochs = 20
 
 x_train, x_test, y_train, y_test = train_test_split(imageList, labelList, test_size=0.1, random_state=100)
 val_split = 0.1
@@ -75,7 +83,7 @@ def conv_mixer_block(x, filters: int, kernel_size: int):
     return x
 
 def get_conv_mixer_256_8(
-    image_size=11, filters=256, depth=8, kernel_size=3, patch_size=2, num_classes=3
+    image_size=11, filters=256, depth=8, kernel_size=3, patch_size=3, num_classes=3
 ):
     """ConvMixer-256/8: https://openreview.net/pdf?id=TVHS5Y4dNvM.
     The hyperparameter values are taken from the paper.
@@ -107,7 +115,7 @@ def run_experiment(model):
         metrics=["accuracy"],
     )
 
-    checkpoint_filepath = "C:/Users/ASUS/Desktop/4.SINIF GÜZ DÖNEMİ DERSLERİ/CS 401/Result" # fix here
+    checkpoint_filepath = "C:/Users/Tuna/Desktop/2021-2022_Fall/CS401/Results" # fix here
     checkpoint_callback = keras.callbacks.ModelCheckpoint(
         checkpoint_filepath,
         monitor="val_accuracy",
@@ -130,3 +138,15 @@ def run_experiment(model):
 
 conv_mixer_model = get_conv_mixer_256_8()
 history, conv_mixer_model = run_experiment(conv_mixer_model)
+
+# print("Type of conv_mixer_model:", type(conv_mixer_model))
+# print("Type of history:", type(history))
+
+predictions = conv_mixer_model.predict(test_dataset)
+classes = np.argmax(predictions, axis = 1)
+cm=confusion_matrix(y_test, classes)
+print(cm)
+cr=classification_report(y_test, classes)
+print(cr)
+f1 = f1_score(y_test, classes)
+print(f1)

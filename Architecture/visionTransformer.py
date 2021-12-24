@@ -38,13 +38,13 @@ num_epochs = 10
 image_size = 11  # We'll resize input images to this size
 patch_size = 2  # Size of the patches to be extract from the input images
 num_patches = (image_size // patch_size) ** 2
-projection_dim = 64
+projection_dim = 64 #128
 num_heads = 4
 transformer_units = [
     projection_dim * 2,
     projection_dim,
 ]  # Size of the transformer layers
-transformer_layers = 8
+transformer_layers = 8 #6, 10
 mlp_head_units = [2048, 1024]  # Size of the dense layers of the final classifier
 
 """

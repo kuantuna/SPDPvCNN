@@ -13,7 +13,7 @@ startDate = '2001-10-11'
 endDate = '2021-11-11'
 axes = ['Date', 'Value']
 headers = ['RSI', 'WMA', 'EMA', 'SMA', 'ROC', 'CMO', 'CCI', 'PPO', 'TEMA', 'WILLR', 'MACD']
-threshold = 0.01
+threshold = 0.005
 # coins = ['SPY']
 
 '''
@@ -113,6 +113,9 @@ for i in range(len(spy_data_close)-1):
     else:
         labelList.append(np.array([1.0])) # HOLD
 labelList = np.array(labelList)
+
+unique, counts = np.unique(labelList, return_counts=True)
+print(np.asarray((unique, counts)).T)
 
 np.save("./S&P/Images.npy", imageList)
 np.save("./S&P/Labels.npy", labelList)

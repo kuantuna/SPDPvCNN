@@ -1,0 +1,116 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+
+\title{\textbf{Stock Price and Direction Prediction via Deep Attention-Based Convolutional Neural Networks}}
+\author{Onur Alaçam, Tuğcan Hoşer, Uygar Kaya, Tuna Tuncer}
+\date{\textbf{2021 Fall}}
+
+\begin{document}
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[]{Assets/OzU.png}
+    \end{center}
+\end{figure}
+
+\begin{center}
+    OZYEGIN UNIVERSITY\\*
+    FACULTY OF ENGINEERING\\*
+    DEPARTMENT OF COMPUTER SCIENCE
+\end{center}
+
+\begin{center}
+    \textbf{CS 401}\\* \vspace{0.2cm}
+    \textbf{2021 Fall}\\* \vspace{0.4cm}
+    \textbf{SENIOR PROJECT REPORT}\\* \vspace{0.6cm}
+    \textbf{Stock Price and Direction Prediction via Deep Attention-Based Convolutional Neural Networks}\\* \vspace{0.8cm}
+    \textbf{By}\\*
+    \textbf{Onur Alaçam, Tuğcan Hoşer, Uygar Kaya, Tuna Tuncer}\\* \vspace{0.6cm}
+    \textbf{Supervised By}\\*
+    \textbf{Assistant Prof. Emre Sefer}\\* \vspace{0.6cm}
+\end{center}
+\textbf{Declaration of Own Work Statement/ (Plagiarism Statement)}\\*
+Hereby I confirm that all this work is original and my own. I have clearly referenced/listed all sources as appropriate and given the sources of all pictures, data etc. that are not my own. I have not made any use of the essay(s) or other work of any other student(s) either past or present, at this or any other educational institution. I also declare that this project has not previously been submitted for assessment in any other course, degree or qualification at this or any other educational institution.\vspace{0.2cm}\\*
+\textbf{Student Name and Surname:}\\* Onur Alaçam, Tuğcan Hoşer, Uygar Kaya, Tuna Tuncer \vspace{0.1cm}\\*
+\textbf{Signature:} \vspace{0.9cm}\\*
+\textbf{Place, Date:}\\* Istanbul, Turkey - 09.01.2022
+
+\tableofcontents
+
+\maketitle
+\begin{center}
+    \textbf{\Large Abstract}
+\end{center}
+Since stock prices are time series data, most academic studies have focused on time series forecasting in machine learning models. Unfortunately, these models do not perform as well as they need to. In this project, we will be designing a novel model that predicts Stock Price and Direction with the help of Deep Attention-based Convolutional Neural Networks based on image processing properties using 2-D images after converting the 1-D time-series signal images to 2-D images with the help of the technical indicator. We will be testing the model we have built and compare its performance to state-of-the-art models at the end of this project. If the results are as expected, we aim to put the model to the test on a major crypto exchange platform such as Binance. We'll start by gathering price and technical indicator data for a variety of cryptocurrencies. Then, utilizing this information, we'll construct a two-dimensional image with the stock price as one dimension and technical indicators as the other. We will obtain our model by training deep attention-based convolutional neural networks with these images. The implementation part of the project will be done in Python Programming Language. 
+
+\begin{center}
+    \section{Introduction}
+\end{center}
+Provide an introduction to the context, background, problem, summary of the approach and the results. Also provide an outline of the rest of the report (e.g., Background information regarding the applied techniques are provided in the next chapter. The third chapter introduces the approach, … etc.).\\*
+
+\begin{center}
+    \section{Background}
+\end{center}
+Introduce the set of techniques, tools, technologies that are utilized in your project.\\*
+
+\begin{center}
+    \section{Problem Statement}
+\end{center}
+Formulate the problem that you aim at solving with your project. Clearly describe assumptions and constraints. If your project involves application development, you should list all the functional and non-functional (quality) requirements.\vspace{0.1cm} \\*
+• Describe the project scope; is it a new project or a part of another project? If it is a part of another project, explain your contribution ? \\*
+• Formulate the engineering problem that you solved; did you come up with an engineering problem? Did you picked a project topic suggested by a faculty member and then refined/detailed the problem ? \\*
+• Describe assumptions and constraints \\*
+• If your project involves application development, you should list all the functional and non-functional requirements.\\*
+
+\begin{center}
+    \section{Solution Approach}
+\end{center}
+Explain your solution approach, major design decisions, and implementation issues faced during the development of the prototype. Make use of subsections to differentiate these subjects. Elaborate on advantages and disadvantages of your design decisions. Discuss which tools and techniques were used and which others you plan to you use for completing your project. \vspace{0.1cm}\\*
+Explain your solution approach, design, implementation issues. Make use of subsections to differentiate these subjects.\vspace{0.1cm}\\*
+• Document your design decisions and elaborate on their advantages and disadvantages.\\*
+• Discuss which tools and techniques were used and explain how you used these tools and techniques to solve your problem. Your explanation should be clear enough so that another person reading your report should be able to solve a similar problem.\\*
+• Discuss technical, operational and financial feasibility of implementation\\*
+• Among the knowledge and skill set that you have acquired in your previous courses, which of them were utilized for this project?\\*
+• What are the engineering standards that you either used or took into consideration? Provide the codes and names of standards that you used for your project.
+
+\begin{center}
+    \section{Results and Discussion}
+\end{center}
+Present the results (so far) you obtained with your project.\vspace{0.1cm} \\*
+Discuss how the formulated problem is addressed and how your solution is validated. In the case of CS401 projects, validation may not be performed yet. This might be deferred after project completion. In any case, you can discuss here the approach you are planning to take for performing validation. \vspace{0.1cm} \\*
+List the known limitations as well.\\*
+
+\begin{center}
+    \section{Related Work}
+\end{center}
+Compare and contrast your approach with existing methods, techniques, tools, applications.
+
+\begin{center}
+    \section{Conclusion and Future Work}
+\end{center}
+Provide a brief summary of what you have achieved with the project so far. Also discuss the remaining tasks to complete your work. \vspace{0.1cm}\\*
+• Discuss Provide a brief summary of what you have achieved with the project.\\*
+• Emphasize the economic and social impact expected.\\*
+• Comment on the effects of your work on global and societal health, environment; discuss the safety, security issues and the legal consequences of your work, if any.\\*
+• Discuss possible ethical issues resulting from the outcomes of your project.\\*
+• Discuss possible future work directions to extend/improve your work further.\\*
+
+\begin{center}
+    \textbf{\Large Acknowledgements}
+\end{center}
+This section is to thank your colleagues or a company for providing feedback, providing help in solving an issue, giving permissions or sources of materials or providing financial support.
+
+\begin{center}
+    \textbf{\Large References}
+\end{center}
+The list of references that are cited in the text should be provided here. \vspace{0.1cm}\\*
+You should include catalogues, product specifications, and papers referenced in your report. You must also cite each information (figure, table, etc.) that does not belong to you (those that have been found online, taken from some other document, etc.), or you risk being penalized due to plagiarism. \vspace{0.1cm}\\*
+Regarding the formatting of references and citations, please refer to refer to the IEEE documentation available online at the following link:\\* http://www.ieee.org/documents/ieeecitationref.pdf
+
+\begin{center}
+    \textbf{\Large Appendix}
+\end{center}
+In this chapter, detailed description such as codes, data, screenshots, maps, figures and tables, may be represented.
+
+\end{document}

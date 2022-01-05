@@ -1,10 +1,12 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
 
 \title{\textbf{Stock Price and Direction Prediction via Deep Attention-Based Convolutional Neural Networks}}
 \author{Onur Alaçam, Tuğcan Hoşer, Uygar Kaya, Tuna Tuncer}
-\date{\textbf{2021 Fall}}
+\date{\textbf{2022 Fall}}
 
 \begin{document}
 
@@ -22,7 +24,7 @@
 
 \begin{center}
     \textbf{CS 401}\\* \vspace{0.2cm}
-    \textbf{2021 Fall}\\* \vspace{0.4cm}
+    \textbf{2022 Fall}\\* \vspace{0.4cm}
     \textbf{SENIOR PROJECT REPORT}\\* \vspace{0.6cm}
     \textbf{Stock Price and Direction Prediction via Deep Attention-Based Convolutional Neural Networks}\\* \vspace{0.8cm}
     \textbf{By}\\*
@@ -84,29 +86,41 @@ List the known limitations as well.\\*
 \begin{center}
     \section{Related Work}
 \end{center}
-Compare and contrast your approach with existing methods, techniques, tools, applications.
+In many academic studies, machine learning models were used when stock prediction was made because stock prices are time series data. Nevertheless, the machine learning models used for stock-price prediction were not performing excellently. Thus, better-performing models were required for stock prices.\vspace{0.2cm} \\*
+In recent years, forecast models based on deep learning have emerged as the best performers in financial forecasts. Moreover, many academic and sectoral studies have been conducted using different deep-learning models. The article named "Attention Augmented Convolutional Networks" [1] implemented by the Google Brain team under the umbrella of Google AI, the article named "Algorithmic Financial Trading with Deep Convolutional Neural Networks: Time Series to Image Conversion Approach" [2], the article named "Patches Are All You Need?" [3] or the article named "An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale" [4] can be given examples of these studies. Our approach in the senior project is analogous to the "Algorithmic Financial Trading with Deep Convolutional Neural Networks: Time Series to Image Conversion Approach" article, but while using Convolutional Neural Network (CNN) in this article, we use the ConvMixer architecture, introduced in 2021, which is thought to perform better according to research's.\vspace{0.2cm} \\*
+Although CNNs have dominated computer vision tasks for many years, recent research has shown that Transformer-based models, most notably the Vision Transformer (ViT), can outperform CNN in some cases.[3] ConvMixer an extremely straightforward model that is similar to the ViT; hence, we are using this architecture in our senior project.
 
 \begin{center}
     \section{Conclusion and Future Work}
 \end{center}
-Provide a brief summary of what you have achieved with the project so far. Also discuss the remaining tasks to complete your work. \vspace{0.1cm}\\*
-• Discuss Provide a brief summary of what you have achieved with the project.\\*
-• Emphasize the economic and social impact expected.\\*
-• Comment on the effects of your work on global and societal health, environment; discuss the safety, security issues and the legal consequences of your work, if any.\\*
-• Discuss possible ethical issues resulting from the outcomes of your project.\\*
-• Discuss possible future work directions to extend/improve your work further.\\*
+In this section, we provide a brief summary of the senior project and we talk about the future work of the project.\\*
+\subsection{Conclusion}
+To summarize our senior project, we use the ConvMixer model that predicts Stock Price and Direction with the help of Deep Attention Based Convolutional Neural Networks after transforming 1D time-series signal images into 2D time-series signals with the help of technical indicators. We think that the last version of senior project will have a consequential economic impact. Companies or investors can buy their stocks in a more optimized way with the last version of our senior project, and as a result, investors can use the money that normally is melt away by their manual trading techniques on different opportunities. Furthermore, We think that our project will have an optimistic social impact because we believe that investors can be mirthful with the right investments they make. Also, After some thought about what ethical issues we might encounter in our senior project, we realized that there might be a problem. If the model we will apply constructs an inaccurate prediction, we can mislead the investors \& companies and make an erroneous investment decision.
+\subsection{Future Work}
+• Finding the best hyperparameters of our model using sites like Weights \& Biases. [5]\\*
+• Utilizing the Cross-Validation to make the performance of the model more accurate.\\*
+• On a high-dimensional scale, the assessment measures and their correlation may be examined.\\*
+• Running models on different Datasets \& Technical Indicators and reporting the results.\\*
+• Testing the model on a major crypto exchange platform like Binance after doing the work above.\\*
+• Finally, implementing a new project that makes an automatic trading bot for cryptocurrencies using this model.
 
 \begin{center}
     \textbf{\Large Acknowledgements}
 \end{center}
-This section is to thank your colleagues or a company for providing feedback, providing help in solving an issue, giving permissions or sources of materials or providing financial support.
+For his support and advice throughout our senior project, we would like to express our thanks and gratitude to our advisor Assistant Prof. Emre Sefer.
 
 \begin{center}
     \textbf{\Large References}
 \end{center}
-The list of references that are cited in the text should be provided here. \vspace{0.1cm}\\*
-You should include catalogues, product specifications, and papers referenced in your report. You must also cite each information (figure, table, etc.) that does not belong to you (those that have been found online, taken from some other document, etc.), or you risk being penalized due to plagiarism. \vspace{0.1cm}\\*
-Regarding the formatting of references and citations, please refer to refer to the IEEE documentation available online at the following link:\\* http://www.ieee.org/documents/ieeecitationref.pdf
+[1] Bello, I., Zoph, B., Vaswani, A., Shlens, J., &amp; Le, Q. V. (2020, September 9). Attention augmented convolutional networks. arXiv.org. Retrieved January 4, 2022, from \href{https://arxiv.org/abs/1904.09925}{https://arxiv.org/abs/1904.09925}\vspace{0.1cm} \newline
+[2] Sezer, O. B., &amp; Ozbayoglu, A. M. (2018, April 27). Algorithmic financial trading with deep convolutional neural networks: Time Series to Image Conversion Approach. Applied Soft Computing. Retrieved January 4, 2022, from \href{https://www.sciencedirect.com/science/article/abs/pii/S1568494618302151}{https://www.sciencedirect.com/science/article/abs/pii/S1568494618302151}\vspace{0.1cm} \newline
+[3] Anonymous. (2021, November 23). Patches are all you need? OpenReview. Retrieved January 5, 2022, from \href{https://openreview.net/forum?id=TVHS5Y4dNvM}{https://openreview.net/forum?id=TVHS5Y4dNvM}\vspace{0.1cm} \newline
+[4] Dosovitskiy, A., Beyer, L., Kolesnikov, A., Weissenborn, D., Zhai, X., Unterthiner, T., Dehghani, M., Minderer, M., Heigold, G., Gelly, S., Uszkoreit, J., &amp; Houlsby, N. (2021, June 3). An image is worth 16x16 words: Transformers for image recognition at scale. arXiv.org. Retrieved January 5, 2022, from \href{https://arxiv.org/abs/2010.11929}{https://arxiv.org/abs/2010.11929} \vspace{0.1cm} \newline
+[5] Weights &amp; Biases – developer tools for ML. Weights &amp; Biases – Developer tools for ML. (n.d.). Retrieved January 5, 2022, from \href{https://wandb.ai/site}{https://wandb.ai/site} \vspace{0.1cm} \newline
+%%[6] \vspace{0.1cm} \newline
+%%[7] \vspace{0.1cm} \newline
+%%[8] \vspace{0.1cm} \newline
+%%[9] \vspace{0.1cm} \newline
 
 \begin{center}
     \textbf{\Large Appendix}

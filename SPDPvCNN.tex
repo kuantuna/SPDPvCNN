@@ -1,0 +1,130 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\title{\textbf{Stock Price and Direction Prediction via Deep Attention-Based Convolutional Neural Networks}}
+\author{Onur Alaçam, Tuğcan Hoşer, Uygar Kaya, Tuna Tuncer}
+\date{\textbf{2022 Fall}}
+
+\begin{document}
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[]{Assets/OzU.png}
+    \end{center}
+\end{figure}
+
+\begin{center}
+    OZYEGIN UNIVERSITY\\*
+    FACULTY OF ENGINEERING\\*
+    DEPARTMENT OF COMPUTER SCIENCE
+\end{center}
+
+\begin{center}
+    \textbf{CS 401}\\* \vspace{0.2cm}
+    \textbf{2022 Fall}\\* \vspace{0.4cm}
+    \textbf{SENIOR PROJECT REPORT}\\* \vspace{0.6cm}
+    \textbf{Stock Price and Direction Prediction via Deep Attention-Based Convolutional Neural Networks}\\* \vspace{0.8cm}
+    \textbf{By}\\*
+    \textbf{Onur Alaçam, Tuğcan Hoşer, Uygar Kaya, Tuna Tuncer}\\* \vspace{0.6cm}
+    \textbf{Supervised By}\\*
+    \textbf{Assistant Prof. Emre Sefer}\\* \vspace{0.6cm}
+\end{center}
+\textbf{Declaration of Own Work Statement/ (Plagiarism Statement)}\\*
+Hereby I confirm that all this work is original and my own. I have clearly referenced/listed all sources as appropriate and given the sources of all pictures, data etc. that are not my own. I have not made any use of the essay(s) or other work of any other student(s) either past or present, at this or any other educational institution. I also declare that this project has not previously been submitted for assessment in any other course, degree or qualification at this or any other educational institution.\vspace{0.2cm}\\*
+\textbf{Student Name and Surname:}\\* Onur Alaçam, Tuğcan Hoşer, Uygar Kaya, Tuna Tuncer \vspace{0.1cm}\\*
+\textbf{Signature:} \vspace{0.9cm}\\*
+\textbf{Place, Date:}\\* Istanbul, Turkey - 09.01.2022
+
+\tableofcontents
+
+\maketitle
+\begin{center}
+    \textbf{\Large Abstract}
+\end{center}
+Since stock prices are time series data, most academic studies have focused on time series forecasting in machine learning models. Unfortunately, these models do not perform as well as they need to. In this project, we will be designing a novel model that predicts Stock Price and Direction with the help of Deep Attention-based Convolutional Neural Networks based on image processing properties using 2-D images after converting the 1-D time-series signal images to 2-D images with the help of the technical indicator. We will be testing the model we have built and compare its performance to state-of-the-art models at the end of this project. If the results are as expected, we aim to put the model to the test on a major crypto exchange platform such as Binance. We'll start by gathering price and technical indicator data for a variety of cryptocurrencies. Then, utilizing this information, we'll construct a two-dimensional image with the stock price as one dimension and technical indicators as the other. We will obtain our model by training deep attention-based convolutional neural networks with these images. The implementation part of the project will be done in Python Programming Language. 
+
+\begin{center}
+    \section{Introduction}
+\end{center}
+Provide an introduction to the context, background, problem, summary of the approach and the results. Also provide an outline of the rest of the report (e.g., Background information regarding the applied techniques are provided in the next chapter. The third chapter introduces the approach, … etc.).\\*
+
+\begin{center}
+    \section{Background}
+\end{center}
+Introduce the set of techniques, tools, technologies that are utilized in your project.\\*
+
+\begin{center}
+    \section{Problem Statement}
+\end{center}
+Formulate the problem that you aim at solving with your project. Clearly describe assumptions and constraints. If your project involves application development, you should list all the functional and non-functional (quality) requirements.\vspace{0.1cm} \\*
+• Describe the project scope; is it a new project or a part of another project? If it is a part of another project, explain your contribution ? \\*
+• Formulate the engineering problem that you solved; did you come up with an engineering problem? Did you picked a project topic suggested by a faculty member and then refined/detailed the problem ? \\*
+• Describe assumptions and constraints \\*
+• If your project involves application development, you should list all the functional and non-functional requirements.\\*
+
+\begin{center}
+    \section{Solution Approach}
+\end{center}
+Explain your solution approach, major design decisions, and implementation issues faced during the development of the prototype. Make use of subsections to differentiate these subjects. Elaborate on advantages and disadvantages of your design decisions. Discuss which tools and techniques were used and which others you plan to you use for completing your project. \vspace{0.1cm}\\*
+Explain your solution approach, design, implementation issues. Make use of subsections to differentiate these subjects.\vspace{0.1cm}\\*
+• Document your design decisions and elaborate on their advantages and disadvantages.\\*
+• Discuss which tools and techniques were used and explain how you used these tools and techniques to solve your problem. Your explanation should be clear enough so that another person reading your report should be able to solve a similar problem.\\*
+• Discuss technical, operational and financial feasibility of implementation\\*
+• Among the knowledge and skill set that you have acquired in your previous courses, which of them were utilized for this project?\\*
+• What are the engineering standards that you either used or took into consideration? Provide the codes and names of standards that you used for your project.
+
+\begin{center}
+    \section{Results and Discussion}
+\end{center}
+Present the results (so far) you obtained with your project.\vspace{0.1cm} \\*
+Discuss how the formulated problem is addressed and how your solution is validated. In the case of CS401 projects, validation may not be performed yet. This might be deferred after project completion. In any case, you can discuss here the approach you are planning to take for performing validation. \vspace{0.1cm} \\*
+List the known limitations as well.\\*
+
+\begin{center}
+    \section{Related Work}
+\end{center}
+In many academic studies, machine learning models were used when stock prediction was made because stock prices are time series data. Nevertheless, the machine learning models used for stock-price prediction were not performing excellently. Thus, better-performing models were required for stock prices.\vspace{0.2cm} \\*
+In recent years, forecast models based on deep learning have emerged as the best performers in financial forecasts. Moreover, many academic and sectoral studies have been conducted using different deep-learning models. The article named "Attention Augmented Convolutional Networks" [1] implemented by the Google Brain team under the umbrella of Google AI, the article named "Algorithmic Financial Trading with Deep Convolutional Neural Networks: Time Series to Image Conversion Approach" [2], the article named "Patches Are All You Need?" [3] or the article named "An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale" [4] can be given examples of these studies. Our approach in the senior project is analogous to the "Algorithmic Financial Trading with Deep Convolutional Neural Networks: Time Series to Image Conversion Approach" article, but while using Convolutional Neural Network (CNN) in this article, we use the ConvMixer architecture, introduced in 2021, which is thought to perform better according to research's.\vspace{0.2cm} \\*
+Although CNNs have dominated computer vision tasks for many years, recent research has shown that Transformer-based models, most notably the Vision Transformer (ViT), can outperform CNN in some cases.[3] ConvMixer an extremely straightforward model that is similar to the ViT; hence, we are using this architecture in our senior project.
+
+\begin{center}
+    \section{Conclusion and Future Work}
+\end{center}
+In this section, we provide a brief summary of the senior project and we talk about the future work of the project.\\*
+\subsection{Conclusion}
+To summarize our senior project, we use the ConvMixer model that predicts Stock Price and Direction with the help of Deep Attention Based Convolutional Neural Networks after transforming 1D time-series signal images into 2D time-series signals with the help of technical indicators. We think that the last version of senior project will have a consequential economic impact. Companies or investors can buy their stocks in a more optimized way with the last version of our senior project, and as a result, investors can use the money that normally is melt away by their manual trading techniques on different opportunities. Furthermore, We think that our project will have an optimistic social impact because we believe that investors can be mirthful with the right investments they make. Also, After some thought about what ethical issues we might encounter in our senior project, we realized that there might be a problem. If the model we will apply constructs an inaccurate prediction, we can mislead the investors \& companies and make an erroneous investment decision.
+\subsection{Future Work}
+• Finding the best hyperparameters of our model using sites like Weights \& Biases. [5]\\*
+• Utilizing the Cross-Validation to make the performance of the model more accurate.\\*
+• On a high-dimensional scale, the assessment measures and their correlation may be examined.\\*
+• Running models on different Datasets \& Technical Indicators and reporting the results.\\*
+• Testing the model on a major crypto exchange platform like Binance after doing the work above.\\*
+• Finally, implementing a new project that makes an automatic trading bot for cryptocurrencies using this model.
+
+\begin{center}
+    \textbf{\Large Acknowledgements}
+\end{center}
+For his support and advice throughout our senior project, we would like to express our thanks and gratitude to our advisor Assistant Prof. Emre Sefer.
+
+\begin{center}
+    \textbf{\Large References}
+\end{center}
+[1] Bello, I., Zoph, B., Vaswani, A., Shlens, J., &amp; Le, Q. V. (2020, September 9). Attention augmented convolutional networks. arXiv.org. Retrieved January 4, 2022, from \href{https://arxiv.org/abs/1904.09925}{https://arxiv.org/abs/1904.09925}\vspace{0.1cm} \newline
+[2] Sezer, O. B., &amp; Ozbayoglu, A. M. (2018, April 27). Algorithmic financial trading with deep convolutional neural networks: Time Series to Image Conversion Approach. Applied Soft Computing. Retrieved January 4, 2022, from \href{https://www.sciencedirect.com/science/article/abs/pii/S1568494618302151}{https://www.sciencedirect.com/science/article/abs/pii/S1568494618302151}\vspace{0.1cm} \newline
+[3] Anonymous. (2021, November 23). Patches are all you need? OpenReview. Retrieved January 5, 2022, from \href{https://openreview.net/forum?id=TVHS5Y4dNvM}{https://openreview.net/forum?id=TVHS5Y4dNvM}\vspace{0.1cm} \newline
+[4] Dosovitskiy, A., Beyer, L., Kolesnikov, A., Weissenborn, D., Zhai, X., Unterthiner, T., Dehghani, M., Minderer, M., Heigold, G., Gelly, S., Uszkoreit, J., &amp; Houlsby, N. (2021, June 3). An image is worth 16x16 words: Transformers for image recognition at scale. arXiv.org. Retrieved January 5, 2022, from \href{https://arxiv.org/abs/2010.11929}{https://arxiv.org/abs/2010.11929} \vspace{0.1cm} \newline
+[5] Weights &amp; Biases – developer tools for ML. Weights &amp; Biases – Developer tools for ML. (n.d.). Retrieved January 5, 2022, from \href{https://wandb.ai/site}{https://wandb.ai/site} \vspace{0.1cm} \newline
+%%[6] \vspace{0.1cm} \newline
+%%[7] \vspace{0.1cm} \newline
+%%[8] \vspace{0.1cm} \newline
+%%[9] \vspace{0.1cm} \newline
+
+\begin{center}
+    \textbf{\Large Appendix}
+\end{center}
+In this chapter, detailed description such as codes, data, screenshots, maps, figures and tables, may be represented.
+
+\end{document}

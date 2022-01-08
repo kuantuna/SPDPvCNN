@@ -117,5 +117,12 @@ labelList = np.array(labelList)
 unique, counts = np.unique(labelList, return_counts=True)
 print(np.asarray((unique, counts)).T)
 
+imageList_copy = imageList[:]
+imageList_copy = imageList_copy.reshape(4960, -1)
+mean = np.mean(imageList_copy, axis=0)
+std = np.std(imageList_copy, axis=0)
+imageList_copy = (imageList_copy - mean) / std
+imageList = imageList_copy.reshape(4960, 11, 11, 1)
+
 np.save("./S&P/Images.npy", imageList)
 np.save("./S&P/Labels.npy", labelList)

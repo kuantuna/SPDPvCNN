@@ -5,11 +5,12 @@ import tensorflow as tf
 from tensorflow.keras import layers
 from tensorflow import keras
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler
 
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import classification_report
 from sklearn.metrics import f1_score
+
+import matplotlib.pyplot as plt
 
 imageList = np.load("../S&P/Images.npy")
 labelList = np.load("../S&P/Labels.npy")
@@ -24,7 +25,7 @@ Reference: (https://github.com/keras-team/keras-io/blob/master/examples/vision/c
 learning_rate = 0.01
 weight_decay = 0.0001
 batch_size = 128
-num_epochs = 20
+num_epochs = 100
 
 x_train, x_test, y_train, y_test = train_test_split(imageList, labelList, test_size=0.1, random_state=100)
 val_split = 0.1
@@ -83,16 +84,16 @@ def conv_mixer_block(x, filters: int, kernel_size: int):
     return x
 
 def get_conv_mixer_256_8(
-    image_size=11, filters=256, depth=8, kernel_size=3, patch_size=3, num_classes=3
+    image_size=11, filters=256, depth=8, kernel_size=3, patch_size=1, num_classes=3
 ):
     """ConvMixer-256/8: https://openreview.net/pdf?id=TVHS5Y4dNvM.
     The hyperparameter values are taken from the paper.
     """
     inputs = keras.Input((image_size, image_size, 1))
-    x = layers.Rescaling(scale=1.0 / 255)(inputs)
+    #x = layers.Rescaling(scale=1.0 / 255)(inputs)
 
     # Extract patch embeddings.
-    x = conv_stem(x, filters, patch_size)
+    x = conv_stem(inputs, filters, patch_size)
 
     # ConvMixer blocks.
     for _ in range(depth):
@@ -148,5 +149,23 @@ cm=confusion_matrix(y_test, classes)
 print(cm)
 cr=classification_report(y_test, classes)
 print(cr)
-f1 = f1_score(y_test, classes)
+f1 = f1_score(y_test, classes, average='micro')
 print(f1)
+
+print(history.history.keys())
+# summarize history for accuracy
+plt.plot(history.history['accuracy'])
+plt.plot(history.history['val_accuracy'])
+plt.title('model accuracy')
+plt.ylabel('accuracy')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.show()
+# summarize history for loss
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title('model loss')
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.show()

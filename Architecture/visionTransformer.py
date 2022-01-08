@@ -7,6 +7,12 @@ from tensorflow import keras
 from tensorflow.keras import layers
 from sklearn.model_selection import train_test_split
 
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import classification_report
+from sklearn.metrics import f1_score
+
+import matplotlib.pyplot as plt
+
 imageList = np.load("../S&P/Images.npy")
 labelList = np.load("../S&P/Labels.npy")
 
@@ -34,7 +40,7 @@ print(f"x_test shape: {x_test.shape} - y_test shape: {y_test.shape}")
 learning_rate = 0.001
 weight_decay = 0.0001
 batch_size = 128
-num_epochs = 10
+num_epochs = 200
 image_size = 11  # We'll resize input images to this size
 patch_size = 2  # Size of the patches to be extract from the input images
 num_patches = (image_size // patch_size) ** 2
@@ -192,7 +198,7 @@ def run_experiment(model):
         ],
     )
 
-    checkpoint_filepath = "C:/Users/ASUS/Desktop/4.SINIF GÜZ DÖNEMİ DERSLERİ/CS 401/Result"
+    checkpoint_filepath = "C:\\Users\\Tuna\\Desktop\\2021-2022_Fall\\CS401"
     checkpoint_callback = keras.callbacks.ModelCheckpoint(
         checkpoint_filepath,
         monitor="val_accuracy",
@@ -219,3 +225,30 @@ def run_experiment(model):
 
 vit_classifier = create_vit_classifier()
 history = run_experiment(vit_classifier)
+
+predictions = vit_classifier.predict(x_test)
+classes = np.argmax(predictions, axis = 1)
+cm=confusion_matrix(y_test, classes)
+print(cm)
+cr=classification_report(y_test, classes)
+print(cr)
+f1 = f1_score(y_test, classes, average='micro')
+print(f1)
+
+print(history.history.keys())
+# summarize history for accuracy
+plt.plot(history.history['accuracy'])
+plt.plot(history.history['val_accuracy'])
+plt.title('model accuracy')
+plt.ylabel('accuracy')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.show()
+# summarize history for loss
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title('model loss')
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.show()

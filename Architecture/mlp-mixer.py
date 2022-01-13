@@ -14,10 +14,7 @@ IMPLEMENTING THE VISION TRANSFORMER
 Reference: (https://github.com/keras-team/keras-io/blob/master/examples/vision/mlp_image_classification.py)
 '''
 
-"""
 ## Prepare the data
-"""
-
 num_classes = 3
 input_shape = (11, 11, 1)
 
@@ -26,10 +23,7 @@ x_train, x_test, y_train, y_test = train_test_split(imageList, labelList, test_s
 print(f"x_train shape: {x_train.shape} - y_train shape: {y_train.shape}")
 print(f"x_test shape: {x_test.shape} - y_test shape: {y_test.shape}")
 
-"""
 ## Configure the hyperparameters
-"""
-
 weight_decay = 0.0001
 batch_size = 128
 num_epochs = 10
@@ -46,10 +40,9 @@ print(f"Patches per image: {num_patches}")
 print(f"Elements per patch (3 channels): {(patch_size ** 2) * 3}")
 
 """
-## Build a classification model
+Build a classification model
 We implement a method that builds a classifier given the processing blocks.
 """
-
 def build_classifier(blocks, positional_encoding=False):
     inputs = layers.Input(shape=input_shape)
     # Augment data.
@@ -76,10 +69,9 @@ def build_classifier(blocks, positional_encoding=False):
     return keras.Model(inputs=inputs, outputs=logits)
 
 """
-## Define an experiment
+Define an experiment
 We implement a utility function to compile, train, and evaluate a given model.
 """
-
 def run_experiment(model):
     # Create Adam optimizer with weight decay.
     optimizer = tfa.optimizers.AdamW(
@@ -120,9 +112,8 @@ def run_experiment(model):
     return history
 
 """
-## Use data augmentation
+Use data augmentation
 """
-
 data_augmentation = keras.Sequential(
     [
         layers.Normalization(),
@@ -136,9 +127,8 @@ data_augmentation = keras.Sequential(
 data_augmentation.layers[0].adapt(x_train)
 
 """
-## Implement patch extraction as a layer
+Implement patch extraction as a layer
 """
-
 class Patches(layers.Layer):
     def __init__(self, patch_size, num_patches):
         super(Patches, self).__init__()
@@ -170,9 +160,8 @@ instead of batch normalization.
 """
 
 """
-### Implement the MLP-Mixer module
+Implement the MLP-Mixer module
 """
-
 class MLPMixerLayer(layers.Layer):
     def __init__(self, num_patches, hidden_units, dropout_rate, *args, **kwargs):
         super(MLPMixerLayer, self).__init__(*args, **kwargs)
@@ -219,7 +208,6 @@ class MLPMixerLayer(layers.Layer):
 Note that training the model with the current settings on a V100 GPUs
 takes around 8 seconds per epoch.
 """
-
 mlpmixer_blocks = keras.Sequential(
     [MLPMixerLayer(num_patches, embedding_dim, dropout_rate) for _ in range(num_blocks)]
 )
@@ -250,7 +238,6 @@ in the Transformer block with a parameter-free 2D Fourier transformation layer:
 """
 ### Implement the FNet module
 """
-
 class FNetLayer(layers.Layer):
     def __init__(self, num_patches, embedding_dim, dropout_rate, *args, **kwargs):
         super(FNetLayer, self).__init__(*args, **kwargs)
@@ -289,7 +276,6 @@ class FNetLayer(layers.Layer):
 Note that training the model with the current settings on a V100 GPUs
 takes around 8 seconds per epoch.
 """
-
 fnet_blocks = keras.Sequential(
     [FNetLayer(num_patches, embedding_dim, dropout_rate) for _ in range(num_blocks)]
 )
@@ -317,7 +303,6 @@ The SGU enables cross-patch interactions across the spatial (channel) dimension,
 """
 ### Implement the gMLP module
 """
-
 class gMLPLayer(layers.Layer):
     def __init__(self, num_patches, embedding_dim, dropout_rate, *args, **kwargs):
         super(gMLPLayer, self).__init__(*args, **kwargs)
@@ -369,7 +354,6 @@ class gMLPLayer(layers.Layer):
 Note that training the model with the current settings on a V100 GPUs
 takes around 9 seconds per epoch.
 """
-
 gmlp_blocks = keras.Sequential(
     [gMLPLayer(num_patches, embedding_dim, dropout_rate) for _ in range(num_blocks)]
 )

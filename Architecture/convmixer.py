@@ -65,11 +65,9 @@ def activation_block(x):
     x = layers.Activation("gelu")(x)
     return layers.BatchNormalization()(x)
 
-
 def conv_stem(x, filters: int, patch_size: int):
     x = layers.Conv2D(filters, kernel_size=patch_size, strides=patch_size)(x)
     return activation_block(x)
-
 
 def conv_mixer_block(x, filters: int, kernel_size: int):
     # Depthwise convolution.
@@ -145,14 +143,15 @@ history, conv_mixer_model = run_experiment(conv_mixer_model)
 
 predictions = conv_mixer_model.predict(test_dataset)
 classes = np.argmax(predictions, axis = 1)
-cm=confusion_matrix(y_test, classes)
+cm = confusion_matrix(y_test, classes)
 print(cm)
-cr=classification_report(y_test, classes)
+cr = classification_report(y_test, classes)
 print(cr)
 f1 = f1_score(y_test, classes, average='micro')
 print(f1)
 
 print(history.history.keys())
+
 # summarize history for accuracy
 plt.plot(history.history['accuracy'])
 plt.plot(history.history['val_accuracy'])
@@ -161,6 +160,7 @@ plt.ylabel('accuracy')
 plt.xlabel('epoch')
 plt.legend(['train', 'test'], loc='upper left')
 plt.show()
+
 # summarize history for loss
 plt.plot(history.history['loss'])
 plt.plot(history.history['val_loss'])

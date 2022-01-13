@@ -1,30 +1,26 @@
 import torch
 import torchvision.transforms as transforms
+import torch.optim.lr_scheduler as lr_scheduler
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-
-import torch.optim.lr_scheduler as lr_scheduler
-from torch.utils.data import Dataset
-from sklearn.model_selection import train_test_split
-
-from torch.utils.tensorboard import SummaryWriter
-
-
 import numpy as np
 
-imageList = np.load("Images.npy").astype(np.float64)
-imageList_copy = imageList[:]
-imageList_copy = imageList_copy.reshape(4960, -1)
-mean = np.mean(imageList_copy, axis=0)
-std = np.std(imageList_copy, axis=0)
-imageList_copy = (imageList_copy - mean) / std
-imageList = imageList_copy.reshape(4960, 11, 11, 1)
+from torch.utils.data import Dataset
+from sklearn.model_selection import train_test_split
+from torch.utils.tensorboard import SummaryWriter
 
+imageList = np.load("Images.npy").astype(np.float64)
 labelList = np.load("Labels.npy").astype(np.int64)
 
+imageList_copy = imageList[:]
+imageList_copy = imageList_copy.reshape(4960, -1)
 
+mean = np.mean(imageList_copy, axis=0)
+std = np.std(imageList_copy, axis=0)
 
+imageList_copy = (imageList_copy - mean) / std
+imageList = imageList_copy.reshape(4960, 11, 11, 1)
 class CustomDataset(Dataset):
     """ Custom dataset for flattened 11x11 csv dataset """
 
@@ -45,13 +41,11 @@ class CustomDataset(Dataset):
     def __len__(self):
         return self.labelList.shape[0]
 
-
 transform = transforms.Compose([
     transforms.ToTensor(),
 ])
 
 ## Configure the hyperparameters
-
 # torch parameters
 SEED = 60  # reproducability
 # NN Parameters
@@ -60,7 +54,6 @@ LR = 0.001  # learning rate
 MOMENTUM = 0.9  # momentum for the SGD optimizer (how much of the past gradients)
 GAMMA = 0.1  # learning rate scheduler (how much to decrease learning rate)
 BATCH_SIZE = 64  # number of images to load per iteration
-
 
 num_classes = 3
 input_shape = (11, 11, 1)
@@ -72,14 +65,11 @@ test_dataset = CustomDataset(y_test, x_test, transform=transform)
 
 train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
 test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=True)
-
-
 class Conv(nn.Module):
     def __init__(self):
         super(Conv, self).__init__()
 
         ## [(W - Kernelw + 2*padding)/stride] + 1
-
         self.conv1 = nn.Conv2d(in_channels=1,
                                out_channels=32,
                                kernel_size=3,
@@ -116,10 +106,8 @@ class Conv(nn.Module):
         x = self.fc2(x)
         return x
 
-
 cuda = torch.cuda.is_available()
 device = torch.device("cuda:0" if cuda else "cpu")
-
 net = Conv().to(device, dtype=torch.double)
 
 loss_fn = nn.CrossEntropyLoss()
@@ -127,7 +115,6 @@ loss_fn = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=LR, momentum=MOMENTUM)
 # change learning rate over time
 scheduler = lr_scheduler.StepLR(optimizer, step_size=100, gamma=GAMMA)
-
 
 def train_net():
     # put the network in training mode
@@ -155,10 +142,7 @@ def train_net():
         epoch_loss += loss.item()
     return epoch_loss
 
-
 ## Define test function
-
-
 def eval_net(loader):
     # put the network in evaluation mode
     net.eval()
@@ -184,7 +168,6 @@ def eval_net(loader):
             # correct += pred.eq(rt.view_as(pred)).sum().item()
     return correct / len(loader.dataset), total_loss
 
-
 writer = SummaryWriter()
 # train the network
 for epoch in range(1, EPOCHS + 1):
@@ -203,6 +186,3 @@ for epoch in range(1, EPOCHS + 1):
 
     writer.flush()
 writer.close()
-
-
-

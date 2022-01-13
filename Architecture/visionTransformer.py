@@ -24,7 +24,6 @@ Reference: (https://github.com/keras-team/keras-io/blob/master/examples/vision/i
 """
 ## Prepare the data
 """
-
 num_classes = 3
 input_shape = (11, 11, 1)
 
@@ -36,7 +35,6 @@ print(f"x_test shape: {x_test.shape} - y_test shape: {y_test.shape}")
 """
 ## Configure the hyperparameters
 """
-
 learning_rate = 0.001
 weight_decay = 0.0001
 batch_size = 128
@@ -56,7 +54,6 @@ mlp_head_units = [2048, 1024]  # Size of the dense layers of the final classifie
 """
 ## Use data augmentation
 """
-
 data_augmentation = keras.Sequential(
     [
         layers.Normalization(),
@@ -73,7 +70,6 @@ data_augmentation.layers[0].adapt(x_train)
 """
 ## Implement multilayer perceptron (MLP)
 """
-
 def mlp(x, hidden_units, dropout_rate):
     for units in hidden_units:
         x = layers.Dense(units, activation=tf.nn.gelu)(x)
@@ -84,7 +80,6 @@ def mlp(x, hidden_units, dropout_rate):
 """
 ## Implement patch creation as a layer
 """
-
 class Patches(layers.Layer):
     def __init__(self, patch_size):
         super(Patches, self).__init__()
@@ -109,7 +104,6 @@ The `PatchEncoder` layer will linearly transform a patch by projecting it into a
 vector of size `projection_dim`. In addition, it adds a learnable position
 embedding to the projected vector.
 """
-
 class PatchEncoder(layers.Layer):
     def __init__(self, num_patches, projection_dim):
         super(PatchEncoder, self).__init__()
@@ -123,7 +117,6 @@ class PatchEncoder(layers.Layer):
         positions = tf.range(start=0, limit=self.num_patches, delta=1)
         encoded = self.projection(patch) + self.position_embedding(positions)
         return encoded
-
 
 """
 ## Build the ViT model
@@ -183,7 +176,6 @@ def create_vit_classifier():
 """
 ## Compile, train, and evaluate the mode
 """
-
 def run_experiment(model):
     optimizer = tfa.optimizers.AdamW(
         learning_rate=learning_rate, weight_decay=weight_decay
@@ -198,7 +190,7 @@ def run_experiment(model):
         ],
     )
 
-    checkpoint_filepath = "C:\\Users\\Tuna\\Desktop\\2021-2022_Fall\\CS401"
+    checkpoint_filepath = "C:\\Users\\Tuna\\Desktop\\2021-2022_Fall\\CS401" # fix here
     checkpoint_callback = keras.callbacks.ModelCheckpoint(
         checkpoint_filepath,
         monitor="val_accuracy",
@@ -222,20 +214,20 @@ def run_experiment(model):
 
     return history
 
-
 vit_classifier = create_vit_classifier()
 history = run_experiment(vit_classifier)
 
 predictions = vit_classifier.predict(x_test)
 classes = np.argmax(predictions, axis = 1)
-cm=confusion_matrix(y_test, classes)
+cm = confusion_matrix(y_test, classes)
 print(cm)
-cr=classification_report(y_test, classes)
+cr = classification_report(y_test, classes)
 print(cr)
 f1 = f1_score(y_test, classes, average='micro')
 print(f1)
 
 print(history.history.keys())
+
 # summarize history for accuracy
 plt.plot(history.history['accuracy'])
 plt.plot(history.history['val_accuracy'])
@@ -244,6 +236,7 @@ plt.ylabel('accuracy')
 plt.xlabel('epoch')
 plt.legend(['train', 'test'], loc='upper left')
 plt.show()
+
 # summarize history for loss
 plt.plot(history.history['loss'])
 plt.plot(history.history['val_loss'])

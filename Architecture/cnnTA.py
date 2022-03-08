@@ -14,13 +14,13 @@ imageList = np.load("Images.npy").astype(np.float64)
 labelList = np.load("Labels.npy").astype(np.int64)
 
 imageList_copy = imageList[:]
-imageList_copy = imageList_copy.reshape(4960, -1)
+imageList_copy = imageList_copy.reshape(len(imageList_copy), -1)
 
 mean = np.mean(imageList_copy, axis=0)
 std = np.std(imageList_copy, axis=0)
 
 imageList_copy = (imageList_copy - mean) / std
-imageList = imageList_copy.reshape(4960, 11, 11, 1)
+imageList = imageList_copy.reshape(len(imageList_copy), 11, 11, 1)
 class CustomDataset(Dataset):
     """ Custom dataset for flattened 11x11 csv dataset """
 

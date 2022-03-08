@@ -6,8 +6,8 @@ from tensorflow import keras
 from tensorflow.keras import layers
 from sklearn.model_selection import train_test_split
 
-imageList = np.load("../S&P/Images.npy")
-labelList = np.load("../S&P/Labels.npy")
+imageList = np.load("../ETF/Images.npy")
+labelList = np.load("../ETF/Labels.npy")
 
 '''
 IMPLEMENTING THE VISION TRANSFORMER

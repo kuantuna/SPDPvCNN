@@ -13,8 +13,8 @@ from sklearn.metrics import f1_score
 
 import matplotlib.pyplot as plt
 
-imageList = np.load("../S&P/Images.npy")
-labelList = np.load("../S&P/Labels.npy")
+imageList = np.load("../ETF/Images.npy")
+labelList = np.load("../ETF/Labels.npy")
 
 '''
 IMPLEMENTING THE VISION TRANSFORMER

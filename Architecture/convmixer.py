@@ -12,8 +12,8 @@ from sklearn.metrics import f1_score
 
 import matplotlib.pyplot as plt
 
-imageList = np.load("../S&P/Images.npy")
-labelList = np.load("../S&P/Labels.npy")
+imageList = np.load("../ETF/Images.npy")
+labelList = np.load("../ETF/Labels.npy")
 
 unique, counts = np.unique(labelList, return_counts=True)
 print(np.asarray((unique, counts)).T)
@@ -25,7 +25,7 @@ Reference: (https://github.com/keras-team/keras-io/blob/master/examples/vision/c
 learning_rate = 0.01
 weight_decay = 0.0001
 batch_size = 128
-num_epochs = 100
+num_epochs = 10
 
 x_train, x_test, y_train, y_test = train_test_split(imageList, labelList, test_size=0.1, random_state=100)
 val_split = 0.1
@@ -114,7 +114,7 @@ def run_experiment(model):
         metrics=["accuracy"],
     )
 
-    checkpoint_filepath = "C:/Users/Tuna/Desktop/2021-2022_Fall/CS401/Results" # fix here
+    checkpoint_filepath = "C:/Users/ASUS/Desktop/OzU Bahar Dönemi Dersleri/Senior Year Project/CS 401/Result" # fix here
     checkpoint_callback = keras.callbacks.ModelCheckpoint(
         checkpoint_filepath,
         monitor="val_accuracy",

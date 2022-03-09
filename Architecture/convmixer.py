@@ -4,6 +4,7 @@ import tensorflow as tf
 
 from tensorflow.keras import layers
 from tensorflow import keras
+from wandb.keras import WandbCallback
 from sklearn.model_selection import train_test_split
 
 from sklearn.metrics import confusion_matrix
@@ -11,6 +12,22 @@ from sklearn.metrics import classification_report
 from sklearn.metrics import f1_score
 
 import matplotlib.pyplot as plt
+
+import wandb
+
+wandb.init(project="test-project", entity="spdpvcnn",
+           config={
+               "learning_rate": 0.001,
+               "epochs": 5,
+               "batch_size": 16,
+               "weight_decay": 0.0001,
+               "image_size": 11,
+               "filters": 768,
+               "depth": 32,
+               "kernel_size": 3,
+               "patch_size": 1,
+               "threshold": 0.0038
+           })
 
 imageList = np.load("../ETF/Images.npy")
 labelList = np.load("../ETF/Labels.npy")
@@ -22,10 +39,10 @@ print(np.asarray((unique, counts)).T)
 IMPLEMENTING THE CONVMIXER
 Reference: (https://github.com/keras-team/keras-io/blob/master/examples/vision/convmixer.py)
 '''
-learning_rate = 0.01
+learning_rate = 0.001
 weight_decay = 0.0001
-batch_size = 128
-num_epochs = 10
+batch_size = 16
+num_epochs = 5
 
 x_train, x_test, y_train, y_test = train_test_split(imageList, labelList, test_size=0.1, random_state=100)
 val_split = 0.1
@@ -42,9 +59,10 @@ image_size = 11
 auto = tf.data.AUTOTUNE
 
 data_augmentation = keras.Sequential(
-    [layers.RandomCrop(image_size, image_size), layers.RandomFlip("horizontal"),],
+    [layers.RandomCrop(image_size, image_size), layers.RandomFlip("horizontal"), ],
     name="data_augmentation",
 )
+
 
 def make_datasets(images, labels, is_train=False):
     dataset = tf.data.Dataset.from_tensor_slices((images, labels))
@@ -57,17 +75,21 @@ def make_datasets(images, labels, is_train=False):
         )
     return dataset.prefetch(auto)
 
+
 train_dataset = make_datasets(new_x_train, new_y_train, is_train=True)
 val_dataset = make_datasets(x_val, y_val)
 test_dataset = make_datasets(x_test, y_test)
+
 
 def activation_block(x):
     x = layers.Activation("gelu")(x)
     return layers.BatchNormalization()(x)
 
+
 def conv_stem(x, filters: int, patch_size: int):
     x = layers.Conv2D(filters, kernel_size=patch_size, strides=patch_size)(x)
     return activation_block(x)
+
 
 def conv_mixer_block(x, filters: int, kernel_size: int):
     # Depthwise convolution.
@@ -81,14 +103,15 @@ def conv_mixer_block(x, filters: int, kernel_size: int):
 
     return x
 
+
 def get_conv_mixer_256_8(
-    image_size=11, filters=256, depth=8, kernel_size=3, patch_size=1, num_classes=3
+        image_size=11, filters=768, depth=32, kernel_size=3, patch_size=1, num_classes=3
 ):
     """ConvMixer-256/8: https://openreview.net/pdf?id=TVHS5Y4dNvM.
     The hyperparameter values are taken from the paper.
     """
     inputs = keras.Input((image_size, image_size, 1))
-    #x = layers.Rescaling(scale=1.0 / 255)(inputs)
+    # x = layers.Rescaling(scale=1.0 / 255)(inputs)
 
     # Extract patch embeddings.
     x = conv_stem(inputs, filters, patch_size)
@@ -103,6 +126,7 @@ def get_conv_mixer_256_8(
 
     return keras.Model(inputs, outputs)
 
+
 def run_experiment(model):
     optimizer = tfa.optimizers.AdamW(
         learning_rate=learning_rate, weight_decay=weight_decay
@@ -114,19 +138,20 @@ def run_experiment(model):
         metrics=["accuracy"],
     )
 
-    checkpoint_filepath = "C:/Users/ASUS/Desktop/OzU Bahar Dönemi Dersleri/Senior Year Project/CS 401/Result" # fix here
+    checkpoint_filepath = "C:/Users/Tuna/Desktop/2022-spring/CS402/SPDPvCNN/Results"  # fix here
+    '''
     checkpoint_callback = keras.callbacks.ModelCheckpoint(
         checkpoint_filepath,
         monitor="val_accuracy",
         save_best_only=True,
         save_weights_only=True,
     )
-
+    '''
     history = model.fit(
         train_dataset,
         validation_data=val_dataset,
         epochs=num_epochs,
-        callbacks=[checkpoint_callback],
+        callbacks=[WandbCallback()],
     )
 
     model.load_weights(checkpoint_filepath)
@@ -135,14 +160,12 @@ def run_experiment(model):
 
     return history, model
 
+
 conv_mixer_model = get_conv_mixer_256_8()
 history, conv_mixer_model = run_experiment(conv_mixer_model)
 
-# print("Type of conv_mixer_model:", type(conv_mixer_model))
-# print("Type of history:", type(history))
-
 predictions = conv_mixer_model.predict(test_dataset)
-classes = np.argmax(predictions, axis = 1)
+classes = np.argmax(predictions, axis=1)
 cm = confusion_matrix(y_test, classes)
 print(cm)
 cr = classification_report(y_test, classes)

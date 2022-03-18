@@ -1,97 +1,78 @@
 import numpy as np
-import tensorflow_addons as tfa
+import os
 import tensorflow as tf
-
-from tensorflow.keras import layers, regularizers
-from tensorflow import keras
-from wandb.keras import WandbCallback
-from sklearn.model_selection import train_test_split
+import tensorflow_addons as tfa
+import time
+import wandb
 
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import classification_report
 from sklearn.metrics import f1_score
+from sklearn.model_selection import train_test_split
+from tensorflow.keras import layers, regularizers
+from tensorflow import keras
+from wandb.keras import WandbCallback
 
-import matplotlib.pyplot as plt
-
-import wandb
-
-# from callbacks import *
-import time
-
-wandb.init(project="test-project", entity="spdpvcnn",
-           config={
-               "model": "ConvMixer",
-               "learning_rate": "0.001",
-               "epochs": 60,
-               "batch_size": 16,
-               "weight_decay": 0.0001,
-               "image_size": 11,
-               "filters": 768,
-               "depth": 32,
-               "kernel_size": 5,
-               "patch_size": 1,
-               "threshold": 0.0038
-           })
-'''
-sweep_config = {
-    "method": "random",
-    "metric": {
-        "name": "val_accuracy",
-        "goal": "maximize"
-    }
-}
-
-parameters_dict = {
-    
-}
-'''
-imageList = np.load("C:\\Users\\Tuna\\Desktop\\2022-spring\\CS402\\SPDPvCNN\\ETF\\Images.npy")
-labelList = np.load("C:\\Users\\Tuna\\Desktop\\2022-spring\\CS402\\SPDPvCNN\\ETF\\Labels.npy")
-
-unique, counts = np.unique(labelList, return_counts=True)
-print(np.asarray((unique, counts)).T)
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 '''
-IMPLEMENTING THE CONVMIXER
+CONVMIXER
 Reference: (https://github.com/keras-team/keras-io/blob/master/examples/vision/convmixer.py)
+'''
+
+
+''' Hyperparameters
 '''
 learning_rate = 0.001
 weight_decay = 0.0001
-batch_size = 16
-num_epochs = 60
+batch_size = 128
+num_epochs = 5
+filters_ = 256
+depth = 8
+kernel_size = 5
+patch_size = 1
+
+
+def initialize_wandb():
+    wandb.init(project="test-project", entity="spdpvcnn",
+            config={
+                "model": "ConvMixer",
+                "learning_rate": learning_rate,
+                "epochs": num_epochs,
+                "batch_size": batch_size,
+                "weight_decay": weight_decay,
+                "filters": filters_,
+                "depth": depth,
+                "kernel_size": kernel_size,
+                "patch_size": patch_size,
+                "threshold": 0.0038
+            })
 
 
 
+def load_dataset():
+    imageList = np.load("../ETF/Images.npy")
+    labelList = np.load("../ETF/Labels.npy")
+    return imageList, labelList
 
-'''
-TOTAL_STEPS = int((50000 / batch_size) * num_epochs)
-WARMUP_STEPS = 10000
-INIT_LR = 0.01
-WAMRUP_LR = 0.002
-'''
-
-
-
+def print_data_counts(labelList):
+    unique, counts = np.unique(labelList, return_counts=True)
+    print(np.asarray((unique, counts)).T)
 
 
-x_train, x_test, y_train, y_test = train_test_split(imageList, labelList, test_size=0.1, random_state=41)
-val_split = 0.1
+def prepare_dataset(imageList, labelList):
+    x_train, x_test, y_train, y_test = train_test_split(imageList, labelList, test_size=0.1, random_state=41)
+    val_split = 0.1
 
-val_indices = int(len(x_train) * val_split)
-new_x_train, new_y_train = x_train[val_indices:], y_train[val_indices:]
-x_val, y_val = x_train[:val_indices], y_train[:val_indices]
+    val_indices = int(len(x_train) * val_split)
+    new_x_train, new_y_train = x_train[val_indices:], y_train[val_indices:]
+    x_val, y_val = x_train[:val_indices], y_train[:val_indices]
 
-print(f"Training data samples: {len(new_x_train)}")
-print(f"Validation data samples: {len(x_val)}")
-print(f"Test data samples: {len(x_test)}")
+    print(f"Training data samples: {len(new_x_train)}")
+    print(f"Validation data samples: {len(x_val)}")
+    print(f"Test data samples: {len(x_test)}")
 
-image_size = 11
-auto = tf.data.AUTOTUNE
-
-data_augmentation = keras.Sequential(
-    [layers.RandomCrop(image_size, image_size), layers.RandomFlip("horizontal"), ],
-    name="data_augmentation",
-)
+    return new_x_train, new_y_train, x_val, y_val, x_test, y_test
 
 
 def make_datasets(images, labels, is_train=False):
@@ -105,10 +86,15 @@ def make_datasets(images, labels, is_train=False):
         )
     return dataset.prefetch(auto)
 
+def get_finalized_datasets(new_x_train, new_y_train, x_val, y_val, x_test, y_test):
+    train_dataset = make_datasets(new_x_train, new_y_train, is_train=True)
+    val_dataset = make_datasets(x_val, y_val)
+    test_dataset = make_datasets(x_test, y_test)
+    return train_dataset, val_dataset, test_dataset
 
-train_dataset = make_datasets(new_x_train, new_y_train, is_train=True)
-val_dataset = make_datasets(x_val, y_val)
-test_dataset = make_datasets(x_test, y_test)
+
+def load_saved_model(path):
+    keras.models.load_model(path, custom_objects={'MyOptimizer': tfa.optimizers.AdamW})
 
 
 def activation_block(x):
@@ -136,8 +122,8 @@ def conv_mixer_block(x, filters: int, kernel_size: int):
     return x
 
 
-def get_conv_mixer_256_8(
-        image_size=11, filters=768, depth=32, kernel_size=5, patch_size=1, num_classes=3
+def get_conv_mixer_model(
+        image_size=11, filters=filters_, depth=depth, kernel_size=kernel_size, patch_size=patch_size, num_classes=3
 ):
     """ConvMixer-256/8: https://openreview.net/pdf?id=TVHS5Y4dNvM.
     The hyperparameter values are taken from the paper.
@@ -159,83 +145,20 @@ def get_conv_mixer_256_8(
     return keras.Model(inputs, outputs)
 
 
+class CmPrinter(tf.keras.callbacks.Callback):
+    def __init__(self, test_dataset) -> None:
+        super().__init__()
+        self.test_dataset = test_dataset
+
+
+    def on_epoch_end(self, epoch, logs={}):
+        predictions = self.model.predict(self.test_dataset)
+        classes = np.argmax(predictions, axis=1)
+        print(confusion_matrix(y_test, classes))# Compute and store recall for each class here.
 
 
 
-
-'''
-class WarmUpCosine(keras.optimizers.schedules.LearningRateSchedule):
-    def __init__(
-        self, learning_rate_base, total_steps, warmup_learning_rate, warmup_steps
-    ):
-        super(WarmUpCosine, self).__init__()
-
-        self.learning_rate_base = learning_rate_base
-        self.total_steps = total_steps
-        self.warmup_learning_rate = warmup_learning_rate
-        self.warmup_steps = warmup_steps
-        self.pi = tf.constant(np.pi)
-
-    def __call__(self, step):
-        if self.total_steps < self.warmup_steps:
-            raise ValueError("Total_steps must be larger or equal to warmup_steps.")
-        learning_rate = (
-            0.5
-            * self.learning_rate_base
-            * (
-                1
-                + tf.cos(
-                    self.pi
-                    * (tf.cast(step, tf.float32) - self.warmup_steps)
-                    / float(self.total_steps - self.warmup_steps)
-                )
-            )
-        )
-
-        if self.warmup_steps > 0:
-            if self.learning_rate_base < self.warmup_learning_rate:
-                raise ValueError(
-                    "Learning_rate_base must be larger or equal to "
-                    "warmup_learning_rate."
-                )
-            slope = (
-                self.learning_rate_base - self.warmup_learning_rate
-            ) / self.warmup_steps
-            warmup_rate = slope * tf.cast(step, tf.float32) + self.warmup_learning_rate
-            learning_rate = tf.where(
-                step < self.warmup_steps, warmup_rate, learning_rate
-            )
-        return tf.where(
-            step > self.total_steps, 0.0, learning_rate, name="learning_rate"
-        )
-
-
-
-
-
-
-scheduled_lrs = WarmUpCosine(
-    learning_rate_base=INIT_LR,
-    total_steps=TOTAL_STEPS,
-    warmup_learning_rate=WAMRUP_LR,
-    warmup_steps=WARMUP_STEPS,
-)
-'''
-'''
-lrs = [scheduled_lrs(step) for step in range(TOTAL_STEPS)]
-plt.plot(lrs)
-plt.xlabel("Step", fontsize=14)
-plt.ylabel("LR", fontsize=14)
-plt.grid()
-plt.show()
-'''
-
-
-
-
-
-
-def run_experiment(model):
+def run_experiment(model, test_dataset):
     optimizer = tfa.optimizers.AdamW(
         learning_rate=learning_rate, weight_decay=weight_decay
     )
@@ -246,28 +169,16 @@ def run_experiment(model):
         loss="sparse_categorical_crossentropy",
         metrics=["accuracy"],
     )
-    # , f1_m,precision_m, recall_m, TP, TN, FP, FN
 
-    # checkpoint_filepath = "C:/Users/Tuna/Desktop/2022-spring/CS402/SPDPvCNN/Results"  # fix here
-    '''
-    checkpoint_callback = keras.callbacks.ModelCheckpoint(
-        checkpoint_filepath,
-        monitor="val_accuracy",
-        save_best_only=True,
-        save_weights_only=True,
-    )
-    '''
     history = model.fit(
         train_dataset,
         validation_data=val_dataset,
         epochs=num_epochs,
-        callbacks=[WandbCallback()],
+        callbacks=[WandbCallback(), CmPrinter(test_dataset)],
     )
 
-    # model.load_weights(checkpoint_filepath)
-    # model.save('../saved_model/wc0317', save_format='tf')
     t = time.time()
-    export_path_keras = "./{}.h5".format(int(t))
+    export_path_keras = "../SavedModels/{}-{}x{}-k{}p{}.h5".format(int(t), filters_, depth, kernel_size, patch_size)
     model.save(export_path_keras)
     _, accuracy = model.evaluate(test_dataset)
     print(f"Test accuracy: {round(accuracy * 100, 2)}%")
@@ -275,36 +186,33 @@ def run_experiment(model):
     return history, model
 
 
-conv_mixer_model = get_conv_mixer_256_8()
-history, conv_mixer_model = run_experiment(conv_mixer_model)
-
-predictions = conv_mixer_model.predict(test_dataset)
-classes = np.argmax(predictions, axis=1)
-cm = confusion_matrix(y_test, classes)
-print(cm)
-cr = classification_report(y_test, classes)
-print(cr)
-f1 = f1_score(y_test, classes, average='micro')
-print(f1)
-'''
-print(history.history.keys())
 
 
-# summarize history for accuracy
-plt.plot(history.history['accuracy'])
-plt.plot(history.history['val_accuracy'])
-plt.title('model accuracy')
-plt.ylabel('accuracy')
-plt.xlabel('epoch')
-plt.legend(['train', 'test'], loc='upper left')
-plt.show()
+if __name__ == "__main__":
+    initialize_wandb()
+    imageList, labelList = load_dataset()
+    print_data_counts(labelList)
+    new_x_train, new_y_train, x_val, y_val, x_test, y_test = prepare_dataset(imageList, labelList)
 
-# summarize history for loss
-plt.plot(history.history['loss'])
-plt.plot(history.history['val_loss'])
-plt.title('model loss')
-plt.ylabel('loss')
-plt.xlabel('epoch')
-plt.legend(['train', 'test'], loc='upper left')
-plt.show()
-'''
+    image_size = 11
+    auto = tf.data.AUTOTUNE
+
+    data_augmentation = keras.Sequential(
+        [layers.RandomCrop(image_size, image_size), layers.RandomFlip("horizontal"), ],
+        name="data_augmentation",
+    )
+
+    train_dataset, val_dataset, test_dataset = get_finalized_datasets(new_x_train, new_y_train, x_val, y_val, x_test, y_test)
+
+    conv_mixer_model = get_conv_mixer_model()
+    #conv_mixer_model = load_saved_model('../SavedModels/???.h5')
+
+    history, conv_mixer_model = run_experiment(conv_mixer_model, test_dataset)
+
+    predictions = conv_mixer_model.predict(test_dataset)
+    classes = np.argmax(predictions, axis=1)
+
+    cr = classification_report(y_test, classes)
+    print(cr)
+    f1 = f1_score(y_test, classes, average='micro')
+    print(f1)

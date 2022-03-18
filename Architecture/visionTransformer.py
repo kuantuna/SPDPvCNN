@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 
 from tensorflow import keras
 from tensorflow.keras import layers
+from wandb.keras import WandbCallback
 from sklearn.model_selection import train_test_split
 
 from sklearn.metrics import confusion_matrix
@@ -13,8 +14,25 @@ from sklearn.metrics import f1_score
 
 import matplotlib.pyplot as plt
 
-imageList = np.load("../ETF/Images.npy")
-labelList = np.load("../ETF/Labels.npy")
+import wandb
+
+wandb.init(project="vt-project", entity="spdpvcnn",
+           config={
+               "model": "VisionTransformer",
+               "learning_rate": "0.001",
+               "epochs": 150,
+               "batch_size": 128,
+               "weight_decay": 0.0001,
+               "image_size": 11,
+               "projection_dim": 64,
+               "num_heads": 4,
+               "patch_size": 2,
+               "transformer_layers": 8,
+               "threshold": 0.0038
+           })
+
+imageList = np.load("C:\\Users\\Tuna\\Desktop\\2022-spring\\CS402\\SPDPvCNN\\ETF\\Images.npy")
+labelList = np.load("C:\\Users\\Tuna\\Desktop\\2022-spring\\CS402\\SPDPvCNN\\ETF\\Labels.npy")
 
 '''
 IMPLEMENTING THE VISION TRANSFORMER
@@ -27,7 +45,7 @@ Reference: (https://github.com/keras-team/keras-io/blob/master/examples/vision/i
 num_classes = 3
 input_shape = (11, 11, 1)
 
-x_train, x_test, y_train, y_test = train_test_split(imageList, labelList, test_size=0.1, random_state=100)
+x_train, x_test, y_train, y_test = train_test_split(imageList, labelList, test_size=0.1, random_state=41)
 
 print(f"x_train shape: {x_train.shape} - y_train shape: {y_train.shape}")
 print(f"x_test shape: {x_test.shape} - y_test shape: {y_test.shape}")
@@ -38,7 +56,7 @@ print(f"x_test shape: {x_test.shape} - y_test shape: {y_test.shape}")
 learning_rate = 0.001
 weight_decay = 0.0001
 batch_size = 128
-num_epochs = 200
+num_epochs = 150
 image_size = 11  # We'll resize input images to this size
 patch_size = 2  # Size of the patches to be extract from the input images
 num_patches = (image_size // patch_size) ** 2
@@ -50,6 +68,17 @@ transformer_units = [
 ]  # Size of the transformer layers
 transformer_layers = 8 #6, 10
 mlp_head_units = [2048, 1024]  # Size of the dense layers of the final classifier
+
+
+
+'''
+TOTAL_STEPS = int((50000 / batch_size) * num_epochs)
+WARMUP_STEPS = 10000
+INIT_LR = 0.01
+WAMRUP_LR = 0.002
+'''
+
+
 
 """
 ## Use data augmentation
@@ -173,6 +202,65 @@ def create_vit_classifier():
     model = keras.Model(inputs=inputs, outputs=logits)
     return model
 
+'''
+
+class WarmUpCosine(keras.optimizers.schedules.LearningRateSchedule):
+    def __init__(
+        self, learning_rate_base, total_steps, warmup_learning_rate, warmup_steps
+    ):
+        super(WarmUpCosine, self).__init__()
+
+        self.learning_rate_base = learning_rate_base
+        self.total_steps = total_steps
+        self.warmup_learning_rate = warmup_learning_rate
+        self.warmup_steps = warmup_steps
+        self.pi = tf.constant(np.pi)
+
+    def __call__(self, step):
+        if self.total_steps < self.warmup_steps:
+            raise ValueError("Total_steps must be larger or equal to warmup_steps.")
+        learning_rate = (
+            0.5
+            * self.learning_rate_base
+            * (
+                1
+                + tf.cos(
+                    self.pi
+                    * (tf.cast(step, tf.float32) - self.warmup_steps)
+                    / float(self.total_steps - self.warmup_steps)
+                )
+            )
+        )
+
+        if self.warmup_steps > 0:
+            if self.learning_rate_base < self.warmup_learning_rate:
+                raise ValueError(
+                    "Learning_rate_base must be larger or equal to "
+                    "warmup_learning_rate."
+                )
+            slope = (
+                self.learning_rate_base - self.warmup_learning_rate
+            ) / self.warmup_steps
+            warmup_rate = slope * tf.cast(step, tf.float32) + self.warmup_learning_rate
+            learning_rate = tf.where(
+                step < self.warmup_steps, warmup_rate, learning_rate
+            )
+        return tf.where(
+            step > self.total_steps, 0.0, learning_rate, name="learning_rate"
+        )
+
+
+scheduled_lrs = WarmUpCosine(
+    learning_rate_base=INIT_LR,
+    total_steps=TOTAL_STEPS,
+    warmup_learning_rate=WAMRUP_LR,
+    warmup_steps=WARMUP_STEPS,
+)
+
+
+'''
+
+
 """
 ## Compile, train, and evaluate the mode
 """
@@ -180,7 +268,7 @@ def run_experiment(model):
     optimizer = tfa.optimizers.AdamW(
         learning_rate=learning_rate, weight_decay=weight_decay
     )
-
+    #scheduled_lrs
     model.compile(
         optimizer=optimizer,
         loss=keras.losses.SparseCategoricalCrossentropy(from_logits=True),
@@ -190,13 +278,15 @@ def run_experiment(model):
         ],
     )
 
-    checkpoint_filepath = "C:\\Users\\Tuna\\Desktop\\2021-2022_Fall\\CS401" # fix here
+    # checkpoint_filepath = "C:\\Users\\Tuna\\Desktop\\2021-2022_Fall\\CS401" # fix here
+    '''
     checkpoint_callback = keras.callbacks.ModelCheckpoint(
         checkpoint_filepath,
         monitor="val_accuracy",
         save_best_only=True,
         save_weights_only=True,
     )
+    '''
 
     history = model.fit(
         x=x_train,
@@ -204,10 +294,10 @@ def run_experiment(model):
         batch_size=batch_size,
         epochs=num_epochs,
         validation_split=0.1,
-        callbacks=[checkpoint_callback],
+        callbacks=[WandbCallback()],
     )
 
-    model.load_weights(checkpoint_filepath)
+    # model.load_weights(checkpoint_filepath)
     _, accuracy, top_5_accuracy = model.evaluate(x_test, y_test)
     print(f"Test accuracy: {round(accuracy * 100, 2)}%")
     print(f"Test top 5 accuracy: {round(top_5_accuracy * 100, 2)}%")

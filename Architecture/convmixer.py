@@ -2,7 +2,7 @@ import numpy as np
 import tensorflow_addons as tfa
 import tensorflow as tf
 
-from tensorflow.keras import layers
+from tensorflow.keras import layers, regularizers
 from tensorflow import keras
 from wandb.keras import WandbCallback
 from sklearn.model_selection import train_test_split
@@ -15,22 +15,38 @@ import matplotlib.pyplot as plt
 
 import wandb
 
+# from callbacks import *
+import time
+
 wandb.init(project="test-project", entity="spdpvcnn",
            config={
-               "learning_rate": 0.001,
-               "epochs": 5,
+               "model": "ConvMixer",
+               "learning_rate": "0.001",
+               "epochs": 60,
                "batch_size": 16,
                "weight_decay": 0.0001,
                "image_size": 11,
                "filters": 768,
                "depth": 32,
-               "kernel_size": 3,
+               "kernel_size": 5,
                "patch_size": 1,
                "threshold": 0.0038
            })
+'''
+sweep_config = {
+    "method": "random",
+    "metric": {
+        "name": "val_accuracy",
+        "goal": "maximize"
+    }
+}
 
-imageList = np.load("../ETF/Images.npy")
-labelList = np.load("../ETF/Labels.npy")
+parameters_dict = {
+    
+}
+'''
+imageList = np.load("C:\\Users\\Tuna\\Desktop\\2022-spring\\CS402\\SPDPvCNN\\ETF\\Images.npy")
+labelList = np.load("C:\\Users\\Tuna\\Desktop\\2022-spring\\CS402\\SPDPvCNN\\ETF\\Labels.npy")
 
 unique, counts = np.unique(labelList, return_counts=True)
 print(np.asarray((unique, counts)).T)
@@ -42,9 +58,23 @@ Reference: (https://github.com/keras-team/keras-io/blob/master/examples/vision/c
 learning_rate = 0.001
 weight_decay = 0.0001
 batch_size = 16
-num_epochs = 5
+num_epochs = 60
 
-x_train, x_test, y_train, y_test = train_test_split(imageList, labelList, test_size=0.1, random_state=100)
+
+
+
+'''
+TOTAL_STEPS = int((50000 / batch_size) * num_epochs)
+WARMUP_STEPS = 10000
+INIT_LR = 0.01
+WAMRUP_LR = 0.002
+'''
+
+
+
+
+
+x_train, x_test, y_train, y_test = train_test_split(imageList, labelList, test_size=0.1, random_state=41)
 val_split = 0.1
 
 val_indices = int(len(x_train) * val_split)
@@ -88,6 +118,7 @@ def activation_block(x):
 
 def conv_stem(x, filters: int, patch_size: int):
     x = layers.Conv2D(filters, kernel_size=patch_size, strides=patch_size)(x)
+    #, kernel_regularizer=regularizers.l2(1e-2)
     return activation_block(x)
 
 
@@ -99,13 +130,14 @@ def conv_mixer_block(x, filters: int, kernel_size: int):
 
     # Pointwise convolution.
     x = layers.Conv2D(filters, kernel_size=1)(x)
+    #, kernel_regularizer=regularizers.l2(1e-2)
     x = activation_block(x)
 
     return x
 
 
 def get_conv_mixer_256_8(
-        image_size=11, filters=768, depth=32, kernel_size=3, patch_size=1, num_classes=3
+        image_size=11, filters=768, depth=32, kernel_size=5, patch_size=1, num_classes=3
 ):
     """ConvMixer-256/8: https://openreview.net/pdf?id=TVHS5Y4dNvM.
     The hyperparameter values are taken from the paper.
@@ -127,18 +159,96 @@ def get_conv_mixer_256_8(
     return keras.Model(inputs, outputs)
 
 
+
+
+
+
+'''
+class WarmUpCosine(keras.optimizers.schedules.LearningRateSchedule):
+    def __init__(
+        self, learning_rate_base, total_steps, warmup_learning_rate, warmup_steps
+    ):
+        super(WarmUpCosine, self).__init__()
+
+        self.learning_rate_base = learning_rate_base
+        self.total_steps = total_steps
+        self.warmup_learning_rate = warmup_learning_rate
+        self.warmup_steps = warmup_steps
+        self.pi = tf.constant(np.pi)
+
+    def __call__(self, step):
+        if self.total_steps < self.warmup_steps:
+            raise ValueError("Total_steps must be larger or equal to warmup_steps.")
+        learning_rate = (
+            0.5
+            * self.learning_rate_base
+            * (
+                1
+                + tf.cos(
+                    self.pi
+                    * (tf.cast(step, tf.float32) - self.warmup_steps)
+                    / float(self.total_steps - self.warmup_steps)
+                )
+            )
+        )
+
+        if self.warmup_steps > 0:
+            if self.learning_rate_base < self.warmup_learning_rate:
+                raise ValueError(
+                    "Learning_rate_base must be larger or equal to "
+                    "warmup_learning_rate."
+                )
+            slope = (
+                self.learning_rate_base - self.warmup_learning_rate
+            ) / self.warmup_steps
+            warmup_rate = slope * tf.cast(step, tf.float32) + self.warmup_learning_rate
+            learning_rate = tf.where(
+                step < self.warmup_steps, warmup_rate, learning_rate
+            )
+        return tf.where(
+            step > self.total_steps, 0.0, learning_rate, name="learning_rate"
+        )
+
+
+
+
+
+
+scheduled_lrs = WarmUpCosine(
+    learning_rate_base=INIT_LR,
+    total_steps=TOTAL_STEPS,
+    warmup_learning_rate=WAMRUP_LR,
+    warmup_steps=WARMUP_STEPS,
+)
+'''
+'''
+lrs = [scheduled_lrs(step) for step in range(TOTAL_STEPS)]
+plt.plot(lrs)
+plt.xlabel("Step", fontsize=14)
+plt.ylabel("LR", fontsize=14)
+plt.grid()
+plt.show()
+'''
+
+
+
+
+
+
 def run_experiment(model):
     optimizer = tfa.optimizers.AdamW(
         learning_rate=learning_rate, weight_decay=weight_decay
     )
+    # scheduled_lrs
 
     model.compile(
         optimizer=optimizer,
         loss="sparse_categorical_crossentropy",
         metrics=["accuracy"],
     )
+    # , f1_m,precision_m, recall_m, TP, TN, FP, FN
 
-    checkpoint_filepath = "C:/Users/Tuna/Desktop/2022-spring/CS402/SPDPvCNN/Results"  # fix here
+    # checkpoint_filepath = "C:/Users/Tuna/Desktop/2022-spring/CS402/SPDPvCNN/Results"  # fix here
     '''
     checkpoint_callback = keras.callbacks.ModelCheckpoint(
         checkpoint_filepath,
@@ -154,7 +264,11 @@ def run_experiment(model):
         callbacks=[WandbCallback()],
     )
 
-    model.load_weights(checkpoint_filepath)
+    # model.load_weights(checkpoint_filepath)
+    # model.save('../saved_model/wc0317', save_format='tf')
+    t = time.time()
+    export_path_keras = "./{}.h5".format(int(t))
+    model.save(export_path_keras)
     _, accuracy = model.evaluate(test_dataset)
     print(f"Test accuracy: {round(accuracy * 100, 2)}%")
 
@@ -172,8 +286,9 @@ cr = classification_report(y_test, classes)
 print(cr)
 f1 = f1_score(y_test, classes, average='micro')
 print(f1)
-
+'''
 print(history.history.keys())
+
 
 # summarize history for accuracy
 plt.plot(history.history['accuracy'])
@@ -192,3 +307,4 @@ plt.ylabel('loss')
 plt.xlabel('epoch')
 plt.legend(['train', 'test'], loc='upper left')
 plt.show()
+'''

@@ -25,10 +25,10 @@ Reference: (https://github.com/keras-team/keras-io/blob/master/examples/vision/c
 '''
 learning_rate = 0.001
 weight_decay = 0.0001
-batch_size = 128
-num_epochs = 5
-filters_ = 256
-depth = 8
+batch_size = 16
+num_epochs = 60
+filters_ = 768
+depth = 32
 kernel_size = 5
 patch_size = 1
 
@@ -56,8 +56,14 @@ def load_dataset():
     return imageList, labelList
 
 def print_data_counts(labelList):
+    labelDict = {
+        0: "Buy",
+        1: "Hold",
+        2: "Sell"
+    }
     unique, counts = np.unique(labelList, return_counts=True)
-    print(np.asarray((unique, counts)).T)
+    for label, count in np.asarray((unique, counts)).T:
+        print("{} count: {}".format(labelDict[int(label)], int(count)))
 
 
 def prepare_dataset(imageList, labelList):
@@ -94,7 +100,7 @@ def get_finalized_datasets(new_x_train, new_y_train, x_val, y_val, x_test, y_tes
 
 
 def load_saved_model(path):
-    keras.models.load_model(path, custom_objects={'MyOptimizer': tfa.optimizers.AdamW})
+    return keras.models.load_model(path, custom_objects={'MyOptimizer': tfa.optimizers.AdamW})
 
 
 def activation_block(x):
@@ -157,8 +163,7 @@ class CmPrinter(tf.keras.callbacks.Callback):
         print(confusion_matrix(y_test, classes))# Compute and store recall for each class here.
 
 
-
-def run_experiment(model, test_dataset):
+def compile_model_optimizer(model):
     optimizer = tfa.optimizers.AdamW(
         learning_rate=learning_rate, weight_decay=weight_decay
     )
@@ -169,7 +174,10 @@ def run_experiment(model, test_dataset):
         loss="sparse_categorical_crossentropy",
         metrics=["accuracy"],
     )
+    return model
 
+
+def run_experiment(model, test_dataset):
     history = model.fit(
         train_dataset,
         validation_data=val_dataset,
@@ -187,11 +195,11 @@ def run_experiment(model, test_dataset):
 
 
 
-
 if __name__ == "__main__":
     initialize_wandb()
     imageList, labelList = load_dataset()
     print_data_counts(labelList)
+
     new_x_train, new_y_train, x_val, y_val, x_test, y_test = prepare_dataset(imageList, labelList)
 
     image_size = 11
@@ -204,8 +212,10 @@ if __name__ == "__main__":
 
     train_dataset, val_dataset, test_dataset = get_finalized_datasets(new_x_train, new_y_train, x_val, y_val, x_test, y_test)
 
-    conv_mixer_model = get_conv_mixer_model()
-    #conv_mixer_model = load_saved_model('../SavedModels/???.h5')
+
+    conv_mixer_model = get_conv_mixer_model()                                                  # If you want to load a saved model and train it
+    conv_mixer_model = compile_model_optimizer(conv_mixer_model)                               # Comment these two lines and uncomment the line below
+    # conv_mixer_model = load_saved_model('C:/Users/Tuna/Desktop/Saved Models/1647585460.h5')  
 
     history, conv_mixer_model = run_experiment(conv_mixer_model, test_dataset)
 

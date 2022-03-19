@@ -21,7 +21,7 @@ Reference: (https://github.com/keras-team/keras-io/blob/master/examples/vision/c
 '''
 
 
-''' Hyperparameters
+''' Setting Hyperparameter Values
 '''
 learning_rate = 0.001
 weight_decay = 0.0001
@@ -33,6 +33,8 @@ kernel_size = 5
 patch_size = 1
 
 
+''' Initializing Weights & Biases
+'''
 def initialize_wandb():
     wandb.init(project="test-project", entity="spdpvcnn",
             config={
@@ -49,7 +51,8 @@ def initialize_wandb():
             })
 
 
-
+''' Dataset Preperation
+'''
 def load_dataset():
     imageList = np.load("../ETF/Images.npy")
     labelList = np.load("../ETF/Labels.npy")
@@ -99,10 +102,10 @@ def get_finalized_datasets(new_x_train, new_y_train, x_val, y_val, x_test, y_tes
     return train_dataset, val_dataset, test_dataset
 
 
-def load_saved_model(path):
-    return keras.models.load_model(path, custom_objects={'MyOptimizer': tfa.optimizers.AdamW})
 
 
+''' ConvMixer Implementation
+'''
 def activation_block(x):
     x = layers.Activation("gelu")(x)
     return layers.BatchNormalization()(x)
@@ -151,18 +154,9 @@ def get_conv_mixer_model(
     return keras.Model(inputs, outputs)
 
 
-class CmPrinter(tf.keras.callbacks.Callback):
-    def __init__(self, test_dataset) -> None:
-        super().__init__()
-        self.test_dataset = test_dataset
 
-
-    def on_epoch_end(self, epoch, logs={}):
-        predictions = self.model.predict(self.test_dataset)
-        classes = np.argmax(predictions, axis=1)
-        print(confusion_matrix(y_test, classes))# Compute and store recall for each class here.
-
-
+''' Compiling, Training and Evaluating
+'''
 def compile_model_optimizer(model):
     optimizer = tfa.optimizers.AdamW(
         learning_rate=learning_rate, weight_decay=weight_decay
@@ -192,6 +186,25 @@ def run_experiment(model, test_dataset):
     print(f"Test accuracy: {round(accuracy * 100, 2)}%")
 
     return history, model
+
+
+# Runs at the end of every epoch and prints the confusion matrix
+class CmPrinter(tf.keras.callbacks.Callback):
+    def __init__(self, test_dataset) -> None:
+        super().__init__()
+        self.test_dataset = test_dataset
+
+
+    def on_epoch_end(self, epoch, logs={}):
+        predictions = self.model.predict(self.test_dataset)
+        classes = np.argmax(predictions, axis=1)
+        print(confusion_matrix(y_test, classes))
+
+
+# Used to load a saved model to train and/or evaluate
+def load_saved_model(path):
+    return keras.models.load_model(path, custom_objects={'MyOptimizer': tfa.optimizers.AdamW})
+
 
 
 

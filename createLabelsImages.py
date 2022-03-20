@@ -6,13 +6,15 @@ from talib import RSI, WMA, EMA, SMA
 from talib import ROC, CMO, CCI, PPO
 from talib import TEMA, WILLR, MACD
 
+from talib import SAR, ADX, STDDEV, OBV
+
 '''
 DEFINING SOME VARIABLES
 '''
 startDate = '2001-10-11'
-endDate = '2021-11-11'
+endDate = '2022-03-19'
 axes = ['Date', 'Value']
-headers = ['RSI', 'WMA', 'EMA', 'SMA', 'ROC', 'CMO', 'CCI', 'PPO', 'TEMA', 'WILLR', 'MACD']
+headers = ['RSI', 'WMA', 'EMA', 'SMA', 'ROC', 'CMO', 'CCI', 'PPO', 'TEMA', 'WILLR', 'MACD', 'SAR', 'ADX', 'STDDEV', 'OBV']
 etfList = ['XLF', 'XLU', 'QQQ', 'SPY', 'XLP', 'EWZ', 'EWH', 'XLY', 'XLE']
 threshold = 0.0038 # Re-arrange the Threshold Value
 imageList = []
@@ -42,11 +44,17 @@ for etf in etfList:
     macd, macdsignal, macdhist = MACD(data["Close"], fastperiod=12, slowperiod=26, signalperiod=9)
     macd = macd.to_frame().reset_index().set_axis(axes, axis=1)
 
+    sar = SAR(data["High"], data["Low"], acceleration=0, maximum=0).to_frame().reset_index().set_axis(axes, axis=1)
+    adx = ADX(data["High"], data["Low"], data["Close"], timeperiod=14).to_frame().reset_index().set_axis(axes, axis=1)
+    std = STDDEV(data['Close'], timeperiod=5, nbdev=1).to_frame().reset_index().set_axis(axes, axis=1)
+    obv = OBV(data['Close'], data['Volume']).to_frame().reset_index().set_axis(axes, axis=1)
+
     '''
     PREPROCESSING INDICATOR DATA
     '''
     # List of (indicators) DataFrames, size=n_indicators
-    indicators = [rsi, wma, ema, sma, roc, cmo, cci, ppo, tema, willr, macd]
+    indicators = [rsi, cmo, willr, cci, macd, roc, ppo, std, tema, obv, wma, ema, sma, adx, sar]
+    # [rsi, wma, ema, sma, roc, cmo, cci, ppo, tema, willr, macd, sar, adx, std, obv]
 
     # Number of indicators (int)
     nIndicators = len(indicators)
@@ -110,7 +118,7 @@ for etf in etfList:
         # If the price hasn't changed
         else:
             labelList.append(np.array([1.0])) # HOLD
-    
+
 imageList = np.array(imageList)
 labelList = np.array(labelList)
 
@@ -122,7 +130,7 @@ imageList_copy = imageList_copy.reshape(len(imageList), -1)
 mean = np.mean(imageList_copy, axis=0)
 std = np.std(imageList_copy, axis=0)
 imageList_copy = (imageList_copy - mean) / std
-imageList = imageList_copy.reshape(len(imageList), 11, 11, 1)
+imageList = imageList_copy.reshape(len(imageList), len(indicators), len(indicators), 1)
 
 np.save("./ETF/Images.npy", imageList)
 np.save("./ETF/Labels.npy", labelList)

@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import os
 import tensorflow as tf
@@ -23,23 +24,96 @@ Reference: (https://github.com/keras-team/keras-io/blob/master/examples/vision/c
 
 ''' Setting Hyperparameter Values
 '''
-learning_rate = 0.001
+#learning_rate = 0.001
 weight_decay = 0.0001
-batch_size = 16
-num_epochs = 60
-filters_ = 768
-depth = 32
+batch_size = 128
+num_epochs = 200
+filters_ = 256
+depth = 8
 kernel_size = 5
 patch_size = 1
+
+image_size = 15
+
+auto = tf.data.AUTOTUNE
+
+TOTAL_STEPS = int((50000 / batch_size) * num_epochs)
+WARMUP_STEPS = 10000
+INIT_LR = 0.01
+WAMRUP_LR = 0.002
+
+class WarmUpCosine(keras.optimizers.schedules.LearningRateSchedule):
+    def __init__(
+        self, learning_rate_base, total_steps, warmup_learning_rate, warmup_steps
+    ):
+        super(WarmUpCosine, self).__init__()
+
+        self.learning_rate_base = learning_rate_base
+        self.total_steps = total_steps
+        self.warmup_learning_rate = warmup_learning_rate
+        self.warmup_steps = warmup_steps
+        self.pi = tf.constant(np.pi)
+
+    def __call__(self, step):
+        if self.total_steps < self.warmup_steps:
+            raise ValueError("Total_steps must be larger or equal to warmup_steps.")
+        learning_rate = (
+            0.5
+            * self.learning_rate_base
+            * (
+                1
+                + tf.cos(
+                    self.pi
+                    * (tf.cast(step, tf.float32) - self.warmup_steps)
+                    / float(self.total_steps - self.warmup_steps)
+                )
+            )
+        )
+
+        if self.warmup_steps > 0:
+            if self.learning_rate_base < self.warmup_learning_rate:
+                raise ValueError(
+                    "Learning_rate_base must be larger or equal to "
+                    "warmup_learning_rate."
+                )
+            slope = (
+                self.learning_rate_base - self.warmup_learning_rate
+            ) / self.warmup_steps
+            warmup_rate = slope * tf.cast(step, tf.float32) + self.warmup_learning_rate
+            learning_rate = tf.where(
+                step < self.warmup_steps, warmup_rate, learning_rate
+            )
+        return tf.where(
+            step > self.total_steps, 0.0, learning_rate, name="learning_rate"
+        )
+
+scheduled_lrs = WarmUpCosine(
+    learning_rate_base=INIT_LR,
+    total_steps=TOTAL_STEPS,
+    warmup_learning_rate=WAMRUP_LR,
+    warmup_steps=WARMUP_STEPS,
+)
+
+'''
+lrs = [scheduled_lrs(step) for step in range(TOTAL_STEPS)]
+plt.plot(lrs)
+plt.xlabel("Step", fontsize=14)
+plt.ylabel("LR", fontsize=14)
+plt.grid()
+plt.show()
+'''
+
+t = time.time()
+epoch_counter = 1
 
 
 ''' Initializing Weights & Biases
 '''
 def initialize_wandb():
-    wandb.init(project="test-project", entity="spdpvcnn",
+    wandb.init(project="convmixer", entity="spdpvcnn",
             config={
-                "model": "ConvMixer",
-                "learning_rate": learning_rate,
+                "model": "ConvMixer(w/regularizers)",
+                "learning_rate": "WarmUpCosine",
                 "epochs": num_epochs,
                 "batch_size": batch_size,
                 "weight_decay": weight_decay,
@@ -47,7 +121,8 @@ def initialize_wandb():
                 "depth": depth,
                 "kernel_size": kernel_size,
                 "patch_size": patch_size,
-                "threshold": 0.0038
+                "threshold": 0.038,
+                "image_size": image_size
             })
 
 
@@ -89,10 +164,12 @@ def make_datasets(images, labels, is_train=False):
     if is_train:
         dataset = dataset.shuffle(batch_size * 10)
     dataset = dataset.batch(batch_size)
+    '''
     if is_train:
         dataset = dataset.map(
             lambda x, y: (data_augmentation(x), y), num_parallel_calls=auto
         )
+    '''    
     return dataset.prefetch(auto)
 
 def get_finalized_datasets(new_x_train, new_y_train, x_val, y_val, x_test, y_test):
@@ -112,8 +189,7 @@ def activation_block(x):
 
 
 def conv_stem(x, filters: int, patch_size: int):
-    x = layers.Conv2D(filters, kernel_size=patch_size, strides=patch_size)(x)
-    #, kernel_regularizer=regularizers.l2(1e-2)
+    x = layers.Conv2D(filters, kernel_size=patch_size, strides=patch_size, kernel_regularizer=regularizers.l2(1e-2))(x)
     return activation_block(x)
 
 
@@ -124,21 +200,19 @@ def conv_mixer_block(x, filters: int, kernel_size: int):
     x = layers.Add()([activation_block(x), x0])  # Residual.
 
     # Pointwise convolution.
-    x = layers.Conv2D(filters, kernel_size=1)(x)
-    #, kernel_regularizer=regularizers.l2(1e-2)
+    x = layers.Conv2D(filters, kernel_size=1, kernel_regularizer=regularizers.l2(1e-2))(x)
     x = activation_block(x)
 
     return x
 
 
 def get_conv_mixer_model(
-        image_size=11, filters=filters_, depth=depth, kernel_size=kernel_size, patch_size=patch_size, num_classes=3
+        image_size=image_size, filters=filters_, depth=depth, kernel_size=kernel_size, patch_size=patch_size, num_classes=3
 ):
     """ConvMixer-256/8: https://openreview.net/pdf?id=TVHS5Y4dNvM.
     The hyperparameter values are taken from the paper.
     """
     inputs = keras.Input((image_size, image_size, 1))
-    # x = layers.Rescaling(scale=1.0 / 255)(inputs)
 
     # Extract patch embeddings.
     x = conv_stem(inputs, filters, patch_size)
@@ -159,9 +233,8 @@ def get_conv_mixer_model(
 '''
 def compile_model_optimizer(model):
     optimizer = tfa.optimizers.AdamW(
-        learning_rate=learning_rate, weight_decay=weight_decay
-    )
-    # scheduled_lrs
+        learning_rate=scheduled_lrs, weight_decay=weight_decay
+    ) 
 
     model.compile(
         optimizer=optimizer,
@@ -176,12 +249,9 @@ def run_experiment(model, test_dataset):
         train_dataset,
         validation_data=val_dataset,
         epochs=num_epochs,
-        callbacks=[WandbCallback(), CmPrinter(test_dataset)],
+        callbacks=[WandbCallback(), CmPrinter(test_dataset, epoch_counter)],
     )
 
-    t = time.time()
-    export_path_keras = "../SavedModels/{}-{}x{}-k{}p{}.h5".format(int(t), filters_, depth, kernel_size, patch_size)
-    model.save(export_path_keras)
     _, accuracy = model.evaluate(test_dataset)
     print(f"Test accuracy: {round(accuracy * 100, 2)}%")
 
@@ -190,15 +260,20 @@ def run_experiment(model, test_dataset):
 
 # Runs at the end of every epoch and prints the confusion matrix
 class CmPrinter(tf.keras.callbacks.Callback):
-    def __init__(self, test_dataset) -> None:
+    def __init__(self, test_dataset, epoch_counter) -> None:
         super().__init__()
         self.test_dataset = test_dataset
+        self.epoch_counter = epoch_counter
 
 
     def on_epoch_end(self, epoch, logs={}):
         predictions = self.model.predict(self.test_dataset)
         classes = np.argmax(predictions, axis=1)
         print(confusion_matrix(y_test, classes))
+
+        export_path_keras = "../SavedModels/test/{}-{}x{}-k{}p{}".format(int(t), filters_, depth, kernel_size, patch_size)
+        self.model.save_weights(export_path_keras)
+        self.epoch_counter += 1
 
 
 # Used to load a saved model to train and/or evaluate
@@ -215,20 +290,19 @@ if __name__ == "__main__":
 
     new_x_train, new_y_train, x_val, y_val, x_test, y_test = prepare_dataset(imageList, labelList)
 
-    image_size = 11
-    auto = tf.data.AUTOTUNE
-
+    '''
     data_augmentation = keras.Sequential(
         [layers.RandomCrop(image_size, image_size), layers.RandomFlip("horizontal"), ],
         name="data_augmentation",
     )
-
+    '''
+    
     train_dataset, val_dataset, test_dataset = get_finalized_datasets(new_x_train, new_y_train, x_val, y_val, x_test, y_test)
 
 
     conv_mixer_model = get_conv_mixer_model()                                                  # If you want to load a saved model and train it
     conv_mixer_model = compile_model_optimizer(conv_mixer_model)                               # Comment these two lines and uncomment the line below
-    # conv_mixer_model = load_saved_model('C:/Users/Tuna/Desktop/Saved Models/1647585460.h5')  
+    #conv_mixer_model = load_saved_model('../SavedModels/1647585460.h5')  
 
     history, conv_mixer_model = run_experiment(conv_mixer_model, test_dataset)
 
@@ -239,3 +313,4 @@ if __name__ == "__main__":
     print(cr)
     f1 = f1_score(y_test, classes, average='micro')
     print(f1)
+    

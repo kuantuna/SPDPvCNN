@@ -24,7 +24,7 @@ Reference: (https://github.com/keras-team/keras-io/blob/master/examples/vision/c
 
 ''' Setting Hyperparameter Values
 '''
-#learning_rate = 0.001
+learning_rate = 0.001
 weight_decay = 0.0001
 batch_size = 128
 num_epochs = 200

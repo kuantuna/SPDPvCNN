@@ -1,12 +1,7 @@
 import yfinance as yf
 import pandas as pd
 import numpy as np
-
-from talib import RSI, WMA, EMA, SMA
-from talib import ROC, CMO, CCI, PPO
-from talib import TEMA, WILLR, MACD
-
-from talib import SAR, ADX, STDDEV, OBV
+import talib as tb
 
 '''
 DEFINING SOME VARIABLES
@@ -14,7 +9,12 @@ DEFINING SOME VARIABLES
 startDate = '2001-10-11'
 endDate = '2022-03-19'
 axes = ['Date', 'Value']
-headers = ['RSI', 'WMA', 'EMA', 'SMA', 'ROC', 'CMO', 'CCI', 'PPO', 'TEMA', 'WILLR', 'MACD', 'SAR', 'ADX', 'STDDEV', 'OBV']
+headers = ['RSI', 'WMA', 'EMA', 'SMA', 'ROC', 'CMO', 'CCI', 'PPO', 'TEMA', 'WILLR', 'MACD', 'SAR', 'ADX', 'STDDEV', 'OBV', 'ADXR', 'APO', 'AROONDOWN', 'AROONUP', 'AROONOSC', 
+           'BOP', 'DX', 'MACDEXT', 'MACDFİX', 'MFI', 'MINUS_DI', 'MINUS_DM', 'MOM', 'PLUS_DI', 'PLUS_DM', 'ROCP', 'ROCR', 'ROCR100','SLOWK', 'SLOWD', 'FASTK', 'FASTD', 
+           'FASTKRSI', 'FASTDRSI', 'TRIX', 'ULTOSC', 'CDLXSIDEGAP3METHODS', 'CDLUPSIDEGAP2CROWS', 'CDLUNIQUE3RIVER', 'CDLTRISTAR', 'CDLTHRUSTING', 'CDLTASUKIGAP', 'CDLTAKURI', 
+           'CDLSTICKSANDWICH', 'CDLSTALLEDPATTERN', 'CDLSPINNINGTOP', 'CDLSHORTLINE', 'CDLSHOOTINGSTAR', 'CDLSEPARATINGLINES', 'CDLRISEFALL3METHODS', 'CDLRICKSHAWMAN', 
+           'CDLPIERCING', 'CDLONNECK', 'CDLMORNINGSTAR','CDLMORNINGDOJISTAR', 'CDLMATHOLD', 'CDLMATCHINGLOW', 'CDLMARUBOZU', 'CDLLONGLINE', 'CDLLONGLEGGEDDOJI', 'CDLLADDERBOTTOM',
+           'CDLKICKINGBYLENGTH', 'CDLKICKING']
 etfList = ['XLF', 'XLU', 'QQQ', 'SPY', 'XLP', 'EWZ', 'EWH', 'XLY', 'XLE']
 threshold = 0.0038 # Re-arrange the Threshold Value
 imageList = []
@@ -31,30 +31,96 @@ for etf in etfList:
     CALCULATING THE INDICATOR VALUES
     '''
     # DataFrame, size=(n_days, 2), col_names=["Date", "Value"]
-    rsi = RSI(data["Close"], timeperiod=14).to_frame().reset_index().set_axis(axes, axis=1)
-    wma = WMA(data["Close"], timeperiod=30).to_frame().reset_index().set_axis(axes, axis=1)
-    ema = EMA(data["Close"], timeperiod=30).to_frame().reset_index().set_axis(axes, axis=1)
-    sma = SMA(data["Close"], timeperiod=30).to_frame().reset_index().set_axis(axes, axis=1)
-    roc = ROC(data["Close"], timeperiod=10).to_frame().reset_index().set_axis(axes, axis=1)
-    cmo = CMO(data["Close"], timeperiod=14).to_frame().reset_index().set_axis(axes, axis=1)
-    cci = CCI(data["High"], data["Low"], data["Close"], timeperiod=14).to_frame().reset_index().set_axis(axes, axis=1)
-    ppo = PPO(data["Close"], fastperiod=12, slowperiod=26, matype=0).to_frame().reset_index().set_axis(axes, axis=1)
-    tema  = TEMA(data["Close"], timeperiod=30).to_frame().reset_index().set_axis(axes, axis=1)
-    willr = WILLR(data["High"], data["Low"], data["Close"], timeperiod=14).to_frame().reset_index().set_axis(axes, axis=1)
-    macd, macdsignal, macdhist = MACD(data["Close"], fastperiod=12, slowperiod=26, signalperiod=9)
+    rsi = tb.RSI(data["Close"], timeperiod=14).to_frame().reset_index().set_axis(axes, axis=1)
+    wma = tb.WMA(data["Close"], timeperiod=30).to_frame().reset_index().set_axis(axes, axis=1)
+    ema = tb.EMA(data["Close"], timeperiod=30).to_frame().reset_index().set_axis(axes, axis=1)
+    sma = tb.SMA(data["Close"], timeperiod=30).to_frame().reset_index().set_axis(axes, axis=1)
+    roc = tb.ROC(data["Close"], timeperiod=10).to_frame().reset_index().set_axis(axes, axis=1)
+    cmo = tb.CMO(data["Close"], timeperiod=14).to_frame().reset_index().set_axis(axes, axis=1)
+    cci = tb.CCI(data["High"], data["Low"], data["Close"], timeperiod=14).to_frame().reset_index().set_axis(axes, axis=1)
+    ppo = tb.PPO(data["Close"], fastperiod=12, slowperiod=26, matype=0).to_frame().reset_index().set_axis(axes, axis=1)
+    tema  = tb.TEMA(data["Close"], timeperiod=30).to_frame().reset_index().set_axis(axes, axis=1)
+    willr = tb.WILLR(data["High"], data["Low"], data["Close"], timeperiod=14).to_frame().reset_index().set_axis(axes, axis=1)
+    macd, macdsignal, macdhist = tb.MACD(data["Close"], fastperiod=12, slowperiod=26, signalperiod=9)
     macd = macd.to_frame().reset_index().set_axis(axes, axis=1)
 
-    sar = SAR(data["High"], data["Low"], acceleration=0, maximum=0).to_frame().reset_index().set_axis(axes, axis=1)
-    adx = ADX(data["High"], data["Low"], data["Close"], timeperiod=14).to_frame().reset_index().set_axis(axes, axis=1)
-    std = STDDEV(data['Close'], timeperiod=5, nbdev=1).to_frame().reset_index().set_axis(axes, axis=1)
-    obv = OBV(data['Close'], data['Volume']).to_frame().reset_index().set_axis(axes, axis=1)
+    sar = tb.SAR(data["High"], data["Low"], acceleration=0, maximum=0).to_frame().reset_index().set_axis(axes, axis=1)
+    adx = tb.ADX(data["High"], data["Low"], data["Close"], timeperiod=14).to_frame().reset_index().set_axis(axes, axis=1)
+    std = tb.STDDEV(data['Close'], timeperiod=5, nbdev=1).to_frame().reset_index().set_axis(axes, axis=1)
+    obv = tb.OBV(data['Close'], data['Volume']).to_frame().reset_index().set_axis(axes, axis=1)
+
+
+    adxr = tb.ADXR(data["High"], data["Low"], data["Close"], timeperiod=14).to_frame().reset_index().set_axis(axes, axis=1)
+    apo = tb.APO(data['Close'], fastperiod=12, slowperiod=26, matype=0).to_frame().reset_index().set_axis(axes, axis=1)
+    aroondown, aroonup = tb.AROON(data["High"], data["Low"], timeperiod=14)
+    aroondown = aroondown.to_frame().reset_index().set_axis(axes, axis=1)
+    aroonup = aroonup.to_frame().reset_index().set_axis(axes, axis=1)
+    aroonosc = tb.AROONOSC(data["High"], data["Low"], timeperiod=14).to_frame().reset_index().set_axis(axes, axis=1)
+    bop = tb.BOP(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
+    dx = tb.DX(data["High"], data["Low"], data["Close"], timeperiod=14).to_frame().reset_index().set_axis(axes, axis=1)
+    macdext, macdextsignal, macdexthist = tb.MACDEXT(data["Close"], fastperiod=12, fastmatype=0, slowperiod=26, slowmatype=0, signalperiod=9, signalmatype=0)
+    macdext = macdext.to_frame().reset_index().set_axis(axes, axis=1)
+    macdfix, macdfixsignal, macdfixhist = tb.MACDFIX(data["Close"], signalperiod=9)
+    macdfix = macdfix.to_frame().reset_index().set_axis(axes, axis=1)
+    mfi = tb.MFI(data["High"], data["Low"], data["Close"], data["Volume"], timeperiod=14).to_frame().reset_index().set_axis(axes, axis=1)
+    minus_di = tb.MINUS_DI(data["High"], data["Low"], data["Close"], timeperiod=14).to_frame().reset_index().set_axis(axes, axis=1)
+    minus_dm = tb.MINUS_DM(data["High"], data["Low"], timeperiod=14).to_frame().reset_index().set_axis(axes, axis=1)
+    mom = tb.MOM(data["Close"], timeperiod=10).to_frame().reset_index().set_axis(axes, axis=1)
+    plus_di = tb.PLUS_DI(data["High"], data["Low"], data["Close"], timeperiod=14).to_frame().reset_index().set_axis(axes, axis=1)
+    plus_dm = tb.PLUS_DM(data["High"], data["Low"], timeperiod=14).to_frame().reset_index().set_axis(axes, axis=1)
+    rocp = tb.ROCP(data["Close"], timeperiod=10).to_frame().reset_index().set_axis(axes, axis=1)
+    rocr = tb.ROCR(data["Close"], timeperiod=10).to_frame().reset_index().set_axis(axes, axis=1)
+    rocr100 = tb.ROCR100(data["Close"], timeperiod=10).to_frame().reset_index().set_axis(axes, axis=1)
+    slowk, slowd = tb.STOCH(data["High"], data["Low"], data["Close"], fastk_period=5, slowk_period=3, slowk_matype=0, slowd_period=3, slowd_matype=0)
+    slowk = slowk.to_frame().reset_index().set_axis(axes, axis=1)
+    slowd = slowd.to_frame().reset_index().set_axis(axes, axis=1)
+    fastk, fastd = tb.STOCHF(data["High"], data["Low"], data["Close"], fastk_period=5, fastd_period=3, fastd_matype=0)
+    fastk = fastk.to_frame().reset_index().set_axis(axes, axis=1)
+    fastd = fastd.to_frame().reset_index().set_axis(axes, axis=1)
+    fastkrsi, fastdrsi = tb.STOCHRSI(data["Close"], timeperiod=14, fastk_period=5, fastd_period=3, fastd_matype=0)
+    fastkrsi = fastkrsi.to_frame().reset_index().set_axis(axes, axis=1)
+    fastdrsi = fastdrsi.to_frame().reset_index().set_axis(axes, axis=1)
+    trix = tb.TRIX(data["Close"], timeperiod=30).to_frame().reset_index().set_axis(axes, axis=1)
+    ultosc = tb.ULTOSC(data["High"], data["Low"], data["Close"], timeperiod1=7, timeperiod2=14, timeperiod3=28).to_frame().reset_index().set_axis(axes, axis=1)
+
+    cdlxsidegap3methods = tb.CDLXSIDEGAP3METHODS(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
+    cdlupsidegap2crows = tb.CDLUPSIDEGAP2CROWS(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
+    cdlunique3river = tb.CDLUNIQUE3RIVER(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
+    cdltristar = tb.CDLTRISTAR(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
+    cdlthrusting = tb.CDLTHRUSTING(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
+    cdltasukigap = tb.CDLTASUKIGAP(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
+    cdltakuri = tb.CDLTAKURI(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
+    cdlstciksandwich = tb.CDLSTICKSANDWICH(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
+    cdlstalledpattern = tb.CDLSTALLEDPATTERN(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
+    cdlspinningtop = tb.CDLSPINNINGTOP(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
+    cdlshortline = tb.CDLSHORTLINE(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
+    cdlshootingstar = tb.CDLSHOOTINGSTAR(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
+    cdlseparatinglines = tb.CDLSEPARATINGLINES(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
+    cdlrisefall3methods = tb.CDLRISEFALL3METHODS(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
+    cdlrickshawman = tb.CDLRICKSHAWMAN(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
+    cdlpiercing = tb.CDLPIERCING(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
+    cdlonneck = tb.CDLONNECK(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
+    cdlmorningstar = tb.CDLMORNINGSTAR(data["Open"], data["High"], data["Low"], data["Close"], penetration=0).to_frame().reset_index().set_axis(axes, axis=1)
+    cdlmorningdojistar = tb.CDLMORNINGDOJISTAR(data["Open"], data["High"], data["Low"], data["Close"], penetration=0).to_frame().reset_index().set_axis(axes, axis=1)
+    cdlmathold = tb.CDLMATHOLD(data["Open"], data["High"], data["Low"], data["Close"], penetration=0).to_frame().reset_index().set_axis(axes, axis=1)
+    cdlmatchinglow = tb.CDLMATCHINGLOW(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
+    cdlmarubozu = tb.CDLMARUBOZU(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
+    cdllongline = tb.CDLLONGLINE(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
+    cdllongleggeddoji = tb.CDLLONGLEGGEDDOJI(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
+    cdlladderbottom = tb.CDLLADDERBOTTOM(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
+    cdlkickingbylength = tb.CDLKICKINGBYLENGTH(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
+    cdlkicking = tb.CDLKICKING(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
 
     '''
     PREPROCESSING INDICATOR DATA
     '''
     # List of (indicators) DataFrames, size=n_indicators
-    indicators = [rsi, cmo, willr, cci, macd, roc, ppo, std, tema, obv, wma, ema, sma, adx, sar]
-    # [rsi, wma, ema, sma, roc, cmo, cci, ppo, tema, willr, macd, sar, adx, std, obv]
+    indicators = [rsi, wma, ema, sma, roc, cmo, cci, ppo, tema, willr, macd, sar, adx, std, obv, adxr, apo, aroondown, aroonup, aroonosc, bop, dx, macdext, macdfix, mfi, 
+    minus_di, minus_dm, mom, plus_di, plus_dm, rocp, rocr, rocr100, slowk, slowd, fastk, fastd, fastkrsi, fastdrsi, trix, ultosc, cdlxsidegap3methods, cdlupsidegap2crows, 
+    cdlunique3river, cdltristar, cdlthrusting, cdltasukigap, cdltakuri, cdlstciksandwich, cdlstalledpattern, cdlspinningtop, cdlshortline, cdlshootingstar, cdlseparatinglines, 
+    cdlrisefall3methods, cdlrickshawman, cdlpiercing, cdlonneck, cdlmorningstar, cdlmorningdojistar, cdlmathold, cdlmatchinglow, cdlmarubozu, cdllongline, cdllongleggeddoji, 
+    cdlladderbottom, cdlkickingbylength, cdlkicking]
+    # [rsi, cmo, willr, cci, macd, roc, ppo, std, tema, obv, wma, ema, sma, adx, sar]
 
     # Number of indicators (int)
     nIndicators = len(indicators)

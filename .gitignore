@@ -2,3 +2,5 @@ wandb
 Architecture/__pycache__
 saved_model
 SavedModels/
+Logs/
+ETF/

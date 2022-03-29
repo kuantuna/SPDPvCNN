@@ -31,9 +31,9 @@ num_epochs = 200
 filters_ = 256
 depth = 8
 kernel_size = 5
-patch_size = 1
+patch_size = 5
 
-image_size = 15
+image_size = 67
 
 auto = tf.data.AUTOTUNE
 
@@ -130,7 +130,7 @@ def initialize_wandb():
 '''
 def load_dataset():
     imageList = np.load("../ETF/Images.npy")
-    labelList = np.load("../ETF/Labels.npy")
+    labelList = np.load("../ETF/Labels01.npy")
     return imageList, labelList
 
 def print_data_counts(labelList):

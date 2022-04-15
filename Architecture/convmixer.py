@@ -14,7 +14,7 @@ from tensorflow.keras import layers, regularizers
 from tensorflow import keras
 from wandb.keras import WandbCallback
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+# os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 '''
 CONVMIXER
@@ -27,10 +27,10 @@ Reference: (https://github.com/keras-team/keras-io/blob/master/examples/vision/c
 learning_rate = 0.001
 weight_decay = 0.0001
 batch_size = 128
-num_epochs = 200
+num_epochs = 3
 filters_ = 256
 depth = 8
-kernel_size = 5
+kernel_size = 7
 patch_size = 5
 
 image_size = 67
@@ -109,28 +109,28 @@ epoch_counter = 1
 
 ''' Initializing Weights & Biases
 '''
-def initialize_wandb():
-    wandb.init(project="convmixer", entity="spdpvcnn",
-            config={
-                "model": "ConvMixer(w/regularizers)",
-                "learning_rate": "WarmUpCosine",
-                "epochs": num_epochs,
-                "batch_size": batch_size,
-                "weight_decay": weight_decay,
-                "filters": filters_,
-                "depth": depth,
-                "kernel_size": kernel_size,
-                "patch_size": patch_size,
-                "threshold": 0.038,
-                "image_size": image_size
-            })
+# def initialize_wandb():
+#     wandb.init(project="convmixer", entity="spdpvcnn",
+#             config={
+#                 "model": "ConvMixer(w/regularizers)",
+#                 "learning_rate": "WarmUpCosine",
+#                 "epochs": num_epochs,
+#                 "batch_size": batch_size,
+#                 "weight_decay": weight_decay,
+#                 "filters": filters_,
+#                 "depth": depth,
+#                 "kernel_size": kernel_size,
+#                 "patch_size": patch_size,
+#                 "threshold": 0.038,
+#                 "image_size": image_size
+#             })
 
 
 ''' Dataset Preperation
 '''
 def load_dataset():
-    imageList = np.load("../ETF/Images.npy")
-    labelList = np.load("../ETF/Labels01.npy")
+    imageList = np.load("../ETF/Images(BIG).npy")
+    labelList = np.load("../ETF/Labels0038.npy")
     return imageList, labelList
 
 def print_data_counts(labelList):
@@ -233,7 +233,7 @@ def get_conv_mixer_model(
 '''
 def compile_model_optimizer(model):
     optimizer = tfa.optimizers.AdamW(
-        learning_rate=scheduled_lrs, weight_decay=weight_decay
+        learning_rate=learning_rate, weight_decay=weight_decay
     ) 
 
     model.compile(
@@ -249,7 +249,7 @@ def run_experiment(model, test_dataset):
         train_dataset,
         validation_data=val_dataset,
         epochs=num_epochs,
-        callbacks=[WandbCallback(), CmPrinter(test_dataset, epoch_counter)],
+        callbacks=[CmPrinter(test_dataset, epoch_counter)],
     )
 
     _, accuracy = model.evaluate(test_dataset)
@@ -271,8 +271,8 @@ class CmPrinter(tf.keras.callbacks.Callback):
         classes = np.argmax(predictions, axis=1)
         print(confusion_matrix(y_test, classes))
 
-        export_path_keras = "../SavedModels/test/{}-{}x{}-k{}p{}".format(int(t), filters_, depth, kernel_size, patch_size)
-        self.model.save_weights(export_path_keras)
+        export_path_keras = "../SavedModels/1604/{}-{}x{}-k{}p{}.h5".format(int(t), filters_, depth, kernel_size, patch_size)
+        self.model.save(export_path_keras)
         self.epoch_counter += 1
 
 
@@ -284,7 +284,7 @@ def load_saved_model(path):
 
 
 if __name__ == "__main__":
-    initialize_wandb()
+    #initialize_wandb()
     imageList, labelList = load_dataset()
     print_data_counts(labelList)
 

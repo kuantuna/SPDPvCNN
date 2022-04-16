@@ -233,7 +233,7 @@ def get_conv_mixer_model(
 '''
 def compile_model_optimizer(model):
     optimizer = tfa.optimizers.AdamW(
-        learning_rate=learning_rate, weight_decay=weight_decay
+        learning_rate=scheduled_lrs, weight_decay=weight_decay
     ) 
 
     model.compile(
@@ -271,7 +271,7 @@ class CmPrinter(tf.keras.callbacks.Callback):
         classes = np.argmax(predictions, axis=1)
         print(confusion_matrix(y_test, classes))
 
-        export_path_keras = "../SavedModels/1604/{}-{}x{}-k{}p{}.h5".format(int(t), filters_, depth, kernel_size, patch_size)
+        export_path_keras = f"../SavedModels/1604/{int(t)}-{filters_}x{depth}-k{kernel_size}p{patch_size}e{self.epoch_counter}.h5"
         self.model.save(export_path_keras)
         self.epoch_counter += 1
 

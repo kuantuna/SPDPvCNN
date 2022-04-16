@@ -344,6 +344,7 @@ for etf in etfList:
         else:
             labelList.append(np.array([1.0]))  # HOLD
 
+    np.save(f"./ETF/New/date-{etf}", data_close.index[:-1])
     np.save(f'./ETF/New/{etf}.npy', data_close[:-1])
     print(len(imageList))
     print(len(labelList))

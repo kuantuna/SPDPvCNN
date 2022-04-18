@@ -34,7 +34,7 @@ kernel_size = 7
 patch_size = 5
 
 image_size = 67
-
+etfList = ['XLF', 'XLU', 'QQQ', 'SPY', 'XLP', 'EWZ', 'EWH', 'XLY', 'XLE']
 auto = tf.data.AUTOTUNE
 
 TOTAL_STEPS = int((50000 / batch_size) * num_epochs)
@@ -129,42 +129,29 @@ epoch_counter = 1
 ''' Dataset Preperation
 '''
 def load_dataset():
-    imageList = np.load("../ETF/New/Images.npy")
-    labelList = np.load("../ETF/New/Labels00038.npy")
-    return imageList, labelList
-
-def print_data_counts(labelList):
-    labelDict = {
-        0: "Buy",
-        1: "Hold",
-        2: "Sell"
-    }
-    unique, counts = np.unique(labelList, return_counts=True)
-    for label, count in np.asarray((unique, counts)).T:
-        print("{} count: {}".format(labelDict[int(label)], int(count)))
-
-
-def prepare_dataset(imageList, labelList):
-    #x_train, x_test, y_train, y_test = train_test_split(imageList, labelList, test_size=0.1, random_state=41)
-    """split imageList and labelList into train and test dataframes"""
-    divider = int(5010*0.8)
-    beginning = 0
-    middle = divider
-    end = 5010
     x_train = []
-    x_test = []
     y_train = []
+    x_test = []
     y_test = []
-    while beginning != len(imageList):
-        x_train.extend(imageList[beginning:middle])
-        x_test.extend(imageList[middle:end])
-        y_train.extend(labelList[beginning:middle])
-        y_test.extend(labelList[middle:end])
-        beginning += 5010
-        middle += 5010
-        end += 5010
+    for etf in etfList:
+        x_train.extend(np.load(f"../ETF/001/TrainData/x_train_{etf}.npy"))
+        y_train.extend(np.load(f"../ETF/001/TrainData/y_train_{etf}.npy"))
+        x_test.extend(np.load(f"../ETF/001/TestData/x_test_{etf}.npy"))
+        y_test.extend(np.load(f"../ETF/001/TestData/y_test_{etf}.npy"))
+    return x_train, y_train, x_test, y_test
+
+# def print_data_counts(labelList):
+#     labelDict = {
+#         0: "Buy",
+#         1: "Hold",
+#         2: "Sell"
+#     }
+#     unique, counts = np.unique(labelList, return_counts=True)
+#     for label, count in np.asarray((unique, counts)).T:
+#         print("{} count: {}".format(labelDict[int(label)], int(count)))
 
 
+def prepare_dataset(x_train, y_train, x_test):
     val_split = 0.1
 
     val_indices = int(len(x_train) * val_split)
@@ -175,7 +162,7 @@ def prepare_dataset(imageList, labelList):
     print(f"Validation data samples: {len(x_val)}")
     print(f"Test data samples: {len(x_test)}")
 
-    return new_x_train, new_y_train, x_val, y_val, x_test, y_test
+    return new_x_train, new_y_train, x_val, y_val
 
 
 def make_datasets(images, labels, is_train=False):
@@ -304,18 +291,9 @@ def load_saved_model(path):
 
 if __name__ == "__main__":
     #initialize_wandb()
-    imageList, labelList = load_dataset()
-    print_data_counts(labelList)
-
-    new_x_train, new_y_train, x_val, y_val, x_test, y_test = prepare_dataset(imageList, labelList)
-
-    '''
-    data_augmentation = keras.Sequential(
-        [layers.RandomCrop(image_size, image_size), layers.RandomFlip("horizontal"), ],
-        name="data_augmentation",
-    )
-    '''
-    
+    x_train, y_train, x_test, y_test = load_dataset()
+    # print_data_counts(labelList)
+    new_x_train, new_y_train, x_val, y_val = prepare_dataset(x_train, y_train, x_test)    
     train_dataset, val_dataset, test_dataset = get_finalized_datasets(new_x_train, new_y_train, x_val, y_val, x_test, y_test)
 
 

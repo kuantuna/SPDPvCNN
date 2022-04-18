@@ -46,37 +46,34 @@ auto = tf.data.AUTOTUNE
 
 
 def load_dataset():
-    imageList = np.load("ETF/New/Images.npy")
-    labelList = np.load("ETF/New/Labels00038.npy")
-    return imageList, labelList
+    x_test = []
+    y_test = []
+    for etf in etfList:
+        x_test.append(np.load(f"ETF/TestData/x_test_{etf}.npy"))
+        y_test.append(np.load(f"ETF/TestData/y_test_{etf}.npy"))
+    return x_test, y_test
 
 
-def print_data_counts(labelList):
-    labelDict = {
-        0: "Buy",
-        1: "Hold",
-        2: "Sell"
-    }
-    unique, counts = np.unique(labelList, return_counts=True)
-    for label, count in np.asarray((unique, counts)).T:
-        print("{} count: {}".format(labelDict[int(label)], int(count)))
+# def print_data_counts(labelList):
+#     labelDict = {
+#         0: "Buy",
+#         1: "Hold",
+#         2: "Sell"
+#     }
+#     unique, counts = np.unique(labelList, return_counts=True)
+#     for label, count in np.asarray((unique, counts)).T:
+#         print("{} count: {}".format(labelDict[int(label)], int(count)))
 
 
 def load_saved_model(path):
     return keras.models.load_model(path, custom_objects={'MyOptimizer': tfa.optimizers.AdamW})
 
 
-def make_dataset(imageList, labelList):
+def make_dataset(x_test, y_test):
     datasets = []
     # keeps the images and labels for every stock one by one (datasets[0] == images & labels for etfList[0])
-    start = 0
-    end = 5010
-    for _ in etfList:
-        img = imageList[start:end]
-        lbl = labelList[start:end]
-        start = end
-        end += 5010
-        dataset = tf.data.Dataset.from_tensor_slices((img, lbl))
+    for xt, yt in zip(x_test, y_test):
+        dataset = tf.data.Dataset.from_tensor_slices((xt, yt))
         dataset = dataset.batch(batch_size)
         dataset = dataset.prefetch(auto)
         datasets.append(dataset)
@@ -84,7 +81,6 @@ def make_dataset(imageList, labelList):
 
 
 """Loading the necessary stuff"""
-model = load_saved_model("SavedModels/1604/1650059581-256x8-k7p5.h5")
 
 
 listOfDates: list[np.ndarray] = []
@@ -93,30 +89,33 @@ listOfPrices: list[np.ndarray] = []
 etfList: list[str] = ['XLF', 'XLU', 'QQQ',
                       'SPY', 'XLP', 'EWZ', 'EWH', 'XLY', 'XLE']
 for etf in etfList:
-    listOfDates.append(np.load(f"ETF/New/date-{etf}.npy"))
-    listOfPrices.append(np.load(f"ETF/New/{etf}.npy"))
+    listOfDates.append(np.load(f"ETF/001/Date/{etf}.npy"))
+    listOfPrices.append(np.load(f"ETF/001/Price/{etf}.npy"))
 
 
-imageList, labelList = load_dataset()
-print_data_counts(labelList)
-datasets = make_dataset(imageList, labelList)
+x_test, y_test = load_dataset()
+# print_data_counts(labelList)
+datasets = make_dataset(x_test, y_test)
 
-listOfSignals = []
-for dataset in datasets:
-    predictions = model.predict(dataset)
-    listOfSignals.append(np.argmax(predictions, axis=1))
+for i in range(10):
+    model = load_saved_model(
+        f"SavedModels/1704/1650295409-256x8-k7p5e{i+1}.h5")
+    listOfSignals = []
+    for dataset in datasets:
+        predictions = model.predict(dataset)
+        listOfSignals.append(np.argmax(predictions, axis=1))
 
-
-"""Main algorithm"""
-for signals, etf, price, dates in zip(listOfSignals, etfList, listOfPrices, listOfDates):
-    wallet = Wallet("USD", etf, 10000)
-    wallet.print_values()
-    for signal, price, date in zip(signals, price, dates):
-        if signal == 0:
-            wallet.buy(price, date)
-        elif signal == 1:
-            wallet.hold()
-        elif signal == 2:
-            wallet.sell(price, date)
-    wallet.print_values()
-    print("\n")
+    print(f"MODEL{i+1}")
+    """Main algorithm"""
+    for signals, etf, price, dates in zip(listOfSignals, etfList, listOfPrices, listOfDates):
+        wallet = Wallet("USD", etf, 10000)
+        wallet.print_values()
+        for signal, price, date in zip(signals, price, dates):
+            if signal == 0:
+                wallet.buy(price, date)
+            elif signal == 1:
+                wallet.hold()
+            elif signal == 2:
+                wallet.sell(price, date)
+        wallet.print_values()
+        print("\n")

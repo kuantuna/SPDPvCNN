@@ -1,6 +1,6 @@
 wandb
 Architecture/__pycache__
+Architecture/wandb
 saved_model
 SavedModels/
-Logs/
 ETF/

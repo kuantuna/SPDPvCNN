@@ -18,8 +18,8 @@ class Wallet:
         self.info["buy_count"] += 1
         stock = (self.info[self.base_currency_name] - 1) / \
             stock_price
-        print(
-            f"Bought {self.stock_name}: {round(stock, 2)} | USD: 0 | price: {round(stock_price, 2)} | date: {date}")
+        # print(
+        #     f"Bought {self.stock_name}: {round(stock, 2)} | USD: 0 | price: {round(stock_price, 2)} | date: {date}")
         self.info[self.stock_name] = stock
         self.info[self.base_currency_name] = 0
 
@@ -32,8 +32,8 @@ class Wallet:
             return
         self.info["sell_count"] += 1
         base = self.info[self.stock_name] * stock_price - 1
-        print(
-            f"Sold   {self.stock_name}: 0 | USD: {round(base, 2)} | price: {round(stock_price, 2)} | date: {date}")
+        # print(
+        #     f"Sold   {self.stock_name}: 0 | USD: {round(base, 2)} | price: {round(stock_price, 2)} | date: {date}")
         self.info[self.base_currency_name] = base
         self.info[self.stock_name] = 0
 

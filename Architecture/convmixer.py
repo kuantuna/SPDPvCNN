@@ -27,7 +27,7 @@ Reference: (https://github.com/keras-team/keras-io/blob/master/examples/vision/c
 learning_rate = 0.001
 weight_decay = 0.0001
 batch_size = 128
-num_epochs = 3
+num_epochs = 10
 filters_ = 256
 depth = 8
 kernel_size = 7
@@ -129,8 +129,8 @@ epoch_counter = 1
 ''' Dataset Preperation
 '''
 def load_dataset():
-    imageList = np.load("../ETF/Images(BIG).npy")
-    labelList = np.load("../ETF/Labels0038.npy")
+    imageList = np.load("../ETF/New/Images.npy")
+    labelList = np.load("../ETF/New/Labels00038.npy")
     return imageList, labelList
 
 def print_data_counts(labelList):
@@ -145,7 +145,26 @@ def print_data_counts(labelList):
 
 
 def prepare_dataset(imageList, labelList):
-    x_train, x_test, y_train, y_test = train_test_split(imageList, labelList, test_size=0.1, random_state=41)
+    #x_train, x_test, y_train, y_test = train_test_split(imageList, labelList, test_size=0.1, random_state=41)
+    """split imageList and labelList into train and test dataframes"""
+    divider = int(5010*0.8)
+    beginning = 0
+    middle = divider
+    end = 5010
+    x_train = []
+    x_test = []
+    y_train = []
+    y_test = []
+    while beginning != len(imageList):
+        x_train.extend(imageList[beginning:middle])
+        x_test.extend(imageList[middle:end])
+        y_train.extend(labelList[beginning:middle])
+        y_test.extend(labelList[middle:end])
+        beginning += 5010
+        middle += 5010
+        end += 5010
+
+
     val_split = 0.1
 
     val_indices = int(len(x_train) * val_split)
@@ -233,7 +252,7 @@ def get_conv_mixer_model(
 '''
 def compile_model_optimizer(model):
     optimizer = tfa.optimizers.AdamW(
-        learning_rate=scheduled_lrs, weight_decay=weight_decay
+        learning_rate=learning_rate, weight_decay=weight_decay
     ) 
 
     model.compile(
@@ -271,7 +290,7 @@ class CmPrinter(tf.keras.callbacks.Callback):
         classes = np.argmax(predictions, axis=1)
         print(confusion_matrix(y_test, classes))
 
-        export_path_keras = f"../SavedModels/1604/{int(t)}-{filters_}x{depth}-k{kernel_size}p{patch_size}e{self.epoch_counter}.h5"
+        export_path_keras = f"../SavedModels/1704/{int(t)}-{filters_}x{depth}-k{kernel_size}p{patch_size}e{self.epoch_counter}.h5"
         self.model.save(export_path_keras)
         self.epoch_counter += 1
 

@@ -15,21 +15,9 @@ headers = ['RSI', 'WMA', 'EMA', 'SMA', 'ROC', 'CMO', 'CCI', 'PPO', 'TEMA', 'WILL
            'ADOSC', 'TRANGE', 'AVGPRICE', 'MEDPRICE', 'TYPPRICE', 'WCLPRICE',  'BETA', 'CORREL', 'LINEARREG', 'LINEARREG_ANGLE', 'LINEARREG_INTERCEPT',
            'LINEARREG_SLOPE', 'TSF', 'VAR']
 
-'''
-'CDLXSIDEGAP3METHODS', 'CDLUPSIDEGAP2CROWS', 'CDLUNIQUE3RIVER', 'CDLTRISTAR', 'CDLTHRUSTING', 'CDLTASUKIGAP', 'CDLTAKURI', 
-           'CDLSTICKSANDWICH', 'CDLSTALLEDPATTERN', 'CDLSPINNINGTOP', 'CDLSHORTLINE', 'CDLSHOOTINGSTAR', 'CDLSEPARATINGLINES', 'CDLRISEFALL3METHODS', 'CDLRICKSHAWMAN', 
-           'CDLPIERCING', 'CDLONNECK', 'CDLMORNINGSTAR','CDLMORNINGDOJISTAR', 'CDLMATHOLD', 'CDLMATCHINGLOW', 'CDLMARUBOZU', 'CDLLONGLINE', 'CDLLONGLEGGEDDOJI', 'CDLLADDERBOTTOM',
-           'CDLKICKINGBYLENGTH', 'CDLKICKING', 'CDL2CROWS', 'CDL3BLACKCROWS', 'CDL3LINESTRIKE', 'CDL3OUTSIDE', 'CDL3STARSINSOUTH', 'CDL3WHITESOLDIERS', 
-           'CDLABANDONEDBABY', 'CDLADVANCEBLOCK', 'CDLBELTHOLD', 'CDLBREAKAWAY', 'CDLCLOSINGMARUBOZU', 'CDLCONCEALBABYSWALL', 'CDLCOUNTERATTACK', 'CDLDARKCLOUDCOVER', 'CDLDOJI', 'CDLDOJISTAR', 
-           'CDLDRAGONFLYDOJI', 'CDLENGULFING', 'CDLEVENINGDOJISTAR', 'CDLEVENINGSTAR', 'CDLGAPSIDESIDEWHITE', 'CDLGRAVESTONEDOJI', 'CDLHAMMER', 'CDLHANGINGMAN', 'CDLHARAMI', 'CDLHARAMICROSS', 
-           'CDLHIGHWAVE', 'CDLHIKKAKE', 'CDLHIKKAKEMOD', 'CDLHOMINGPIGEON', 'CDLIDENTICAL3CROWS', 'CDLINNECK', 'CDLINVERTEDHAMMER',
-'''
-
 etfList = ['XLF', 'XLU', 'QQQ', 'SPY', 'XLP', 'EWZ', 'EWH', 'XLY', 'XLE']
-#
 threshold = 0.01  # Re-arrange the Threshold Value
-imageList = []
-labelList = []
+
 pd.set_option('display.max_rows', None)
 
 '''
@@ -37,6 +25,10 @@ DOWNLOADING THE DATA
 '''
 # DataFrame, size=(n_days, 6), col_names=["Open", "High", "Low", "Close", "Adj Close", "Volume"]
 for etf in etfList:
+    
+    imageList = []
+    labelList = []
+    
     data = yf.download(etf, start=startDate, end=endDate)
 
     '''
@@ -130,35 +122,6 @@ for etf in etfList:
     ultosc = tb.ULTOSC(data["High"], data["Low"], data["Close"], timeperiod1=7,
                        timeperiod2=14, timeperiod3=28).to_frame().reset_index().set_axis(axes, axis=1)
 
-    '''
-    cdlxsidegap3methods = tb.CDLXSIDEGAP3METHODS(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlupsidegap2crows = tb.CDLUPSIDEGAP2CROWS(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlunique3river = tb.CDLUNIQUE3RIVER(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
-    cdltristar = tb.CDLTRISTAR(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlthrusting = tb.CDLTHRUSTING(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
-    cdltasukigap = tb.CDLTASUKIGAP(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
-    cdltakuri = tb.CDLTAKURI(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlstciksandwich = tb.CDLSTICKSANDWICH(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlstalledpattern = tb.CDLSTALLEDPATTERN(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlspinningtop = tb.CDLSPINNINGTOP(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlshortline = tb.CDLSHORTLINE(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlshootingstar = tb.CDLSHOOTINGSTAR(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlseparatinglines = tb.CDLSEPARATINGLINES(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlrisefall3methods = tb.CDLRISEFALL3METHODS(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlrickshawman = tb.CDLRICKSHAWMAN(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlpiercing = tb.CDLPIERCING(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlonneck = tb.CDLONNECK(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlmorningstar = tb.CDLMORNINGSTAR(data["Open"], data["High"], data["Low"], data["Close"], penetration=0).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlmorningdojistar = tb.CDLMORNINGDOJISTAR(data["Open"], data["High"], data["Low"], data["Close"], penetration=0).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlmathold = tb.CDLMATHOLD(data["Open"], data["High"], data["Low"], data["Close"], penetration=0).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlmatchinglow = tb.CDLMATCHINGLOW(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlmarubozu = tb.CDLMARUBOZU(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
-    cdllongline = tb.CDLLONGLINE(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
-    cdllongleggeddoji = tb.CDLLONGLEGGEDDOJI(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlladderbottom = tb.CDLLADDERBOTTOM(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlkickingbylength = tb.CDLKICKINGBYLENGTH(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlkicking = tb.CDLKICKING(data["Open"], data["High"], data["Low"], data["Close"]).to_frame().reset_index().set_axis(axes, axis=1)
-    '''
     bbands_upperband, bbands_middleband, bbands_lowerband = tb.BBANDS(
         data['Close'], timeperiod=5, nbdevup=2, nbdevdn=2, matype=0)
     bbands_upperband = bbands_upperband.to_frame().reset_index().set_axis(axes, axis=1)
@@ -198,43 +161,6 @@ for etf in etfList:
     wclprice = tb.WCLPRICE(data["High"], data["Low"], data['Close']).to_frame(
     ).reset_index().set_axis(axes, axis=1)
 
-    '''
-    cdl2crows = tb.CDL2CROWS(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdl3blackcrows = tb.CDL3BLACKCROWS(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdl3inside = tb.CDL3INSIDE(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdl3linestrike = tb.CDL3LINESTRIKE(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdl3outside = tb.CDL3OUTSIDE(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdl3starsinsouth = tb.CDL3STARSINSOUTH(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdl3whitesoldiers = tb.CDL3WHITESOLDIERS(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlabandonedbaby = tb.CDLABANDONEDBABY(data['Open'], data["High"], data["Low"], data['Close'], penetration=0).to_frame().reset_index().set_axis(axes, axis=1)
-    cdladvancedblock = tb.CDLADVANCEBLOCK(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlbelthold = tb.CDLBELTHOLD(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlbreakaway = tb.CDLBREAKAWAY(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlclosingmarubozu = tb.CDLCLOSINGMARUBOZU(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlconcealbabyswall = tb.CDLCONCEALBABYSWALL(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlcounterattack = tb.CDLCOUNTERATTACK(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdldarkcloudcover = tb.CDLDARKCLOUDCOVER(data['Open'], data["High"], data["Low"], data['Close'], penetration=0).to_frame().reset_index().set_axis(axes, axis=1)
-    cdldoji = tb.CDLDOJI(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdldojistar = tb.CDLDOJISTAR(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdldragonflydoji = tb.CDLDRAGONFLYDOJI(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlengulfing = tb.CDLENGULFING(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdleveningdojistar = tb.CDLEVENINGDOJISTAR(data['Open'], data["High"], data["Low"], data['Close'], penetration=0).to_frame().reset_index().set_axis(axes, axis=1)
-    cdleveningstar = tb.CDLEVENINGSTAR(data['Open'], data["High"], data["Low"], data['Close'], penetration=0).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlgapsidesidewhite = tb.CDLGAPSIDESIDEWHITE(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlgravestonedoji = tb.CDLGRAVESTONEDOJI(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlhammer = tb.CDLHAMMER(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlhangingman = tb.CDLHANGINGMAN(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlharami = tb.CDLHARAMI(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlharamicross = tb.CDLHARAMICROSS(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlhighwave = tb.CDLHIGHWAVE(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlhikkake = tb.CDLHIKKAKE(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlhikkakemod = tb.CDLHIKKAKEMOD(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlhomingpigeon = tb.CDLHOMINGPIGEON(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlidentical3crows = tb.CDLIDENTICAL3CROWS(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlinneck = tb.CDLINNECK(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    cdlinvertedhammer = tb.CDLINVERTEDHAMMER(data['Open'], data["High"], data["Low"], data['Close']).to_frame().reset_index().set_axis(axes, axis=1)
-    '''
-
     beta = tb.BETA(data["High"], data["Low"], timeperiod=5).to_frame(
     ).reset_index().set_axis(axes, axis=1)
     correl = tb.CORREL(data["High"], data["Low"], timeperiod=30).to_frame(
@@ -259,16 +185,8 @@ for etf in etfList:
     indicators = [rsi, cmo, plus_di, minus_di, willr, cci, ultosc, aroonosc, mfi, mom, macd, macdfix, linearreg_angle, linearreg_slope, rocp, roc, rocr, rocr100, slowk, fastd, slowd, aroonup,
                   aroondown, apo, macdext, fastk, ppo, minus_dm, adosc, fastdrsi, fastkrsi, trange, trix, std, bop, var, plus_dm, correl, ad, beta, wclprice, tsf, typprice, avgprice, medprice, bbands_lowerband,
                   linearreg, obv, bbands_middleband, tema, bbands_upperband, dema, midprice, midpoint, sarext, wma, ema, ht_trendline, kama, sma, ma, sar, adxr, adx, trima, linearreg_intercept, dx]
+    # 15x15 matrix of indicators
     # [rsi, cmo, willr, cci, macd, roc, ppo, std, tema, obv, wma, ema, sma, adx, sar]
-    '''
-    cdlxsidegap3methods, cdlupsidegap2crows, 
-    cdlunique3river, cdltristar, cdlthrusting, cdltasukigap, cdltakuri, cdlstciksandwich, cdlstalledpattern, cdlspinningtop, cdlshortline, cdlshootingstar, cdlseparatinglines, 
-    cdlrisefall3methods, cdlrickshawman, cdlpiercing, cdlonneck, cdlmorningstar, cdlmorningdojistar, cdlmathold, cdlmatchinglow, cdlmarubozu, cdllongline, cdllongleggeddoji, 
-    cdlladderbottom, cdlkickingbylength, cdlkicking, cdl2crows, cdl3inside, cdl3linestrike, cdl3outside, cdl3starsinsouth, cdl3whitesoldiers, cdlabandonedbaby, cdladvancedblock,
-    cdlbelthold, cdlbreakaway, cdlclosingmarubozu, cdlconcealbabyswall, cdlcounterattack, cdldarkcloudcover, cdldoji, cdldojistar, cdldragonflydoji, cdlengulfing, cdleveningdojistar, cdleveningstar,
-    cdlgapsidesidewhite, cdlgravestonedoji, cdlhammer, cdlhangingman, cdlharami, cdlharamicross, cdlhighwave, cdlhikkake, cdlhikkakemod, cdlhomingpigeon, cdlidentical3crows, cdlinneck,
-    cdlinvertedhammer,
-    '''
 
     # Number of indicators (int)
     nIndicators = len(indicators)
@@ -344,25 +262,40 @@ for etf in etfList:
         else:
             labelList.append(np.array([1.0]))  # HOLD
 
-    np.save(f"./ETF/New/date-{etf}", data_close.index[:-1])
-    np.save(f'./ETF/New/{etf}.npy', data_close[:-1])
+    np.save(f"./ETF/Date/{etf}.npy", data_close.index[:-1])
+    np.save(f'./ETF/Price/{etf}.npy', data_close[:-1])
     print(len(imageList))
     print(len(labelList))
     print(len(data_close[:-1]))
 
-imageList = np.array(imageList)
-labelList = np.array(labelList)
+    imageList = np.array(imageList)
+    labelList = np.array(labelList)
 
-unique, counts = np.unique(labelList, return_counts=True)
-print(np.asarray((unique, counts)).T)
+    unique, counts = np.unique(labelList, return_counts=True)
+    print(np.asarray((unique, counts)).T)
 
-imageList_copy = imageList[:]
-imageList_copy = imageList_copy.reshape(len(imageList), -1)
-mean = np.mean(imageList_copy, axis=0)
-std = np.std(imageList_copy, axis=0)
-imageList_copy = (imageList_copy - mean) / std
-imageList = imageList_copy.reshape(
-    len(imageList), len(indicators), len(indicators), 1)
+    imageList_copy = imageList[:]
+    imageList_copy = imageList_copy.reshape(len(imageList), -1)
+    mean = np.mean(imageList_copy, axis=0)
+    std = np.std(imageList_copy, axis=0)
+    imageList_copy = (imageList_copy - mean) / std
+    imageList = imageList_copy.reshape(len(imageList), len(indicators), len(indicators), 1)
 
-np.save("./ETF/New/Images.npy", imageList)
-np.save("./ETF/New/Labels001.npy", labelList)
+    x_train = []
+    y_train = []
+
+    x_test = []
+    y_test = []
+
+    for index in range(len(imageList)):
+        if(index < len(imageList) * 0.8):
+            x_train.append(imageList[index])
+            y_train.append(labelList[index])
+        else:
+            x_test.append(imageList[index])
+            y_test.append(labelList[index])
+
+    np.save(f"./ETF/TrainData/x_train_{etf}.npy", x_train)
+    np.save(f"./ETF/TrainData/y_train_{etf}.npy", y_train)
+    np.save(f"./ETF/TestData/x_test_{etf}.npy", x_test)
+    np.save(f"./ETF/TestData/y_test_{etf}.npy", y_test)

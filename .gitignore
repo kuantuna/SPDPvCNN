@@ -3,4 +3,4 @@ Architecture/__pycache__
 Architecture/wandb
 saved_model
 SavedModels/
-ETF/
+ETF/TrainData/

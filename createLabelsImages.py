@@ -16,7 +16,7 @@ headers = ['RSI', 'WMA', 'EMA', 'SMA', 'ROC', 'CMO', 'CCI', 'PPO', 'TEMA', 'WILL
            'LINEARREG_SLOPE', 'TSF', 'VAR']
 
 etfList = ['XLF', 'XLU', 'QQQ', 'SPY', 'XLP', 'EWZ', 'EWH', 'XLY', 'XLE']
-threshold = 0.0038  # Re-arrange the Threshold Value
+threshold = 0.01  # Re-arrange the Threshold Value
 
 pd.set_option('display.max_rows', None)
 
@@ -262,8 +262,8 @@ for etf in etfList:
         else:
             labelList.append(np.array([1.0]))  # HOLD
 
-    np.save(f"./ETF/0038/Date/{etf}.npy", data_close.index[:-1])
-    np.save(f'./ETF/0038/Price/{etf}.npy', data_close[:-1])
+    np.save(f"./ETF/01/Date/{etf}.npy", data_close.index[:-1])
+    np.save(f'./ETF/01/Price/{etf}.npy', data_close[:-1])
     print(len(imageList))
     print(len(labelList))
     print(len(data_close[:-1]))
@@ -295,7 +295,7 @@ for etf in etfList:
             x_test.append(imageList[index])
             y_test.append(labelList[index])
 
-    np.save(f"./ETF/0038/TrainData/x_train_{etf}.npy", x_train)
-    np.save(f"./ETF/0038/TrainData/y_train_{etf}.npy", y_train)
-    np.save(f"./ETF/0038/TestData/x_test_{etf}.npy", x_test)
-    np.save(f"./ETF/0038/TestData/y_test_{etf}.npy", y_test)
+    np.save(f"./ETF/01/TrainData/x_train_{etf}.npy", x_train)
+    np.save(f"./ETF/01/TrainData/y_train_{etf}.npy", y_train)
+    np.save(f"./ETF/01/TestData/x_test_{etf}.npy", x_test)
+    np.save(f"./ETF/01/TestData/y_test_{etf}.npy", y_test)

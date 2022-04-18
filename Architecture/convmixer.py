@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import os
 import tensorflow as tf
 import tensorflow_addons as tfa
 import time
@@ -27,7 +26,7 @@ Reference: (https://github.com/keras-team/keras-io/blob/master/examples/vision/c
 learning_rate = 0.001
 weight_decay = 0.0001
 batch_size = 128
-num_epochs = 10
+num_epochs = 500
 filters_ = 256
 depth = 8
 kernel_size = 7
@@ -109,21 +108,21 @@ epoch_counter = 1
 
 ''' Initializing Weights & Biases
 '''
-# def initialize_wandb():
-#     wandb.init(project="convmixer", entity="spdpvcnn",
-#             config={
-#                 "model": "ConvMixer(w/regularizers)",
-#                 "learning_rate": "WarmUpCosine",
-#                 "epochs": num_epochs,
-#                 "batch_size": batch_size,
-#                 "weight_decay": weight_decay,
-#                 "filters": filters_,
-#                 "depth": depth,
-#                 "kernel_size": kernel_size,
-#                 "patch_size": patch_size,
-#                 "threshold": 0.038,
-#                 "image_size": image_size
-#             })
+def initialize_wandb():
+    wandb.init(project="Convmixer", entity="spdpvcnn",
+            config={
+                "model": "ConvMixer(w/regularizers)",
+                "learning_rate": "WarmUpCosine",
+                "epochs": num_epochs,
+                "batch_size": batch_size,
+                "weight_decay": weight_decay,
+                "filters": filters_,
+                "depth": depth,
+                "kernel_size": kernel_size,
+                "patch_size": patch_size,
+                "threshold": 0.01,
+                "image_size": image_size
+            })
 
 
 ''' Dataset Preperation
@@ -134,10 +133,10 @@ def load_dataset():
     x_test = []
     y_test = []
     for etf in etfList:
-        x_train.extend(np.load(f"../ETF/001/TrainData/x_train_{etf}.npy"))
-        y_train.extend(np.load(f"../ETF/001/TrainData/y_train_{etf}.npy"))
-        x_test.extend(np.load(f"../ETF/001/TestData/x_test_{etf}.npy"))
-        y_test.extend(np.load(f"../ETF/001/TestData/y_test_{etf}.npy"))
+        x_train.extend(np.load(f"../ETF/01/TrainData/x_train_{etf}.npy"))
+        y_train.extend(np.load(f"../ETF/01/TrainData/y_train_{etf}.npy"))
+        x_test.extend(np.load(f"../ETF/01/TestData/x_test_{etf}.npy"))
+        y_test.extend(np.load(f"../ETF/01/TestData/y_test_{etf}.npy"))
     return x_train, y_train, x_test, y_test
 
 # def print_data_counts(labelList):
@@ -170,12 +169,6 @@ def make_datasets(images, labels, is_train=False):
     if is_train:
         dataset = dataset.shuffle(batch_size * 10)
     dataset = dataset.batch(batch_size)
-    '''
-    if is_train:
-        dataset = dataset.map(
-            lambda x, y: (data_augmentation(x), y), num_parallel_calls=auto
-        )
-    '''    
     return dataset.prefetch(auto)
 
 def get_finalized_datasets(new_x_train, new_y_train, x_val, y_val, x_test, y_test):
@@ -239,7 +232,7 @@ def get_conv_mixer_model(
 '''
 def compile_model_optimizer(model):
     optimizer = tfa.optimizers.AdamW(
-        learning_rate=learning_rate, weight_decay=weight_decay
+        learning_rate=scheduled_lrs, weight_decay=weight_decay
     ) 
 
     model.compile(
@@ -250,12 +243,13 @@ def compile_model_optimizer(model):
     return model
 
 
+
 def run_experiment(model, test_dataset):
     history = model.fit(
         train_dataset,
         validation_data=val_dataset,
         epochs=num_epochs,
-        callbacks=[CmPrinter(test_dataset, epoch_counter)],
+        callbacks=[CmPrinter(test_dataset, epoch_counter), WandbCallback()]
     )
 
     _, accuracy = model.evaluate(test_dataset)
@@ -278,7 +272,7 @@ class CmPrinter(tf.keras.callbacks.Callback):
         print(confusion_matrix(y_test, classes))
 
         export_path_keras = f"../SavedModels/1704/{int(t)}-{filters_}x{depth}-k{kernel_size}p{patch_size}e{self.epoch_counter}.h5"
-        self.model.save(export_path_keras)
+        self.model.save_weights(export_path_keras)
         self.epoch_counter += 1
 
 
@@ -290,7 +284,7 @@ def load_saved_model(path):
 
 
 if __name__ == "__main__":
-    #initialize_wandb()
+    initialize_wandb()
     x_train, y_train, x_test, y_test = load_dataset()
     # print_data_counts(labelList)
     new_x_train, new_y_train, x_val, y_val = prepare_dataset(x_train, y_train, x_test)    

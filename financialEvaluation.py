@@ -1,8 +1,143 @@
 import numpy as np
-from tensorflow import keras
 import tensorflow as tf
 import tensorflow_addons as tfa
+import time
+from tensorflow.keras import layers, regularizers
+from tensorflow import keras
 
+learning_rate = 0.001
+weight_decay = 0.0001
+batch_size = 128
+num_epochs = 500
+filters_ = 256
+depth = 8
+kernel_size = 7
+patch_size = 5
+
+image_size = 67
+auto = tf.data.AUTOTUNE
+
+TOTAL_STEPS = int((50000 / batch_size) * num_epochs)
+WARMUP_STEPS = 10000
+INIT_LR = 0.01
+WAMRUP_LR = 0.002
+
+class WarmUpCosine(keras.optimizers.schedules.LearningRateSchedule):
+    def __init__(
+        self, learning_rate_base, total_steps, warmup_learning_rate, warmup_steps
+    ):
+        super(WarmUpCosine, self).__init__()
+
+        self.learning_rate_base = learning_rate_base
+        self.total_steps = total_steps
+        self.warmup_learning_rate = warmup_learning_rate
+        self.warmup_steps = warmup_steps
+        self.pi = tf.constant(np.pi)
+
+    def __call__(self, step):
+        if self.total_steps < self.warmup_steps:
+            raise ValueError("Total_steps must be larger or equal to warmup_steps.")
+        learning_rate = (
+            0.5
+            * self.learning_rate_base
+            * (
+                1
+                + tf.cos(
+                    self.pi
+                    * (tf.cast(step, tf.float32) - self.warmup_steps)
+                    / float(self.total_steps - self.warmup_steps)
+                )
+            )
+        )
+
+        if self.warmup_steps > 0:
+            if self.learning_rate_base < self.warmup_learning_rate:
+                raise ValueError(
+                    "Learning_rate_base must be larger or equal to "
+                    "warmup_learning_rate."
+                )
+            slope = (
+                self.learning_rate_base - self.warmup_learning_rate
+            ) / self.warmup_steps
+            warmup_rate = slope * tf.cast(step, tf.float32) + self.warmup_learning_rate
+            learning_rate = tf.where(
+                step < self.warmup_steps, warmup_rate, learning_rate
+            )
+        return tf.where(
+            step > self.total_steps, 0.0, learning_rate, name="learning_rate"
+        )
+
+scheduled_lrs = WarmUpCosine(
+    learning_rate_base=INIT_LR,
+    total_steps=TOTAL_STEPS,
+    warmup_learning_rate=WAMRUP_LR,
+    warmup_steps=WARMUP_STEPS,
+)
+
+t = time.time()
+epoch_counter = 1
+
+''' ConvMixer Implementation
+'''
+def activation_block(x):
+    x = layers.Activation("gelu")(x)
+    return layers.BatchNormalization()(x)
+
+
+def conv_stem(x, filters: int, patch_size: int):
+    x = layers.Conv2D(filters, kernel_size=patch_size, strides=patch_size, kernel_regularizer=regularizers.l2(1e-2))(x)
+    return activation_block(x)
+
+
+def conv_mixer_block(x, filters: int, kernel_size: int):
+    # Depthwise convolution.
+    x0 = x
+    x = layers.DepthwiseConv2D(kernel_size=kernel_size, padding="same")(x)
+    x = layers.Add()([activation_block(x), x0])  # Residual.
+
+    # Pointwise convolution.
+    x = layers.Conv2D(filters, kernel_size=1, kernel_regularizer=regularizers.l2(1e-2))(x)
+    x = activation_block(x)
+
+    return x
+
+
+def get_conv_mixer_model(
+        image_size=image_size, filters=filters_, depth=depth, kernel_size=kernel_size, patch_size=patch_size, num_classes=3
+):
+    """ConvMixer-256/8: https://openreview.net/pdf?id=TVHS5Y4dNvM.
+    The hyperparameter values are taken from the paper.
+    """
+    inputs = keras.Input((image_size, image_size, 1))
+
+    # Extract patch embeddings.
+    x = conv_stem(inputs, filters, patch_size)
+
+    # ConvMixer blocks.
+    for _ in range(depth):
+        x = conv_mixer_block(x, filters, kernel_size)
+
+    # Classification block.
+    x = layers.GlobalAvgPool2D()(x)
+    outputs = layers.Dense(num_classes, activation="softmax")(x)
+
+    return keras.Model(inputs, outputs)
+
+
+
+''' Compiling, Training and Evaluating
+'''
+def compile_model_optimizer(model):
+    optimizer = tfa.optimizers.AdamW(
+        learning_rate=scheduled_lrs, weight_decay=weight_decay
+    ) 
+
+    model.compile(
+        optimizer=optimizer,
+        loss="sparse_categorical_crossentropy",
+        metrics=["accuracy"],
+    )
+    return model
 
 class Wallet:
     def __init__(self, base_currency_name: str, stock_name: str, initial_money: float):
@@ -49,8 +184,8 @@ def load_dataset():
     x_test = []
     y_test = []
     for etf in etfList:
-        x_test.append(np.load(f"ETF/TestData/x_test_{etf}.npy"))
-        y_test.append(np.load(f"ETF/TestData/y_test_{etf}.npy"))
+        x_test.append(np.load(f"ETF/01/TestData/x_test_{etf}.npy"))
+        y_test.append(np.load(f"ETF/01/TestData/y_test_{etf}.npy"))
     return x_test, y_test
 
 
@@ -89,17 +224,18 @@ listOfPrices: list[np.ndarray] = []
 etfList: list[str] = ['XLF', 'XLU', 'QQQ',
                       'SPY', 'XLP', 'EWZ', 'EWH', 'XLY', 'XLE']
 for etf in etfList:
-    listOfDates.append(np.load(f"ETF/001/Date/{etf}.npy"))
-    listOfPrices.append(np.load(f"ETF/001/Price/{etf}.npy"))
+    listOfDates.append(np.load(f"ETF/01/Date/{etf}.npy"))
+    listOfPrices.append(np.load(f"ETF/01/Price/{etf}.npy"))
 
 
 x_test, y_test = load_dataset()
 # print_data_counts(labelList)
 datasets = make_dataset(x_test, y_test)
 
-for i in range(10):
-    model = load_saved_model(
-        f"SavedModels/1704/1650295409-256x8-k7p5e{i+1}.h5")
+for i in range(4):
+    model = get_conv_mixer_model()                                                  
+    model = compile_model_optimizer(model)
+    model.load_weights(f"SavedModels/1704/1650311790-256x8-k7p5e{i+1}.h5")
     listOfSignals = []
     for dataset in datasets:
         predictions = model.predict(dataset)

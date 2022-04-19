@@ -192,7 +192,8 @@ class Wallet:
         self.profit_percentage = base / self.initial_money - 1
 
     def print_values(self):
-        print(self.info, self.profit_percentage)
+        print(self.info)
+        print(f"Profit percentage: {self.profit_percentage}")
 
 
 batch_size: int = 128
@@ -251,20 +252,22 @@ x_test, y_test = load_dataset()
 # print_data_counts(labelList)
 datasets = make_dataset(x_test, y_test)
 
-for i in range(4):
+for i in [16, 178, 181, 281, 286, 325, 350, 368, 383, 389, 394, 403, 408, 461, 462, 468, 486]:
     model = get_conv_mixer_model()
     model = compile_model_optimizer(model)
-    model.load_weights(f"SavedModels/1704/1650311790-256x8-k7p5e{i+1}.h5")
+    model.load_weights(
+        f"SavedModels/01/500_epoch/1650312655-256x8-k7p5e{i}.h5")
     listOfSignals = []
     for dataset in datasets:
         predictions = model.predict(dataset)
         listOfSignals.append(np.argmax(predictions, axis=1))
 
-    print(f"MODEL{i+1}")
+    print(f"MODEL{i}")
     """Main algorithm"""
+    profits = []
     for signals, etf, price, dates in zip(listOfSignals, etfList, listOfPrices, listOfDates):
         wallet = Wallet("USD", etf, 10000)
-        wallet.print_values()
+        # wallet.print_values()
         for signal, price, date in zip(signals, price, dates):
             if signal == 0:
                 wallet.buy(price, date)
@@ -272,5 +275,7 @@ for i in range(4):
                 wallet.hold()
             elif signal == 2:
                 wallet.sell(price, date)
-        wallet.print_values()
-        print("\n")
+        # wallet.print_values()
+        # print("\n")
+        profits.append(wallet.profit_percentage)
+    print(f"Profit percentage: {np.mean(profits)}\n")

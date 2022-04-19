@@ -165,8 +165,8 @@ class Wallet:
         self.info["buy_count"] += 1
         v_base = (self.info[self.base_currency_name] - 1)
         stock = v_base / stock_price
-        # print(
-        #     f"Bought {self.stock_name}: {round(stock, 2)} | USD: 0 | price: {round(stock_price, 2)} | date: {date}")
+        print(
+            f"Bought {self.stock_name}: {round(stock, 2)} | USD: 0 | price: {round(stock_price, 2)} | date: {date}")
         self.info[self.stock_name] = stock
         self.info[f"v_{self.stock_name}"] = stock
         self.info[self.base_currency_name] = 0
@@ -183,8 +183,8 @@ class Wallet:
         self.info["sell_count"] += 1
         base = self.info[self.stock_name] * stock_price - 1
         v_stock = base / stock_price
-        # print(
-        #     f"Sold   {self.stock_name}: 0 | USD: {round(base, 2)} | price: {round(stock_price, 2)} | date: {date}")
+        print(
+            f"Sold   {self.stock_name}: 0 | USD: {round(base, 2)} | price: {round(stock_price, 2)} | date: {date}")
         self.info[self.base_currency_name] = base
         self.info[f"v_{self.base_currency_name}"] = base
         self.info[self.stock_name] = 0
@@ -237,15 +237,14 @@ def make_dataset(x_test, y_test):
 
 """Loading the necessary stuff"""
 
-
 listOfDates: list[np.ndarray] = []
 listOfPrices: list[np.ndarray] = []
 # keeps the prices for every stock one by one (listOfPrices[0] == prices for etfList[0])
 etfList: list[str] = ['XLF', 'XLU', 'QQQ',
                       'SPY', 'XLP', 'EWZ', 'EWH', 'XLY', 'XLE']
 for etf in etfList:
-    listOfDates.append(np.load(f"ETF/01/Date/{etf}.npy"))
-    listOfPrices.append(np.load(f"ETF/01/Price/{etf}.npy"))
+    listOfDates.append(np.load(f"ETF/01/Date/TestDate/{etf}.npy", allow_pickle=True))
+    listOfPrices.append(np.load(f"ETF/01/Price/TestPrice/{etf}.npy", allow_pickle=True))
 
 
 x_test, y_test = load_dataset()
@@ -267,7 +266,7 @@ for i in [16, 178, 181, 281, 286, 325, 350, 368, 383, 389, 394, 403, 408, 461, 4
     profits = []
     for signals, etf, price, dates in zip(listOfSignals, etfList, listOfPrices, listOfDates):
         wallet = Wallet("USD", etf, 10000)
-        # wallet.print_values()
+        wallet.print_values()
         for signal, price, date in zip(signals, price, dates):
             if signal == 0:
                 wallet.buy(price, date)
@@ -275,7 +274,7 @@ for i in [16, 178, 181, 281, 286, 325, 350, 368, 383, 389, 394, 403, 408, 461, 4
                 wallet.hold()
             elif signal == 2:
                 wallet.sell(price, date)
-        # wallet.print_values()
-        # print("\n")
+        wallet.print_values()
+        print("\n")
         profits.append(wallet.profit_percentage)
     print(f"Profit percentage: {np.mean(profits)}\n")

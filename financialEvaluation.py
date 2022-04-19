@@ -22,6 +22,7 @@ WARMUP_STEPS = 10000
 INIT_LR = 0.01
 WAMRUP_LR = 0.002
 
+
 class WarmUpCosine(keras.optimizers.schedules.LearningRateSchedule):
     def __init__(
         self, learning_rate_base, total_steps, warmup_learning_rate, warmup_steps
@@ -36,7 +37,8 @@ class WarmUpCosine(keras.optimizers.schedules.LearningRateSchedule):
 
     def __call__(self, step):
         if self.total_steps < self.warmup_steps:
-            raise ValueError("Total_steps must be larger or equal to warmup_steps.")
+            raise ValueError(
+                "Total_steps must be larger or equal to warmup_steps.")
         learning_rate = (
             0.5
             * self.learning_rate_base
@@ -59,13 +61,15 @@ class WarmUpCosine(keras.optimizers.schedules.LearningRateSchedule):
             slope = (
                 self.learning_rate_base - self.warmup_learning_rate
             ) / self.warmup_steps
-            warmup_rate = slope * tf.cast(step, tf.float32) + self.warmup_learning_rate
+            warmup_rate = slope * \
+                tf.cast(step, tf.float32) + self.warmup_learning_rate
             learning_rate = tf.where(
                 step < self.warmup_steps, warmup_rate, learning_rate
             )
         return tf.where(
             step > self.total_steps, 0.0, learning_rate, name="learning_rate"
         )
+
 
 scheduled_lrs = WarmUpCosine(
     learning_rate_base=INIT_LR,
@@ -79,13 +83,16 @@ epoch_counter = 1
 
 ''' ConvMixer Implementation
 '''
+
+
 def activation_block(x):
     x = layers.Activation("gelu")(x)
     return layers.BatchNormalization()(x)
 
 
 def conv_stem(x, filters: int, patch_size: int):
-    x = layers.Conv2D(filters, kernel_size=patch_size, strides=patch_size, kernel_regularizer=regularizers.l2(1e-2))(x)
+    x = layers.Conv2D(filters, kernel_size=patch_size,
+                      strides=patch_size, kernel_regularizer=regularizers.l2(1e-2))(x)
     return activation_block(x)
 
 
@@ -96,7 +103,8 @@ def conv_mixer_block(x, filters: int, kernel_size: int):
     x = layers.Add()([activation_block(x), x0])  # Residual.
 
     # Pointwise convolution.
-    x = layers.Conv2D(filters, kernel_size=1, kernel_regularizer=regularizers.l2(1e-2))(x)
+    x = layers.Conv2D(filters, kernel_size=1,
+                      kernel_regularizer=regularizers.l2(1e-2))(x)
     x = activation_block(x)
 
     return x
@@ -124,13 +132,14 @@ def get_conv_mixer_model(
     return keras.Model(inputs, outputs)
 
 
-
 ''' Compiling, Training and Evaluating
 '''
+
+
 def compile_model_optimizer(model):
     optimizer = tfa.optimizers.AdamW(
         learning_rate=scheduled_lrs, weight_decay=weight_decay
-    ) 
+    )
 
     model.compile(
         optimizer=optimizer,
@@ -139,24 +148,30 @@ def compile_model_optimizer(model):
     )
     return model
 
+
 class Wallet:
     def __init__(self, base_currency_name: str, stock_name: str, initial_money: float):
         self.base_currency_name: str = base_currency_name
         self.stock_name: str = stock_name
-        self.info: dict = {base_currency_name: initial_money, stock_name: 0,
+        self.initial_money: float = initial_money
+        self.info: dict = {base_currency_name: initial_money, stock_name: 0, f"v_{base_currency_name}": initial_money, f"v_{stock_name}": 0,
                            "buy_count": 0, "hold_count": 0, "sell_count": 0}
+        self.profit_percentage: float = 0
         #self.transactions: list = []
 
     def buy(self, stock_price: float, date: str):
         if self.info[self.base_currency_name] == 0:
             return
         self.info["buy_count"] += 1
-        stock = (self.info[self.base_currency_name] - 1) / \
-            stock_price
-        # print(
-        #     f"Bought {self.stock_name}: {round(stock, 2)} | USD: 0 | price: {round(stock_price, 2)} | date: {date}")
+        v_base = (self.info[self.base_currency_name] - 1)
+        stock = v_base / stock_price
+        print(
+            f"Bought {self.stock_name}: {round(stock, 2)} | USD: 0 | price: {round(stock_price, 2)} | date: {date}")
         self.info[self.stock_name] = stock
+        self.info[f"v_{self.stock_name}"] = stock
         self.info[self.base_currency_name] = 0
+        self.info[f"v_{self.base_currency_name}"] = v_base
+        self.profit_percentage = v_base / self.initial_money - 1
 
     def hold(self):
         self.info["hold_count"] += 1
@@ -167,13 +182,18 @@ class Wallet:
             return
         self.info["sell_count"] += 1
         base = self.info[self.stock_name] * stock_price - 1
-        # print(
-        #     f"Sold   {self.stock_name}: 0 | USD: {round(base, 2)} | price: {round(stock_price, 2)} | date: {date}")
+        v_stock = base / stock_price
+        print(
+            f"Sold   {self.stock_name}: 0 | USD: {round(base, 2)} | price: {round(stock_price, 2)} | date: {date}")
         self.info[self.base_currency_name] = base
+        self.info[f"v_{self.base_currency_name}"] = base
         self.info[self.stock_name] = 0
+        self.info[f"v_{self.stock_name}"] = v_stock
+        self.profit_percentage = base / self.initial_money - 1
 
     def print_values(self):
         print(self.info)
+        print(f"Profit percentage: {self.profit_percentage}")
 
 
 batch_size: int = 128
@@ -217,32 +237,33 @@ def make_dataset(x_test, y_test):
 
 """Loading the necessary stuff"""
 
-
 listOfDates: list[np.ndarray] = []
 listOfPrices: list[np.ndarray] = []
 # keeps the prices for every stock one by one (listOfPrices[0] == prices for etfList[0])
 etfList: list[str] = ['XLF', 'XLU', 'QQQ',
                       'SPY', 'XLP', 'EWZ', 'EWH', 'XLY', 'XLE']
 for etf in etfList:
-    listOfDates.append(np.load(f"ETF/01/Date/{etf}.npy"))
-    listOfPrices.append(np.load(f"ETF/01/Price/{etf}.npy"))
+    listOfDates.append(np.load(f"ETF/01/Date/TestDate/{etf}.npy", allow_pickle=True))
+    listOfPrices.append(np.load(f"ETF/01/Price/TestPrice/{etf}.npy", allow_pickle=True))
 
 
 x_test, y_test = load_dataset()
 # print_data_counts(labelList)
 datasets = make_dataset(x_test, y_test)
 
-for i in range(4):
-    model = get_conv_mixer_model()                                                  
+for i in [16, 178, 181, 281, 286, 325, 350, 368, 383, 389, 394, 403, 408, 461, 462, 468, 486]:
+    model = get_conv_mixer_model()
     model = compile_model_optimizer(model)
-    model.load_weights(f"SavedModels/1704/1650311790-256x8-k7p5e{i+1}.h5")
+    model.load_weights(
+        f"SavedModels/01/500_epoch/1650312655-256x8-k7p5e{i}.h5")
     listOfSignals = []
     for dataset in datasets:
         predictions = model.predict(dataset)
         listOfSignals.append(np.argmax(predictions, axis=1))
 
-    print(f"MODEL{i+1}")
+    print(f"MODEL{i}")
     """Main algorithm"""
+    profits = []
     for signals, etf, price, dates in zip(listOfSignals, etfList, listOfPrices, listOfDates):
         wallet = Wallet("USD", etf, 10000)
         wallet.print_values()
@@ -255,3 +276,5 @@ for i in range(4):
                 wallet.sell(price, date)
         wallet.print_values()
         print("\n")
+        profits.append(wallet.profit_percentage)
+    print(f"Profit percentage: {np.mean(profits)}\n")

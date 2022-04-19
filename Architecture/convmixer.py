@@ -271,7 +271,7 @@ class CmPrinter(tf.keras.callbacks.Callback):
         classes = np.argmax(predictions, axis=1)
         print(confusion_matrix(y_test, classes))
 
-        export_path_keras = f"../SavedModels/1704/{int(t)}-{filters_}x{depth}-k{kernel_size}p{patch_size}e{self.epoch_counter}.h5"
+        export_path_keras = f"../SavedModels/01/{int(t)}-{filters_}x{depth}-k{kernel_size}p{patch_size}e{self.epoch_counter}.h5"
         self.model.save_weights(export_path_keras)
         self.epoch_counter += 1
 

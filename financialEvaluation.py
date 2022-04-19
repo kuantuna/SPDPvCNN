@@ -5,6 +5,10 @@ import time
 from tensorflow.keras import layers, regularizers
 from tensorflow import keras
 
+
+THRESHOLD = "01"
+MODEL_PATH = "1650312655-256x8-k7p5e"
+
 learning_rate = 0.001
 weight_decay = 0.0001
 batch_size = 128
@@ -165,8 +169,8 @@ class Wallet:
         self.info["buy_count"] += 1
         v_base = (self.info[self.base_currency_name] - 1)
         stock = v_base / stock_price
-        print(
-            f"Bought {self.stock_name}: {round(stock, 2)} | USD: 0 | price: {round(stock_price, 2)} | date: {date}")
+        # print(
+        #     f"Bought {self.stock_name}: {round(stock, 2)} | USD: 0 | price: {round(stock_price, 2)} | date: {date}")
         self.info[self.stock_name] = stock
         self.info[f"v_{self.stock_name}"] = stock
         self.info[self.base_currency_name] = 0
@@ -183,8 +187,8 @@ class Wallet:
         self.info["sell_count"] += 1
         base = self.info[self.stock_name] * stock_price - 1
         v_stock = base / stock_price
-        print(
-            f"Sold   {self.stock_name}: 0 | USD: {round(base, 2)} | price: {round(stock_price, 2)} | date: {date}")
+        # print(
+        #     f"Sold   {self.stock_name}: 0 | USD: {round(base, 2)} | price: {round(stock_price, 2)} | date: {date}")
         self.info[self.base_currency_name] = base
         self.info[f"v_{self.base_currency_name}"] = base
         self.info[self.stock_name] = 0
@@ -192,6 +196,7 @@ class Wallet:
         self.profit_percentage = base / self.initial_money - 1
 
     def print_values(self):
+        # if(self.profit_percentage > 0):
         print(self.info)
         print(f"Profit percentage: {self.profit_percentage}")
 
@@ -204,8 +209,8 @@ def load_dataset():
     x_test = []
     y_test = []
     for etf in etfList:
-        x_test.append(np.load(f"ETF/01/TestData/x_test_{etf}.npy"))
-        y_test.append(np.load(f"ETF/01/TestData/y_test_{etf}.npy"))
+        x_test.append(np.load(f"ETF/{THRESHOLD}/TestData/x_test_{etf}.npy"))
+        y_test.append(np.load(f"ETF/{THRESHOLD}/TestData/y_test_{etf}.npy"))
     return x_test, y_test
 
 
@@ -243,19 +248,23 @@ listOfPrices: list[np.ndarray] = []
 etfList: list[str] = ['XLF', 'XLU', 'QQQ',
                       'SPY', 'XLP', 'EWZ', 'EWH', 'XLY', 'XLE']
 for etf in etfList:
-    listOfDates.append(np.load(f"ETF/01/Date/TestDate/{etf}.npy", allow_pickle=True))
-    listOfPrices.append(np.load(f"ETF/01/Price/TestPrice/{etf}.npy", allow_pickle=True))
+    listOfDates.append(
+        np.load(f"ETF/{THRESHOLD}/Date/TestDate/{etf}.npy", allow_pickle=True))
+    listOfPrices.append(
+        np.load(f"ETF/{THRESHOLD}/Price/TestPrice/{etf}.npy", allow_pickle=True))
 
 
 x_test, y_test = load_dataset()
 # print_data_counts(labelList)
 datasets = make_dataset(x_test, y_test)
 
-for i in [16, 178, 181, 281, 286, 325, 350, 368, 383, 389, 394, 403, 408, 461, 462, 468, 486]:
+profit_ranking = []
+
+for i in [178, 486, 16, 462, 368, 403, 325, 383, 394, 461, 389, 297]:
     model = get_conv_mixer_model()
     model = compile_model_optimizer(model)
     model.load_weights(
-        f"SavedModels/01/500_epoch/1650312655-256x8-k7p5e{i}.h5")
+        f"SavedModels/{THRESHOLD}/{MODEL_PATH}{i}.h5")
     listOfSignals = []
     for dataset in datasets:
         predictions = model.predict(dataset)
@@ -266,7 +275,6 @@ for i in [16, 178, 181, 281, 286, 325, 350, 368, 383, 389, 394, 403, 408, 461, 4
     profits = []
     for signals, etf, price, dates in zip(listOfSignals, etfList, listOfPrices, listOfDates):
         wallet = Wallet("USD", etf, 10000)
-        wallet.print_values()
         for signal, price, date in zip(signals, price, dates):
             if signal == 0:
                 wallet.buy(price, date)
@@ -275,6 +283,14 @@ for i in [16, 178, 181, 281, 286, 325, 350, 368, 383, 389, 394, 403, 408, 461, 4
             elif signal == 2:
                 wallet.sell(price, date)
         wallet.print_values()
-        print("\n")
+        # print("\n")
         profits.append(wallet.profit_percentage)
-    print(f"Profit percentage: {np.mean(profits)}\n")
+    mpp = np.mean(profits)
+    print(f"Model profit percentage: {mpp}\n")
+    profit_ranking.append({"mpp": mpp, "model": i})
+
+sorted_pr = sorted(profit_ranking, key=lambda d: d['mpp'], reverse=True)
+print(sorted_pr)
+"""create a list of model values from sorted_pr"""
+model_values = [d['model'] for d in sorted_pr]
+print(model_values)

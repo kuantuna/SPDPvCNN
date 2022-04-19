@@ -262,8 +262,6 @@ for etf in etfList:
         else:
             labelList.append(np.array([1.0]))  # HOLD
 
-    np.save(f"./ETF/01/Date/{etf}.npy", data_close.index[:-1])
-    np.save(f'./ETF/01/Price/{etf}.npy', data_close[:-1])
     print(len(imageList))
     print(len(labelList))
     print(len(data_close[:-1]))
@@ -287,15 +285,30 @@ for etf in etfList:
     x_test = []
     y_test = []
 
+    train_date = []
+    test_date = []
+
+    train_price = []
+    test_price = []
+
     for index in range(len(imageList)):
-        if(index < len(imageList) * 0.8):
+        if(index < (len(imageList) * 0.8)):
             x_train.append(imageList[index])
             y_train.append(labelList[index])
+            train_date.append(data_close.index[index])
+            train_price.append(data_close.iloc[index])
         else:
             x_test.append(imageList[index])
             y_test.append(labelList[index])
-
+            test_date.append(data_close.index[index])
+            test_price.append(data_close.iloc[index])
+        
     np.save(f"./ETF/01/TrainData/x_train_{etf}.npy", x_train)
     np.save(f"./ETF/01/TrainData/y_train_{etf}.npy", y_train)
     np.save(f"./ETF/01/TestData/x_test_{etf}.npy", x_test)
     np.save(f"./ETF/01/TestData/y_test_{etf}.npy", y_test)
+
+    np.save(f"./ETF/01/Date/TrainDate/{etf}.npy", train_date)
+    np.save(f"./ETF/01/Date/TestDate/{etf}.npy", test_date)
+    np.save(f'./ETF/01/Price/TrainPrice/{etf}.npy', train_price)
+    np.save(f'./ETF/01/Price/TestPrice/{etf}.npy', test_price)

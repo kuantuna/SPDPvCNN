@@ -5,106 +5,26 @@ import tensorflow_addons as tfa
 import time
 import wandb
 
+import helpers.constants as constants
+from helpers.WarmUpCosine import WarmUpCosine
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import classification_report
 from sklearn.metrics import f1_score
-from sklearn.model_selection import train_test_split
 from tensorflow.keras import layers, regularizers
 from tensorflow import keras
 from wandb.keras import WandbCallback
-
 # os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 '''
 CONVMIXER
 Reference: (https://github.com/keras-team/keras-io/blob/master/examples/vision/convmixer.py)
 '''
-
-
-''' Setting Hyperparameter Values
-'''
-learning_rate = 0.001
-weight_decay = 0.0001
-batch_size = 128
-num_epochs = 500
-filters_ = 256
-depth = 8
-kernel_size = 7
-patch_size = 5
-
-image_size = 67
-etfList = ['XLF', 'XLU', 'QQQ', 'SPY', 'XLP', 'EWZ', 'EWH', 'XLY', 'XLE']
-auto = tf.data.AUTOTUNE
-
-TOTAL_STEPS = int((50000 / batch_size) * num_epochs)
-WARMUP_STEPS = 10000
-INIT_LR = 0.01
-WAMRUP_LR = 0.002
-
-class WarmUpCosine(keras.optimizers.schedules.LearningRateSchedule):
-    def __init__(
-        self, learning_rate_base, total_steps, warmup_learning_rate, warmup_steps
-    ):
-        super(WarmUpCosine, self).__init__()
-
-        self.learning_rate_base = learning_rate_base
-        self.total_steps = total_steps
-        self.warmup_learning_rate = warmup_learning_rate
-        self.warmup_steps = warmup_steps
-        self.pi = tf.constant(np.pi)
-
-    def __call__(self, step):
-        if self.total_steps < self.warmup_steps:
-            raise ValueError("Total_steps must be larger or equal to warmup_steps.")
-        learning_rate = (
-            0.5
-            * self.learning_rate_base
-            * (
-                1
-                + tf.cos(
-                    self.pi
-                    * (tf.cast(step, tf.float32) - self.warmup_steps)
-                    / float(self.total_steps - self.warmup_steps)
-                )
-            )
-        )
-
-        if self.warmup_steps > 0:
-            if self.learning_rate_base < self.warmup_learning_rate:
-                raise ValueError(
-                    "Learning_rate_base must be larger or equal to "
-                    "warmup_learning_rate."
-                )
-            slope = (
-                self.learning_rate_base - self.warmup_learning_rate
-            ) / self.warmup_steps
-            warmup_rate = slope * tf.cast(step, tf.float32) + self.warmup_learning_rate
-            learning_rate = tf.where(
-                step < self.warmup_steps, warmup_rate, learning_rate
-            )
-        return tf.where(
-            step > self.total_steps, 0.0, learning_rate, name="learning_rate"
-        )
-
-scheduled_lrs = WarmUpCosine(
-    learning_rate_base=INIT_LR,
-    total_steps=TOTAL_STEPS,
-    warmup_learning_rate=WAMRUP_LR,
-    warmup_steps=WARMUP_STEPS,
-)
-
-'''
-lrs = [scheduled_lrs(step) for step in range(TOTAL_STEPS)]
-plt.plot(lrs)
-plt.xlabel("Step", fontsize=14)
-plt.ylabel("LR", fontsize=14)
-plt.grid()
-plt.show()
-'''
-
+etf_list = constants.etf_list
+threshold = constants.threshold
+hyperparameters = constants.hyperparameters["convmixer"]
 t = time.time()
 epoch_counter = 1
-
+auto = tf.data.AUTOTUNE
 
 ''' Initializing Weights & Biases
 '''
@@ -113,15 +33,15 @@ def initialize_wandb():
             config={
                 "model": "ConvMixer(w/regularizers)",
                 "learning_rate": "WarmUpCosine",
-                "epochs": num_epochs,
-                "batch_size": batch_size,
-                "weight_decay": weight_decay,
-                "filters": filters_,
-                "depth": depth,
-                "kernel_size": kernel_size,
-                "patch_size": patch_size,
+                "epochs": hyperparameters["num_epochs"],
+                "batch_size": hyperparameters["batch_size"],
+                "weight_decay": hyperparameters["weight_decay"],
+                "filters": hyperparameters["filters"],
+                "depth": hyperparameters["depth"],
+                "kernel_size": hyperparameters["kernel_size"],
+                "patch_size": hyperparameters["patch_size"],
                 "threshold": 0.01,
-                "image_size": image_size
+                "image_size": hyperparameters["image_size"]
             })
 
 
@@ -132,22 +52,12 @@ def load_dataset():
     y_train = []
     x_test = []
     y_test = []
-    for etf in etfList:
-        x_train.extend(np.load(f"../ETF/01/TrainData/x_train_{etf}.npy"))
-        y_train.extend(np.load(f"../ETF/01/TrainData/y_train_{etf}.npy"))
-        x_test.extend(np.load(f"../ETF/01/TestData/x_test_{etf}.npy"))
-        y_test.extend(np.load(f"../ETF/01/TestData/y_test_{etf}.npy"))
+    for etf in etf_list:
+        x_train.extend(np.load(f"../ETF/{threshold}/TrainData/x_{etf}.npy"))
+        y_train.extend(np.load(f"../ETF/{threshold}/TrainData/y_{etf}.npy"))
+        x_test.extend(np.load(f"../ETF/{threshold}/TestData/x_{etf}.npy"))
+        y_test.extend(np.load(f"../ETF/{threshold}/TestData/y_{etf}.npy"))
     return x_train, y_train, x_test, y_test
-
-# def print_data_counts(labelList):
-#     labelDict = {
-#         0: "Buy",
-#         1: "Hold",
-#         2: "Sell"
-#     }
-#     unique, counts = np.unique(labelList, return_counts=True)
-#     for label, count in np.asarray((unique, counts)).T:
-#         print("{} count: {}".format(labelDict[int(label)], int(count)))
 
 
 def prepare_dataset(x_train, y_train, x_test):
@@ -167,8 +77,8 @@ def prepare_dataset(x_train, y_train, x_test):
 def make_datasets(images, labels, is_train=False):
     dataset = tf.data.Dataset.from_tensor_slices((images, labels))
     if is_train:
-        dataset = dataset.shuffle(batch_size * 10)
-    dataset = dataset.batch(batch_size)
+        dataset = dataset.shuffle(hyperparameters["batch_size"] * 10)
+    dataset = dataset.batch(hyperparameters["batch_size"])
     return dataset.prefetch(auto)
 
 def get_finalized_datasets(new_x_train, new_y_train, x_val, y_val, x_test, y_test):
@@ -206,7 +116,8 @@ def conv_mixer_block(x, filters: int, kernel_size: int):
 
 
 def get_conv_mixer_model(
-        image_size=image_size, filters=filters_, depth=depth, kernel_size=kernel_size, patch_size=patch_size, num_classes=3
+        image_size=hyperparameters["image_size"], filters=hyperparameters["filters"], depth=hyperparameters["depth"], 
+        kernel_size=hyperparameters["kernel_size"], patch_size=hyperparameters["patch_size"], num_classes=3
 ):
     """ConvMixer-256/8: https://openreview.net/pdf?id=TVHS5Y4dNvM.
     The hyperparameter values are taken from the paper.
@@ -227,12 +138,25 @@ def get_conv_mixer_model(
     return keras.Model(inputs, outputs)
 
 
+TOTAL_STEPS = int(
+    (50000 / hyperparameters["batch_size"]) * hyperparameters["num_epochs"])
+WARMUP_STEPS = 10000
+INIT_LR = 0.01
+WAMRUP_LR = 0.002
+
+scheduled_lrs = WarmUpCosine(
+    learning_rate_base=INIT_LR,
+    total_steps=TOTAL_STEPS,
+    warmup_learning_rate=WAMRUP_LR,
+    warmup_steps=WARMUP_STEPS,
+)
+
 
 ''' Compiling, Training and Evaluating
 '''
 def compile_model_optimizer(model):
     optimizer = tfa.optimizers.AdamW(
-        learning_rate=scheduled_lrs, weight_decay=weight_decay
+        learning_rate=scheduled_lrs, weight_decay=hyperparameters["weight_decay"]
     ) 
 
     model.compile(
@@ -248,8 +172,8 @@ def run_experiment(model, test_dataset):
     history = model.fit(
         train_dataset,
         validation_data=val_dataset,
-        epochs=num_epochs,
-        callbacks=[CmPrinter(test_dataset, epoch_counter), WandbCallback()]
+        epochs=hyperparameters["num_epochs"],
+        callbacks=[CmPrinter(test_dataset, epoch_counter)] # WandbCallback()
     )
 
     _, accuracy = model.evaluate(test_dataset)
@@ -271,7 +195,7 @@ class CmPrinter(tf.keras.callbacks.Callback):
         classes = np.argmax(predictions, axis=1)
         print(confusion_matrix(y_test, classes))
 
-        export_path_keras = f"../SavedModels/01/{int(t)}-{filters_}x{depth}-k{kernel_size}p{patch_size}e{self.epoch_counter}.h5"
+        export_path_keras = f"../SavedModels/01/{int(t)}-{hyperparameters['filters']}x{hyperparameters['depth']}-k{hyperparameters['kernel_size']}p{hyperparameters['patch_size']}e{self.epoch_counter}.h5"
         self.model.save_weights(export_path_keras)
         self.epoch_counter += 1
 
@@ -284,7 +208,7 @@ def load_saved_model(path):
 
 
 if __name__ == "__main__":
-    initialize_wandb()
+    # initialize_wandb()
     x_train, y_train, x_test, y_test = load_dataset()
     # print_data_counts(labelList)
     new_x_train, new_y_train, x_val, y_val = prepare_dataset(x_train, y_train, x_test)    

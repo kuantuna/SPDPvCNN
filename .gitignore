@@ -1,7 +1,8 @@
 wandb
-Architecture/__pycache__
-Architecture/wandb
-Architecture/runs
-Architecture/helpers/__pycache__
+architectures/__pycache__
+architectures/wandb
+architectures/runs
+architectures/helpers/__pycache__
 ETF/01/TrainData/
 ETF/0038/TrainData/
+SavedModels/

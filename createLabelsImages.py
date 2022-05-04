@@ -25,10 +25,10 @@ DOWNLOADING THE DATA
 '''
 # DataFrame, size=(n_days, 6), col_names=["Open", "High", "Low", "Close", "Adj Close", "Volume"]
 for etf in etfList:
-    
+
     imageList = []
     labelList = []
-    
+
     data = yf.download(etf, start=startDate, end=endDate)
 
     '''
@@ -277,7 +277,8 @@ for etf in etfList:
     mean = np.mean(imageList_copy, axis=0)
     std = np.std(imageList_copy, axis=0)
     imageList_copy = (imageList_copy - mean) / std
-    imageList = imageList_copy.reshape(len(imageList), len(indicators), len(indicators), 1)
+    imageList = imageList_copy.reshape(
+        len(imageList), len(indicators), len(indicators), 1)
 
     x_train = []
     y_train = []
@@ -302,11 +303,11 @@ for etf in etfList:
             y_test.append(labelList[index])
             test_date.append(data_close.index[index])
             test_price.append(data_close.iloc[index])
-        
-    np.save(f"./ETF/01/TrainData/x_train_{etf}.npy", x_train)
-    np.save(f"./ETF/01/TrainData/y_train_{etf}.npy", y_train)
-    np.save(f"./ETF/01/TestData/x_test_{etf}.npy", x_test)
-    np.save(f"./ETF/01/TestData/y_test_{etf}.npy", y_test)
+
+    np.save(f"./ETF/01/TrainData/x_{etf}.npy", x_train)
+    np.save(f"./ETF/01/TrainData/y_{etf}.npy", y_train)
+    np.save(f"./ETF/01/TestData/x_{etf}.npy", x_test)
+    np.save(f"./ETF/01/TestData/y_{etf}.npy", y_test)
 
     np.save(f"./ETF/01/Date/TrainDate/{etf}.npy", train_date)
     np.save(f"./ETF/01/Date/TestDate/{etf}.npy", test_date)

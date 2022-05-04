@@ -1,10 +1,10 @@
+from tensorflow import keras
+from tensorflow.keras import layers, regularizers
 import numpy as np
 import tensorflow as tf
 import tensorflow_addons as tfa
-import time
-from tensorflow.keras import layers, regularizers
-from tensorflow import keras
 
+import time
 
 THRESHOLD = "01"
 MODEL_PATH = "1650312655-256x8-k7p5e"
@@ -209,8 +209,8 @@ def load_dataset():
     x_test = []
     y_test = []
     for etf in etfList:
-        x_test.append(np.load(f"ETF/{THRESHOLD}/TestData/x_test_{etf}.npy"))
-        y_test.append(np.load(f"ETF/{THRESHOLD}/TestData/y_test_{etf}.npy"))
+        x_test.append(np.load(f"ETF/{THRESHOLD}/TestData/x_{etf}.npy"))
+        y_test.append(np.load(f"ETF/{THRESHOLD}/TestData/y_{etf}.npy"))
     return x_test, y_test
 
 

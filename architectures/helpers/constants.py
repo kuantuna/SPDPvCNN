@@ -1,9 +1,9 @@
 from architectures.helpers.warmup_cosine import WarmUpCosine
 
-# selected_model = "convmixer"
+selected_model = "convmixer"
 # selected_model = "vision_transformer"
 # selected_model = "mlp_mixer"
-selected_model = "cnn_ta"
+# selected_model = "cnn_ta"
 
 etf_list = ['XLF', 'XLU', 'QQQ', 'SPY', 'XLP', 'EWZ', 'EWH', 'XLY', 'XLE']
 threshold = "01"

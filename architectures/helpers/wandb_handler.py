@@ -11,7 +11,7 @@ def initialize_wandb():
         wandb.init(project=f"{selected_model}", entity="spdpvcnn",
                    config={
                        "model": f"{selected_model}",
-                       "learning_rate": hyperparameters["learning_rate"],
+                       "learning_rate": hyperparameters["learning_rate_type"],
                        "epochs": hyperparameters["num_epochs"],
                        "batch_size": hyperparameters["batch_size"],
                        "weight_decay": hyperparameters["weight_decay"],
@@ -26,7 +26,7 @@ def initialize_wandb():
         wandb.init(project=f"{selected_model}", entity="spdpvcnn",
                    config={
                        "model": f"{selected_model}",
-                       "learning_rate": hyperparameters["learning_rate"],
+                       "learning_rate": hyperparameters["learning_rate_type"],
                        "epochs": hyperparameters["num_epochs"],
                        "batch_size": hyperparameters["batch_size"],
                        "weight_decay": hyperparameters["weight_decay"],
@@ -38,6 +38,19 @@ def initialize_wandb():
                        "threshold": f"0.{threshold}",
                    })
     elif selected_model == "mlp_mixer":
-        pass
+        wandb.init(project=f"{selected_model}", entity="spdpvcnn",
+                   config={
+                       "model": f"{selected_model}",
+                       "learning_rate": hyperparameters["learning_rate_type"],
+                       "epochs": hyperparameters["num_epochs"],
+                       "batch_size": hyperparameters["batch_size"],
+                       "weight_decay": hyperparameters["weight_decay"],
+                       "image_size": hyperparameters["image_size"],
+                       "dropout_rate": hyperparameters["dropout_rate"],
+                       "embedding_dim": hyperparameters["embedding_dim"],
+                       "patch_size": hyperparameters["patch_size"],
+                       "num_blocks": hyperparameters["num_blocks"],
+                       "threshold": f"0.{threshold}",
+                   })
     elif selected_model == "cnn_ta":
         pass

@@ -1,23 +1,10 @@
-import numpy as np
 import tensorflow as tf
 import tensorflow_addons as tfa
-import matplotlib.pyplot as plt
 
 import architectures.helpers.constants as constants
-from architectures.helpers.warmup_cosine import WarmUpCosine
-
 
 from tensorflow import keras
 from tensorflow.keras import layers
-from wandb.keras import WandbCallback
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import classification_report
-from sklearn.metrics import f1_score
-
-import matplotlib.pyplot as plt
-
-import wandb
 
 hyperparameters = constants.hyperparameters["vision_transformer"]
 
@@ -25,40 +12,6 @@ hyperparameters = constants.hyperparameters["vision_transformer"]
 IMPLEMENTING THE VISION TRANSFORMER
 Reference: (https://github.com/keras-team/keras-io/blob/master/examples/vision/image_classification_with_vision_transformer.py)
 '''
-
-"""
-## Prepare the data
-"""
-
-
-"""
-## Configure the hyperparameters
-"""
-
-
-'''
-TOTAL_STEPS = int((50000 / batch_size) * num_epochs)
-WARMUP_STEPS = 10000
-INIT_LR = 0.01
-WAMRUP_LR = 0.002
-'''
-
-
-"""
-## Use data augmentation
-"""
-# data_augmentation = keras.Sequential(
-#     [
-#         layers.Normalization(),
-#         layers.Resizing(image_size, image_size),
-#         layers.RandomFlip("horizontal"),
-#         layers.RandomRotation(factor=0.02),
-#         layers.RandomZoom(height_factor=0.2, width_factor=0.2),
-#     ],
-#     name="data_augmentation",
-# )
-# # Compute the mean and the variance of the training data for normalization.
-# data_augmentation.layers[0].adapt(x_train)
 
 """
 ## Implement multilayer perceptron (MLP)
@@ -179,19 +132,6 @@ def create_vit_classifier():
     return model
 
 
-TOTAL_STEPS = int(
-    (50000 / hyperparameters["batch_size"]) * hyperparameters["num_epochs"])
-WARMUP_STEPS = 10000
-INIT_LR = 0.01
-WAMRUP_LR = 0.002
-
-scheduled_lrs = WarmUpCosine(
-    learning_rate_base=INIT_LR,
-    total_steps=TOTAL_STEPS,
-    warmup_learning_rate=WAMRUP_LR,
-    warmup_steps=WARMUP_STEPS,
-)
-
 """
 ## Compile, train, and evaluate the mode
 """
@@ -199,7 +139,7 @@ scheduled_lrs = WarmUpCosine(
 
 def compile_model(model):
     optimizer = tfa.optimizers.AdamW(
-        learning_rate=scheduled_lrs, weight_decay=hyperparameters["weight_decay"]
+        learning_rate=hyperparameters["learning_rate"], weight_decay=hyperparameters["weight_decay"]
     )
 
     model.compile(

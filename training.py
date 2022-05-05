@@ -10,8 +10,7 @@ from architectures.helpers.constants import selected_model
 from architectures.helpers.wandb_handler import initialize_wandb
 from architectures.helpers.custom_callbacks import CustomCallback
 
-from architectures.convmixer import get_cm_model
-from architectures.vision_transformer import get_vit_model
+from architectures.helpers.model_handler import get_model
 
 from sklearn.metrics import f1_score
 from sklearn.metrics import classification_report
@@ -89,7 +88,7 @@ if __name__ == "__main__":
         x_train, y_train, x_test)
     train_dataset, val_dataset, test_dataset = get_finalized_datasets(
         new_x_train, new_y_train, x_val, y_val, x_test, y_test)
-    model = get_vit_model()
+    model = get_model()
     history, trained_model = run_experiment(model, test_dataset)
 
     predictions = trained_model.predict(test_dataset)

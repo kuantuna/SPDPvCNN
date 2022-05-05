@@ -1,11 +1,8 @@
 import tensorflow_addons as tfa
 import architectures.helpers.constants as constants
 
-from architectures.helpers.warmup_cosine import WarmUpCosine
-
 from tensorflow.keras import layers, regularizers
 from tensorflow import keras
-# os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 '''
 CONVMIXER
@@ -66,27 +63,13 @@ def get_conv_mixer_model(
     return keras.Model(inputs, outputs)
 
 
-TOTAL_STEPS = int(
-    (50000 / hyperparameters["batch_size"]) * hyperparameters["num_epochs"])
-WARMUP_STEPS = 10000
-INIT_LR = 0.01
-WAMRUP_LR = 0.002
-
-scheduled_lrs = WarmUpCosine(
-    learning_rate_base=INIT_LR,
-    total_steps=TOTAL_STEPS,
-    warmup_learning_rate=WAMRUP_LR,
-    warmup_steps=WARMUP_STEPS,
-)
-
-
 ''' Compiling, Training and Evaluating
 '''
 
 
 def compile_model_optimizer(model):
     optimizer = tfa.optimizers.AdamW(
-        learning_rate=scheduled_lrs, weight_decay=hyperparameters["weight_decay"]
+        learning_rate=hyperparameters["learning_rate"], weight_decay=hyperparameters["weight_decay"]
     )
 
     model.compile(

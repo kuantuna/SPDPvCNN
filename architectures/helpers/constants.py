@@ -1,4 +1,5 @@
 from architectures.helpers.warmup_cosine import WarmUpCosine
+from architectures.helpers.one_cycle import OneCycleLRScheduler
 from tensorflow import keras
 
 # selected_model = "convmixer"
@@ -47,10 +48,10 @@ hyperparameters = {
         "num_classes": 3,
     },
     "mlp_mixer": {
-        "learning_rate_type": 0.01,  # 0.005, ReduceLROnPlateau
+        "learning_rate_type": "WarmUpCosine",  # 0.005, ReduceLROnPlateau
         "weight_decay": 0.0001,
         "batch_size": 128,
-        "num_epochs": 100,
+        "num_epochs": 500,
         "dropout_rate": 0.2,
         "image_size": 67,  # We'll resize input images to this size.
         "patch_size": 7,  # Size of the patches to be extract from the input images
@@ -87,10 +88,13 @@ if hyperparameters[selected_model]["learning_rate_type"] == "WarmUpCosine":
     hyperparameters[selected_model]["learning_rate"] = scheduled_lrs
 else:
     hyperparameters[selected_model]["learning_rate"] = hyperparameters[selected_model]["learning_rate_type"]
-    reduce_lr = keras.callbacks.ReduceLROnPlateau(
-        monitor="val_loss", factor=0.5, patience=3, verbose=1
-    )
-    hyperparameters[selected_model]["learning_rate_scheduler"] = reduce_lr
+    # reduce_lr = keras.callbacks.ReduceLROnPlateau(
+    #     monitor="val_loss", factor=0.6, patience=10, verbose=1
+    # )
+    # hyperparameters[selected_model]["learning_rate_scheduler"] = reduce_lr
+    # one_cycle_lr_scheduler = OneCycleLRScheduler(hyperparameters[selected_model]["num_epochs"], hyperparameters[selected_model]["learning_rate"],
+    #                                              hyperparameters[selected_model]["image_size"] / hyperparameters[selected_model]["batch_size"])
+    # hyperparameters[selected_model]["learning_rate_scheduler"] = one_cycle_lr_scheduler
 
 
 hyperparameters["convmixer"]["input_shape"] = (

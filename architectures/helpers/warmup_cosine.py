@@ -52,6 +52,15 @@ class WarmUpCosine(keras.optimizers.schedules.LearningRateSchedule):
             step > self.total_steps, 0.0, learning_rate, name="learning_rate"
         )
 
+    def get_config(self):
+        config = {
+            "learning_rate_base": self.learning_rate_base,
+            "total_steps": self.total_steps,
+            "warmup_learning_rate": self.warmup_learning_rate,
+            "warmup_steps": self.warmup_steps,
+        }
+        return config
+
 # lrs = [scheduled_lrs(step) for step in range(TOTAL_STEPS)]
 # plt.plot(lrs)
 # plt.xlabel("Step", fontsize=14)

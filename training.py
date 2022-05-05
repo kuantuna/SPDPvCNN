@@ -14,6 +14,7 @@ from architectures.helpers.model_handler import get_model
 
 from sklearn.metrics import f1_score
 from sklearn.metrics import classification_report
+from tensorflow import keras
 from wandb.keras import WandbCallback
 
 hyperparameters = hyperparameters[selected_model]

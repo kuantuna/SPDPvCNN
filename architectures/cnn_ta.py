@@ -22,5 +22,10 @@ def get_ct_model():
     model.add(Dense(hyperparameters["num_classes"], activation='softmax'))
     model.compile(loss="sparse_categorical_crossentropy",
                   optimizer=keras.optimizers.Adadelta(),
-                  metrics=["accuracy"],)
+                  metrics=[
+                      keras.metrics.SparseCategoricalAccuracy(name="acc"),
+                      keras.metrics.SparseTopKCategoricalAccuracy(
+                          5, name="top5-acc"),
+                  ],
+                  )
     return model

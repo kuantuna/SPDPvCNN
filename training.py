@@ -67,12 +67,16 @@ def get_finalized_datasets(new_x_train, new_y_train, x_val, y_val, x_test, y_tes
 
 
 def run_experiment(model, test_dataset):
+    callback_list = [CustomCallback(
+        test_dataset, epoch_counter, t, y_test), WandbCallback()]
+    if hyperparameters["learning_rate_type"] != "WarmUpCosine" and hyperparameters["learning_rate_type"] != "Not found":
+        callback_list.append(hyperparameters["learning_rate_scheduler"])
+
     history = model.fit(
         train_dataset,
         validation_data=val_dataset,
         epochs=hyperparameters["num_epochs"],
-        callbacks=[CustomCallback(
-            test_dataset, epoch_counter, t, y_test), WandbCallback()],
+        callbacks=callback_list,
     )
 
     _, accuracy = model.evaluate(test_dataset)

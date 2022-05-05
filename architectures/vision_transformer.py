@@ -145,11 +145,8 @@ def compile_model(model):
     model.compile(
         optimizer=optimizer,
         loss=keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-        metrics=[
-            keras.metrics.SparseCategoricalAccuracy(name="accuracy"),
-            keras.metrics.SparseTopKCategoricalAccuracy(
-                5, name="top-5-accuracy"),
-        ],
+        metrics=[keras.metrics.SparseCategoricalAccuracy(name="acc"),
+                 keras.metrics.SparseTopKCategoricalAccuracy(5, name="top5-acc"), ],
     )
     return model
 

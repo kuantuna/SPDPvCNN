@@ -1,9 +1,10 @@
 from architectures.helpers.warmup_cosine import WarmUpCosine
+from tensorflow import keras
 
 # selected_model = "convmixer"
-selected_model = "convmixer_tf"
+# selected_model = "convmixer_tf"
 # selected_model = "vision_transformer"
-# selected_model = "mlp_mixer"
+selected_model = "mlp_mixer"
 # selected_model = "cnn_ta"
 
 etf_list = ['XLF', 'XLU', 'QQQ', 'SPY', 'XLP', 'EWZ', 'EWH', 'XLY', 'XLE']
@@ -11,7 +12,7 @@ threshold = "01"
 
 hyperparameters = {
     "convmixer": {
-        "learning_rate_type": "WarmUpCosine",  # 0.01
+        "learning_rate_type": 0.01,  # "WarmUpCosine"
         "weight_decay": 0.0001,
         "batch_size": 128,
         "num_epochs": 100,
@@ -22,18 +23,18 @@ hyperparameters = {
         "image_size": 67,
     },
     "convmixer_tf": {
-        "learning_rate_type": "WarmUpCosine",  # 0.01
+        "learning_rate_type": 0.01,  # "WarmUpCosine"
         "weight_decay": 0.0001,
         "batch_size": 128,
         "num_epochs": 500,
         "filters": 256,
         "depth": 8,
         "kernel_size": 7,
-        "patch_size": 5,
+        "patch_size": 7,
         "image_size": 67,
     },
     "vision_transformer": {
-        "learning_rate_type": "WarmUpCosine",  # 0.001
+        "learning_rate_type": 0.001,  # "WarmUpCosine"
         "weight_decay": 0.0001,
         "batch_size": 128,
         "num_epochs": 150,
@@ -46,7 +47,7 @@ hyperparameters = {
         "num_classes": 3,
     },
     "mlp_mixer": {
-        "learning_rate_type": "WarmUpCosine",  # 0.005
+        "learning_rate_type": 0.01,  # 0.005, ReduceLROnPlateau
         "weight_decay": 0.0001,
         "batch_size": 128,
         "num_epochs": 100,
@@ -60,7 +61,7 @@ hyperparameters = {
     "cnn_ta": {
         "learning_rate_type": "Not found",
         "batch_size": 128,
-        "num_epochs": 100,
+        "num_epochs": 500,
         "first_dropout_rate": 0.25,
         "second_dropout_rate": 0.5,
         "kernel_size": 5,
@@ -86,6 +87,10 @@ if hyperparameters[selected_model]["learning_rate_type"] == "WarmUpCosine":
     hyperparameters[selected_model]["learning_rate"] = scheduled_lrs
 else:
     hyperparameters[selected_model]["learning_rate"] = hyperparameters[selected_model]["learning_rate_type"]
+    reduce_lr = keras.callbacks.ReduceLROnPlateau(
+        monitor="val_loss", factor=0.5, patience=3, verbose=1
+    )
+    hyperparameters[selected_model]["learning_rate_scheduler"] = reduce_lr
 
 
 hyperparameters["convmixer"]["input_shape"] = (

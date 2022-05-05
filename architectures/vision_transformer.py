@@ -169,6 +169,7 @@ def compile_model(model):
 
 
 def get_vit_model():
+    print("Getting the ViT model...")
     model = create_vit_classifier()
     return compile_model(model)
 

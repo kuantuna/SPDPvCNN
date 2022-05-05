@@ -53,4 +53,14 @@ def initialize_wandb():
                        "threshold": f"0.{threshold}",
                    })
     elif selected_model == "cnn_ta":
-        pass
+        wandb.init(project=f"{selected_model}", entity="spdpvcnn",
+                   config={
+                       "model": f"{selected_model}",
+                       "learning_rate": hyperparameters["learning_rate_type"],
+                       "epochs": hyperparameters["num_epochs"],
+                       "batch_size": hyperparameters["batch_size"],
+                       "image_size": hyperparameters["image_size"],
+                       "first_dropout_rate": hyperparameters["first_dropout_rate"],
+                       "second_dropout_rate": hyperparameters["second_dropout_rate"],
+                       "threshold": f"0.{threshold}",
+                   })

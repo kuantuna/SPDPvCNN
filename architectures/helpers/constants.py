@@ -2,8 +2,8 @@ from architectures.helpers.warmup_cosine import WarmUpCosine
 
 # selected_model = "convmixer"
 # selected_model = "vision_transformer"
-selected_model = "mlp_mixer"
-# selected_model = "cnn_ta"
+# selected_model = "mlp_mixer"
+selected_model = "cnn_ta"
 
 etf_list = ['XLF', 'XLU', 'QQQ', 'SPY', 'XLP', 'EWZ', 'EWH', 'XLY', 'XLE']
 threshold = "01"
@@ -46,7 +46,14 @@ hyperparameters = {
         "num_classes": 3,
     },
     "cnn_ta": {
-
+        "learning_rate_type": "Not found",
+        "batch_size": 128,
+        "num_epochs": 100,
+        "first_dropout_rate": 0.25,
+        "second_dropout_rate": 0.5,
+        "kernel_size": 5,
+        "image_size": 67,  # We'll resize input images to this size.
+        "num_classes": 3,
     }
 }
 
@@ -83,3 +90,6 @@ hyperparameters["mlp_mixer"]["num_patches"] = (
 
 hyperparameters["mlp_mixer"]["input_shape"] = (
     hyperparameters["mlp_mixer"]["image_size"], hyperparameters["mlp_mixer"]["image_size"], 1)
+
+hyperparameters["cnn_ta"]["input_shape"] = (
+    hyperparameters["cnn_ta"]["image_size"], hyperparameters["cnn_ta"]["image_size"], 1)

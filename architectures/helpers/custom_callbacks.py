@@ -7,7 +7,7 @@ from architectures.helpers.constants import selected_model
 from architectures.helpers.constants import threshold
 
 
-hyperparameters = hyperparameters["convmixer"]
+hyperparameters = hyperparameters[selected_model]
 # Runs at the end of every epoch and prints the confusion matrix
 
 
@@ -22,8 +22,15 @@ class CustomCallback(tf.keras.callbacks.Callback):
     def on_epoch_end(self, epoch, logs=None):
         predictions = self.model.predict(self.test_dataset)
         classes = np.argmax(predictions, axis=1)
-        print(confusion_matrix(self.y_test, classes))
-
-        export_path_keras = f"SavedModels/{selected_model}/{threshold}/{int(self.time)}-{hyperparameters['filters']}x{hyperparameters['depth']}-k{hyperparameters['kernel_size']}p{hyperparameters['patch_size']}e{self.epoch_counter}.h5"
+        print(f"\n{confusion_matrix(self.y_test, classes)}\n")
+        export_path_keras = ""
+        if selected_model == "convmixer":
+            export_path_keras = f"saved_models/{selected_model}/{threshold}/{int(self.time)}-{hyperparameters['filters']}x{hyperparameters['depth']}-k{hyperparameters['kernel_size']}p{hyperparameters['patch_size']}-e{self.epoch_counter}.h5"
+        elif selected_model == "vision_transformer":
+            export_path_keras = f"saved_models/{selected_model}/{threshold}/{int(self.time)}-tl{hyperparameters['transformer_layers']}-pd{hyperparameters['projection_dim']}-p{hyperparameters['patch_size']}-e{self.epoch_counter}.h5"
+        elif selected_model == "mlp_mixer":
+            export_path_keras = f"saved_models/{selected_model}/{threshold}/{int(self.time)}-ed{hyperparameters['embedding_dim']}-nb{hyperparameters['num_blocks']}-p{hyperparameters['patch_size']}-e{self.epoch_counter}.h5"
+        elif selected_model == "cnn_ta":
+            export_path_keras = f"saved_models/{selected_model}/{threshold}/{int(self.time)}-fdr{hyperparameters['first_dropout_rate']}-sdr{hyperparameters['second_dropout_rate']}-k{hyperparameters['kernel_size']}-e{self.epoch_counter}.h5"
         self.model.save_weights(export_path_keras)
         self.epoch_counter += 1

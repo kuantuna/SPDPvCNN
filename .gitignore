@@ -5,3 +5,4 @@ architectures/runs
 architectures/helpers/__pycache__
 ETF/01/TrainData/
 ETF/0038/TrainData/
+saved_models/

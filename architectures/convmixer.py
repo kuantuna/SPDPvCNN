@@ -87,5 +87,6 @@ def load_saved_model(path):
 
 
 def get_cm_model():
+    print("Getting the ConvMixer model...")
     conv_mixer_model = get_conv_mixer_model()
     return compile_model_optimizer(conv_mixer_model)

@@ -14,13 +14,13 @@ IMPLEMENTING THE VISION TRANSFORMER
 Reference: (https://github.com/keras-team/keras-io/blob/master/examples/vision/mlp_image_classification.py)
 '''
 
-print(
-    f"Image size: {hyperparameters['image_size']} X {hyperparameters['image_size']} = {hyperparameters['image_size'] ** 2}")
-print(
-    f"Patch size: {hyperparameters['patch_size']} X {hyperparameters['patch_size']} = {hyperparameters['patch_size'] ** 2} ")
-print(f"Patches per image: {hyperparameters['num_patches']}")
-print(
-    f"Elements per patch (3 channels): {(hyperparameters['patch_size'] ** 2) * 3}")
+# print(
+#     f"Image size: {hyperparameters['image_size']} X {hyperparameters['image_size']} = {hyperparameters['image_size'] ** 2}")
+# print(
+#     f"Patch size: {hyperparameters['patch_size']} X {hyperparameters['patch_size']} = {hyperparameters['patch_size'] ** 2} ")
+# print(f"Patches per image: {hyperparameters['num_patches']}")
+# print(
+#     f"Elements per patch (3 channels): {(hyperparameters['patch_size'] ** 2) * 3}")
 
 """
 Build a classification model
@@ -193,6 +193,7 @@ You may also try to increase the size of the input images and use different patc
 
 
 def get_mm_model():
+    print("Getting MLP-Mixer model...")
     mlpmixer_blocks = keras.Sequential(
         [MLPMixerLayer(hyperparameters["num_patches"], hyperparameters["embedding_dim"], hyperparameters["dropout_rate"])
          for _ in range(hyperparameters["num_blocks"])]

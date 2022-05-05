@@ -6,7 +6,7 @@
 
 ## **_Dependencies Used_**
 
-**_In order to run `convmixer.py`, `vision_transformer.py`, and `mlp_mixer.py` one must have the exact versions of dependencies below._**<br/> 
+**_In order to run `convmixer.py`, `vision_transformer.py`, and `mlp_mixer.py` one must have the exact versions of dependencies below._**<br/>
 **_Note that the code is incompatible with versions of tensorflow 2.5.0, 2.7.0, and 2.8.0._**
 
 - **_[Keras:](https://keras.io/) 2.6.0_**
@@ -14,12 +14,15 @@
 - **_[Tensorflow Addons:](https://www.tensorflow.org/addons) 0.16.1_**
 
 ## **_Steps to Re-Produce Our Results_**
-**_1. Clone the Repository to Your Local Machine_** 
+
+**_1. Clone the Repository to Your Local Machine_**
+
 ```bash
 git clone https://github.com/kuantuna/SPDPvCNN.git
 ```
+
 **_2. Run the `create_labels_images.py` to create images and labels for the specified range of dates.<br/>_**
-**_3. Later, run the `convmixer.py` to train a model using the images created on the previous phase.<br/>_**
+**_3. Later, in the `architectures/helpers/constants.py` choose the architecture (selected_model) you want to use (by commenting others) and run the `training.py` to train the model using the images created on the previous phase.<br/>_**
 **_4. Finally, run the `financial_evaluation.py` to evaluate our model on the test data financially.<br/>_**
 
 ## **_Institution_**

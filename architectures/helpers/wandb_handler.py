@@ -22,6 +22,21 @@ def initialize_wandb():
                        "threshold": f"0.{threshold}",
                        "image_size": hyperparameters["image_size"]
                    })
+    elif selected_model == "convmixer_tf":
+        wandb.init(project=f"{selected_model}", entity="spdpvcnn",
+                   config={
+                       "model": f"{selected_model}",
+                       "learning_rate": hyperparameters["learning_rate_type"],
+                       "epochs": hyperparameters["num_epochs"],
+                       "batch_size": hyperparameters["batch_size"],
+                       "weight_decay": hyperparameters["weight_decay"],
+                       "filters": hyperparameters["filters"],
+                       "depth": hyperparameters["depth"],
+                       "kernel_size": hyperparameters["kernel_size"],
+                       "patch_size": hyperparameters["patch_size"],
+                       "threshold": f"0.{threshold}",
+                       "image_size": hyperparameters["image_size"]
+                   })
     elif selected_model == "vision_transformer":
         wandb.init(project=f"{selected_model}", entity="spdpvcnn",
                    config={

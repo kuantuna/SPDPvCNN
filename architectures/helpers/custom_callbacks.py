@@ -26,6 +26,8 @@ class CustomCallback(tf.keras.callbacks.Callback):
         export_path_keras = ""
         if selected_model == "convmixer":
             export_path_keras = f"saved_models/{selected_model}/{threshold}/{int(self.time)}-{hyperparameters['filters']}x{hyperparameters['depth']}-k{hyperparameters['kernel_size']}p{hyperparameters['patch_size']}-e{self.epoch_counter}.h5"
+        elif selected_model == "convmixer_tf":
+            export_path_keras = f"saved_models/{selected_model}/{threshold}/{int(self.time)}-{hyperparameters['filters']}x{hyperparameters['depth']}-k{hyperparameters['kernel_size']}p{hyperparameters['patch_size']}-e{self.epoch_counter}.h5"
         elif selected_model == "vision_transformer":
             export_path_keras = f"saved_models/{selected_model}/{threshold}/{int(self.time)}-tl{hyperparameters['transformer_layers']}-pd{hyperparameters['projection_dim']}-p{hyperparameters['patch_size']}-e{self.epoch_counter}.h5"
         elif selected_model == "mlp_mixer":

@@ -1,6 +1,7 @@
 from architectures.helpers.warmup_cosine import WarmUpCosine
 
-selected_model = "convmixer"
+# selected_model = "convmixer"
+selected_model = "convmixer_tf"
 # selected_model = "vision_transformer"
 # selected_model = "mlp_mixer"
 # selected_model = "cnn_ta"
@@ -10,6 +11,17 @@ threshold = "01"
 
 hyperparameters = {
     "convmixer": {
+        "learning_rate_type": "WarmUpCosine",  # 0.01
+        "weight_decay": 0.0001,
+        "batch_size": 128,
+        "num_epochs": 100,
+        "filters": 256,
+        "depth": 8,
+        "kernel_size": 7,
+        "patch_size": 5,
+        "image_size": 67,
+    },
+    "convmixer_tf": {
         "learning_rate_type": "WarmUpCosine",  # 0.01
         "weight_decay": 0.0001,
         "batch_size": 128,
@@ -75,6 +87,12 @@ if hyperparameters[selected_model]["learning_rate_type"] == "WarmUpCosine":
 else:
     hyperparameters[selected_model]["learning_rate"] = hyperparameters[selected_model]["learning_rate_type"]
 
+
+hyperparameters["convmixer"]["input_shape"] = (
+    hyperparameters["convmixer"]["image_size"], hyperparameters["convmixer"]["image_size"], 1)
+
+hyperparameters["convmixer_tf"]["input_shape"] = (
+    hyperparameters["convmixer_tf"]["image_size"], hyperparameters["convmixer_tf"]["image_size"], 1)
 
 hyperparameters["vision_transformer"]["num_patches"] = (
     hyperparameters["vision_transformer"]["image_size"] // hyperparameters["vision_transformer"]["patch_size"]) ** 2

@@ -21,7 +21,7 @@
 git clone https://github.com/kuantuna/SPDPvCNN.git
 ```
 
-**_2. Run the `create_labels_images.py` to create images and labels for the specified range of dates.<br/>_**
+**_2. Run the `data_creation.py` to create images and labels for the specified range of dates.<br/>_**
 **_3. Later, in the `architectures/helpers/constants.py` choose the architecture (selected_model) you want to use (by commenting others) and run the `training.py` to train the model using the images created on the previous phase.<br/>_**
 **_4. Finally, run the `financial_evaluation.py` to evaluate our model on the test data financially.<br/>_**
 

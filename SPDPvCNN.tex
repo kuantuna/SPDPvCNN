@@ -8,13 +8,13 @@
 
 \title{\textbf{Stock Price and Direction Prediction via Deep Attention-Based Convolutional Neural Networks}}
 \author{Onur Alaçam, Tuğcan Hoşer, Uygar Kaya, Tuna Tuncer}
-\date{\textbf{2021 Fall}}
+\date{\textbf{2022 Spring}}
 
 \begin{document}
 
 \begin{figure}[h]
     \begin{center}
-        \includegraphics[]{Assets/OzU.png}
+        \includegraphics[]{assets/OzU.png}
     \end{center}
 \end{figure}
 
@@ -25,8 +25,8 @@
 \end{center}
 
 \begin{center}
-    \textbf{CS 401}\\* \vspace{0.2cm}
-    \textbf{2021 Fall}\\* \vspace{0.4cm}
+    \textbf{CS 402}\\* \vspace{0.2cm}
+    \textbf{2022 Spring}\\* \vspace{0.4cm}
     \textbf{SENIOR PROJECT REPORT}\\* \vspace{0.6cm}
     \textbf{Stock Price and Direction Prediction via Deep Attention-Based Convolutional Neural Networks}\\* \vspace{0.8cm}
     \textbf{By}\\*
@@ -38,7 +38,7 @@
 Hereby I confirm that all this work is original and my own. I have clearly referenced/listed all sources as appropriate and given the sources of all pictures, data etc. that are not my own. I have not made any use of the essay(s) or other work of any other student(s) either past or present, at this or any other educational institution. I also declare that this project has not previously been submitted for assessment in any other course, degree or qualification at this or any other educational institution.\vspace{0.2cm}\\*
 \textbf{Student Name and Surname:}\\* Onur Alaçam, Tuğcan Hoşer, Uygar Kaya, Tuna Tuncer \vspace{0.1cm}\\*
 \textbf{Signature:} \vspace{0.9cm}\\*
-\textbf{Place, Date:}\\* Istanbul, Turkey - 09.01.2022
+\textbf{Place, Date:}\\* Istanbul, Turkey - 27.05.2022
 
 \tableofcontents
 
@@ -76,7 +76,7 @@ We got the data of S\&P 500 from Yahoo Finance from 2001 to 2021. We have turned
 The Relative Strength Index (RSI) is an indicator that provides predictions about the direction of the short and medium-term trend calculated by comparing the closing values of the relevant period with the previous closing values of the period.
 \begin{figure}[H]
 \begin{center}
-   \includegraphics[scale=1]{Assets/rsi.png}
+   \includegraphics[width=55mm,scale=0.5]{assets/formulas/rsi.png}
    \caption{RSI Formula}
 \end{center}
 \end{figure}
@@ -85,7 +85,7 @@ The Relative Strength Index (RSI) is an indicator that provides predictions abou
 A Weighted Moving Average puts more weight on recent data and less on past data. This is done by multiplying each bar’s price by a weighting factor. Because of its unique calculation, WMA will follow prices more closely than a corresponding Simple Moving Average.
 \begin{figure}[H]
 \begin{center}
-   \includegraphics[scale=0.8]{Assets/wma.png}
+   \includegraphics[width=85mm,scale=0.8]{assets/formulas/wma.png}
    \caption{WSI Formula}
 \end{center}
 \end{figure}
@@ -94,7 +94,7 @@ A Weighted Moving Average puts more weight on recent data and less on past data.
 EMA, which stands for Exponential Moving Average, is used as an indicator of moving averages. Through the EMA, traders can watch exponential moving averages on the charts. By giving weight to last minute data such as EMA closing prices, the time that can progress with the weights assigned to the relevant data is based on the exponentially decreasing process.
 \begin{figure}[H]
 \begin{center}
-   \includegraphics[scale=0.8]{Assets/ema.png}
+   \includegraphics[width=95mm,scale=0.8]{assets/formulas/ema.png}
    \caption{EMA Formula}
 \end{center}
 \end{figure}
@@ -103,7 +103,7 @@ EMA, which stands for Exponential Moving Average, is used as an indicator of mov
 Simple Moving Average (SMA) is the simplest form of moving averages. It is obtained by dividing the total of data by the number of data.
 \begin{figure}[H]
 \begin{center}
-   \includegraphics[scale=0.8]{Assets/sma.png}
+   \includegraphics[width=55mm,scale=0.8]{assets/formulas/sma.png}
    \caption{SMA Formula}
 \end{center}
 \end{figure}
@@ -112,7 +112,7 @@ Simple Moving Average (SMA) is the simplest form of moving averages. It is obtai
 The Rate of Change Indicator (ROC) is a kind of momentum oscillator. Calculates the rate of price change between periods.
 \begin{figure}[H]
 \begin{center}
-   \includegraphics[scale=0.7]{Assets/roc.png}
+   \includegraphics[width=80mm,scale=0.8]{assets/formulas/roc.png}
    \caption{ROC Formula}
 \end{center}
 \end{figure}
@@ -121,18 +121,18 @@ The Rate of Change Indicator (ROC) is a kind of momentum oscillator. Calculates 
 The Chande Momentum Oscillator (CMO) is calculated by dividing the sum of the momentum on the up days and the sum of the momentum on the down days by dividing the sum of the momentum on the up days by the sum of the momentum on the down days and multiplying by 100 to make a percentage.
 \begin{figure}[H]
 \begin{center}
-   \includegraphics[scale=0.7]{Assets/cmo.png}
+   \includegraphics[width=45mm,scale=0.8]{assets/formulas/cmo.png}\\*
+   \textit{$S_U$: Total momentum of the up days for the analysis period}\vspace{0.1cm}\\*
+   \textit{$S_D$: Total momentum of the down days for the analysis period}\vspace{0.2cm}\\*
    \caption{CMO Formula}
 \end{center}
 \end{figure}
 \noindent
-\textit{$S_U$: Total momentum of the up days for the analysis period}\vspace{0.1cm}\\*
-\textit{$S_D$: Total momentum of the down days for the analysis period}\vspace{0.2cm}\\*
 \textbf{CCI: Commodity Channel Index} \\*
 Commodity Channel Index (CCI) is an indicator that compares current prices and the average price over a period of time.
 \begin{figure}[H]
 \begin{center}
-   \includegraphics[scale=0.7]{Assets/cci.png}
+   \includegraphics[width=80mm,scale=0.8]{assets/formulas/cci.png}
    \caption{CCI Formula}
 \end{center}
 \end{figure}
@@ -141,7 +141,7 @@ Commodity Channel Index (CCI) is an indicator that compares current prices and t
 The Percentage Price Oscillator (PPO) is a technical momentum indicator that displays the relationship between two moving averages in percentage terms. The moving averages are the 26-period and 12-period exponential moving average (EMA).
 \begin{figure}[H]
 \begin{center}
-   \includegraphics[scale=0.7]{Assets/ppo.png}
+   \includegraphics[width=80mm,scale=0.8]{assets/formulas/ppo.png}
    \caption{PPO Formula}
 \end{center}
 \end{figure}
@@ -150,7 +150,7 @@ The Percentage Price Oscillator (PPO) is a technical momentum indicator that dis
 Triple Exponential Moving Average (TEMA) is a type of EMA indicator that provides the reduction of minor price fluctuations and filters out volatility.
 \begin{figure}[H]
 \begin{center}
-   \includegraphics[scale=0.7]{Assets/tema.png}
+   \includegraphics[width=90mm,scale=0.8]{assets/formulas/tema.png}
    \caption{TEMA Formula}
 \end{center}
 \end{figure}
@@ -159,7 +159,7 @@ Triple Exponential Moving Average (TEMA) is a type of EMA indicator that provide
 Williams \%R, also known as the Williams Percent Range, is a type of momentum indicator that moves between 0 and -100 and measures overbought and oversold levels.
 \begin{figure}[H]
 \begin{center}
-    \includegraphics[scale=0.8]{Assets/willr.png}
+    \includegraphics[width=75mm,scale=0.8]{assets/formulas/willr.png}
     \caption{WILLR Formula}
 \end{center}
 \end{figure}
@@ -168,7 +168,7 @@ Williams \%R, also known as the Williams Percent Range, is a type of momentum in
 The Moving Average Convergence and Divergence (MACD) indicator is a technical indicator that displays how stock values are trending.
 \begin{figure}[H]
 \begin{center}
-    \includegraphics[scale=0.8]{Assets/macd.png}
+    \includegraphics[width=80mm,scale=0.8]{assets/formulas/macd.png}
     \caption{MACD Formula}
 \end{center}
 \end{figure}
@@ -212,7 +212,7 @@ Different hyperparameters are selected for each different architecture.\vspace{0
 In our proposed CNN analysis phase, as can be seen in Figure, nine layers are used. These are listed as follows: input layer (11x11), two convolutional layers (11x11x32, 11x11x64), a max pooling (5x5x64), two dropout (0.25, 0.50), fully connected layers (128), and an output layer (3).
 \begin{figure}[H]
 \begin{center}
-   \includegraphics[scale=0.24]{Assets/cnn_structure.png}
+   \includegraphics[scale=0.24]{assets/structures/cnn.png}
    \caption{Convolutional Neural Network Structure}
 \end{center}
 \end{figure}
@@ -222,7 +222,7 @@ We used PyTorch while implementing CNN. We selected the hyperparameters based on
 \textbf{\large ConvMixer}
 \begin{figure}[H]
 \begin{center}
-    \includegraphics[scale=0.7]{Assets/convmixer_structure.png}
+    \includegraphics[scale=0.7]{assets/structures/convmixer.png}
     \caption{ConvMixer Structure}
 \end{center}
 \end{figure}
@@ -234,7 +234,7 @@ We used tensorflow and keras while implementing ConvMixer. In order to select th
 \textbf{\large Vision Transformer} \\*
 \begin{figure}[H]
 \begin{center}
-    \includegraphics[scale=0.4]{Assets/vit_structure.png}
+    \includegraphics[scale=0.4]{assets/structures/visionTransformer.png}
     \caption{Vision Transformer Structure}
 \end{center}
 \end{figure}
@@ -320,13 +320,13 @@ In addition, as mentioned above, the size of the dataset we prepared was conside
 \textbf{\large Model Accuracy \& Loss Graph of ConvMixer}
 \begin{figure}[H]
     \begin{center}
-        \includegraphics[scale=0.6]{Assets/accuracy_convmixer.png}
+        \includegraphics[scale=0.6]{assets/graphs/accuracy_convmixer.png}
         \caption{Train - Test Accuracy Graph}
     \end{center}
 \end{figure}
 \begin{figure}[H]
     \begin{center}
-        \includegraphics[scale=0.6]{Assets/accuracy_convmixer.png}
+        \includegraphics[scale=0.6]{assets/graphs/loss_convmixer.png}
         \caption{Train - Test Loss Graph}
     \end{center}
 \end{figure}
@@ -334,13 +334,13 @@ In addition, as mentioned above, the size of the dataset we prepared was conside
 \textbf{\large Model Accuracy \& Loss Graph of Vision Transform}
 \begin{figure}[H]
     \begin{center}
-        \includegraphics[scale=0.6]{Assets/accuracy_vt.png}
+        \includegraphics[scale=0.6]{assets/graphs/accuracy_vt.png}
         \caption{Train - Test Accuracy Graph}
     \end{center}
 \end{figure}
 \begin{figure}[H]
     \begin{center}
-        \includegraphics[scale=0.6]{Assets/loss_vt.png}
+        \includegraphics[scale=0.6]{assets/graphs/loss_vt.png}
         \caption{Train - Test Loss Graph}
     \end{center}
 \end{figure}
@@ -390,28 +390,28 @@ For his support and advice throughout our senior project, we would like to expre
 \end{center}
 \begin{figure}[H]
 \begin{center}
-    \includegraphics[scale=0.18]{Assets/image_creation_alg.png}
+    \includegraphics[scale=0.18]{assets/appendix/image_creation_alg.png}
     \caption{Algorithm of Labeling}
 \end{center}
 \end{figure}
 \noindent
 \begin{figure}[H]
 \begin{center}
-    \includegraphics[scale=0.18]{Assets/cnn_implemantation.png}
+    \includegraphics[scale=0.18]{assets/appendix/cnn_implemantation.png}
     \caption{Algorithm of Convolutional Neural Network}
 \end{center}
 \end{figure}
 \noindent
 \begin{figure}[H]
 \begin{center}
-    \includegraphics[scale=0.18]{Assets/convmixer_implemantation.png}
+    \includegraphics[scale=0.18]{assets/appendix/convmixer_implemantation.png}
     \caption{Algorithm of ConvMixer}
 \end{center}
 \end{figure}
 \noindent
 \begin{figure}[H]
 \begin{center}
-    \includegraphics[scale=0.18]{Assets/vit_implemantation.png}
+    \includegraphics[scale=0.18]{assets/appendix/vit_implemantation.png}
     \caption{Algorithm of Vision Transformer}
 \end{center}
 \end{figure}

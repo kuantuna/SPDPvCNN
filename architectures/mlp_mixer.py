@@ -63,9 +63,7 @@ We implement a utility function to compile, train, and evaluate a given model.
 
 def compile_model(model):
     # Create Adam optimizer with weight decay.
-    optimizer = tfa.optimizers.AdamW(
-        learning_rate=hyperparameters["learning_rate"], weight_decay=hyperparameters["weight_decay"],
-    )
+    optimizer = keras.optimizers.Adadelta()
     # Compile the model.
     model.compile(
         optimizer=optimizer,

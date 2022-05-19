@@ -1,11 +1,12 @@
 from architectures.helpers.warmup_cosine import WarmUpCosine
 from architectures.helpers.one_cycle import OneCycleLRScheduler
 from tensorflow import keras
+import matplotlib.pyplot as plt
 
-# selected_model = "convmixer"
+selected_model = "convmixer"
 # selected_model = "convmixer_tf"
 # selected_model = "vision_transformer"
-selected_model = "mlp_mixer"
+# selected_model = "mlp_mixer"
 # selected_model = "cnn_ta"
 
 etf_list = ['XLF', 'XLU', 'QQQ', 'SPY', 'XLP', 'EWZ', 'EWH', 'XLY', 'XLE']
@@ -13,18 +14,18 @@ threshold = "01"
 
 hyperparameters = {
     "convmixer": {
-        "learning_rate_type": 0.01,  # "WarmUpCosine"
+        "learning_rate_type": "Not found",  # "WarmUpCosine"
         "weight_decay": 0.0001,
-        "batch_size": 128,
-        "num_epochs": 100,
+        "batch_size": 32,
+        "num_epochs": 200,
         "filters": 256,
         "depth": 8,
-        "kernel_size": 7,
-        "patch_size": 5,
+        "kernel_size": 9,
+        "patch_size": 3,
         "image_size": 67,
     },
     "convmixer_tf": {
-        "learning_rate_type": 0.01,  # "WarmUpCosine"
+        "learning_rate_type": 0.1,  # "WarmUpCosine"
         "weight_decay": 0.0001,
         "batch_size": 128,
         "num_epochs": 500,
@@ -35,12 +36,12 @@ hyperparameters = {
         "image_size": 67,
     },
     "vision_transformer": {
-        "learning_rate_type": 0.001,  # "WarmUpCosine"
+        "learning_rate_type": "Not found",  # 0.001
         "weight_decay": 0.0001,
         "batch_size": 128,
         "num_epochs": 150,
         "image_size": 67,  # We'll resize input images to this size
-        "patch_size": 7,  # Size of the patches to be extract from the input images
+        "patch_size": 5,  # Size of the patches to be extract from the input images
         "projection_dim": 64,  # 128
         "num_heads": 4,
         "transformer_layers": 8,  # 6, 8, 10
@@ -48,11 +49,11 @@ hyperparameters = {
         "num_classes": 3,
     },
     "mlp_mixer": {
-        "learning_rate_type": "WarmUpCosine",  # 0.005, ReduceLROnPlateau
+        "learning_rate_type": "Not found",  # "WarmUpCosine", ReduceLROnPlateau
         "weight_decay": 0.0001,
         "batch_size": 128,
         "num_epochs": 500,
-        "dropout_rate": 0.2,
+        "dropout_rate": 0.5,
         "image_size": 67,  # We'll resize input images to this size.
         "patch_size": 7,  # Size of the patches to be extract from the input images
         "embedding_dim": 256,  # Number of hidden units.
@@ -76,8 +77,8 @@ if hyperparameters[selected_model]["learning_rate_type"] == "WarmUpCosine":
     TOTAL_STEPS = int(
         (50000 / hyperparameters[selected_model]["batch_size"]) * hyperparameters[selected_model]["num_epochs"])
     WARMUP_STEPS = 10000
-    INIT_LR = 0.01
-    WAMRUP_LR = 0.002
+    INIT_LR = 0.001
+    WAMRUP_LR = 0.0001
 
     scheduled_lrs = WarmUpCosine(
         learning_rate_base=INIT_LR,
@@ -86,6 +87,12 @@ if hyperparameters[selected_model]["learning_rate_type"] == "WarmUpCosine":
         warmup_steps=WARMUP_STEPS,
     )
     hyperparameters[selected_model]["learning_rate"] = scheduled_lrs
+#     lrs = [scheduled_lrs(step) for step in range(TOTAL_STEPS)]
+#     plt.plot(lrs)
+#     plt.xlabel("Step", fontsize=14)
+#     plt.ylabel("LR", fontsize=14)
+#     plt.grid()
+#     plt.show()
 else:
     hyperparameters[selected_model]["learning_rate"] = hyperparameters[selected_model]["learning_rate_type"]
     # reduce_lr = keras.callbacks.ReduceLROnPlateau(
@@ -93,7 +100,7 @@ else:
     # )
     # hyperparameters[selected_model]["learning_rate_scheduler"] = reduce_lr
     # one_cycle_lr_scheduler = OneCycleLRScheduler(hyperparameters[selected_model]["num_epochs"], hyperparameters[selected_model]["learning_rate"],
-    #                                              hyperparameters[selected_model]["image_size"] / hyperparameters[selected_model]["batch_size"])
+    #                                              32465 / hyperparameters[selected_model]["batch_size"])
     # hyperparameters[selected_model]["learning_rate_scheduler"] = one_cycle_lr_scheduler
 
 

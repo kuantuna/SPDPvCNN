@@ -23,7 +23,7 @@ def get_ct_model():
     model.compile(loss="sparse_categorical_crossentropy",
                   optimizer=keras.optimizers.Adadelta(),
                   metrics=[
-                      keras.metrics.SparseCategoricalAccuracy(name="acc"),
+                      keras.metrics.SparseCategoricalAccuracy(name="accuracy"),
                       keras.metrics.SparseTopKCategoricalAccuracy(
                           5, name="top5-acc"),
                   ],

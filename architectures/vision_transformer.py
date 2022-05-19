@@ -138,14 +138,12 @@ def create_vit_classifier():
 
 
 def compile_model(model):
-    optimizer = tfa.optimizers.AdamW(
-        learning_rate=hyperparameters["learning_rate"], weight_decay=hyperparameters["weight_decay"]
-    )
+    optimizer = keras.optimizers.Adadelta()
 
     model.compile(
         optimizer=optimizer,
         loss=keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-        metrics=[keras.metrics.SparseCategoricalAccuracy(name="acc"),
+        metrics=[keras.metrics.SparseCategoricalAccuracy(name="accuracy"),
                  keras.metrics.SparseTopKCategoricalAccuracy(5, name="top5-acc"), ],
     )
     return model

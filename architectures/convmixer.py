@@ -22,7 +22,8 @@ def activation_block(x):
 
 def conv_stem(x, filters: int, patch_size: int):
     x = layers.Conv2D(filters, kernel_size=patch_size,
-                      strides=patch_size, kernel_regularizer=regularizers.l2(1e-2))(x)
+                      strides=patch_size)(x)
+    # , kernel_regularizer=regularizers.l2(1e-2)
     return activation_block(x)
 
 
@@ -33,8 +34,9 @@ def conv_mixer_block(x, filters: int, kernel_size: int):
     x = layers.Add()([activation_block(x), x0])  # Residual.
 
     # Pointwise convolution.
-    x = layers.Conv2D(filters, kernel_size=1,
-                      kernel_regularizer=regularizers.l2(1e-2))(x)
+    x = layers.Conv2D(filters, kernel_size=1)(x)
+    # ,
+    #                   kernel_regularizer=regularizers.l2(1e-2)
     x = activation_block(x)
 
     return x
@@ -68,9 +70,7 @@ def get_conv_mixer_model(
 
 
 def compile_model_optimizer(model):
-    optimizer = tfa.optimizers.AdamW(
-        learning_rate=hyperparameters["learning_rate"], weight_decay=hyperparameters["weight_decay"]
-    )
+    optimizer = keras.optimizers.Adadelta()
 
     model.compile(
         optimizer=optimizer,
@@ -83,7 +83,7 @@ def compile_model_optimizer(model):
 
 
 def load_saved_model(path):
-    return keras.models.load_model(path, custom_objects={'MyOptimizer': tfa.optimizers.AdamW})
+    return keras.models.load_model(path, custom_objects={'MyOptimizer': keras.optimizers.Adadelta})
 
 
 def get_cm_model():

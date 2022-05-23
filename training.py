@@ -14,6 +14,7 @@ from architectures.helpers.model_handler import get_model
 
 from sklearn.metrics import f1_score
 from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
 from tensorflow import keras
 from wandb.keras import WandbCallback
 
@@ -102,8 +103,9 @@ if __name__ == "__main__":
 
     predictions = trained_model.predict(test_dataset)
     classes = np.argmax(predictions, axis=1)
-
+    cf = confusion_matrix(y_test, classes)
+    print(f"\n{cf}")
     cr = classification_report(y_test, classes)
-    print(cr)
+    print(f"\n{cr}")
     f1 = f1_score(y_test, classes, average='micro')
-    print(f1)
+    print(f"\nF1 score: {f1}")

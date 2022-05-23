@@ -1,0 +1,353 @@
+PS C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN> C:/ProgramData/Anaconda3/envs/tf/python.exe c:/Users/Tuna/Desktop/2022-spring/CS402/SPDPvCNN/training.py
+wandb: Currently logged in as: kuantuna (spdpvcnn). Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.12.16
+wandb: Run data is saved locally in C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220523_222656-9bdh3pls
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run confused-pyramid-21
+wandb:  View project at https://wandb.ai/spdpvcnn/cnn_ta
+wandb:  View run at https://wandb.ai/spdpvcnn/cnn_ta/runs/9bdh3pls
+Training data samples: 32465
+Validation data samples: 3607
+Test data samples: 9018
+2022-05-23 22:27:02.387854: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX AVX2
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2022-05-23 22:27:02.798342: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 3495 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 3060 Laptop GPU, pci bus id: 0000:01:00.0, compute capability: 8.6
+2022-05-23 22:27:02.800340: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 1165883080 exceeds 10% of free system memory.
+2022-05-23 22:28:50.995321: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 1165883080 exceeds 10% of free system memory.
+Getting the CNN_TA model...
+wandb: WARNING The save_model argument by default saves the model in the HDF5 format that cannot save custom objects like subclassed models and custom layers. This behavior will be deprecated in a future release in favor of the SavedModel format. Meanwhile, the HDF5 model is saved as W&B files and the SavedModel as W&B Artifacts.
+2022-05-23 22:29:33.952856: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 1165883080 exceeds 10% of free system memory.
+2022-05-23 22:29:34.253473: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 1165883080 exceeds 10% of free system memory.
+Epoch 1/500
+2022-05-23 22:29:34.779620: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:185] None of the MLIR Optimization Passes are enabled (registered 2)
+2022-05-23 22:29:35.599978: I tensorflow/stream_executor/cuda/cuda_dnn.cc:369] Loaded cuDNN version 8201
+2022-05-23 22:29:38.184924: I tensorflow/stream_executor/cuda/cuda_blas.cc:1760] TensorFloat-32 will be used for the matrix multiplication. This will only be logged once.
+  5/254 [..............................] - ETA: 8s - loss: 1.0660 - accuracy: 0.4172 - top5-acc: 1.0000WARNING:tensorflow:Callback method `on_train_batch_end` is slow compared to the batch time (batch time: 0.0130s vs `on_train_batch_end` time: 0.0162s). Check your callbacks.
+254/254 [==============================] - 15s 35ms/step - loss: 0.9347 - accuracy: 0.6389 - top5-acc: 1.0000 - val_loss: 0.9201 - val_accuracy: 0.6274 - val_top5-acc: 1.0000
+[[   0 1797    0]
+ [   0 5625    0]
+ [   0 1596    0]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9241 - accuracy: 0.6238 - top5-acc: 1.0000
+
+
+
+2022-05-23 22:29:51.124093: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 1165883080 exceeds 10% of free system memory.
+Epoch 2/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8914 - accuracy: 0.6543 - top5-acc: 1.0000 - val_loss: 0.8878 - val_accuracy: 0.6288 - val_top5-acc: 1.0000
+[[   0 1791    6]
+ [   0 5622    3]
+ [   0 1592    4]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9069 - accuracy: 0.6239 - top5-acc: 1.0000
+
+
+
+Epoch 3/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8742 - accuracy: 0.6542 - top5-acc: 1.0000 - val_loss: 0.8685 - val_accuracy: 0.6393 - val_top5-acc: 1.0000
+[[   5 1737   55]
+ [   6 5595   24]
+ [   2 1545   49]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.8983 - accuracy: 0.6264 - top5-acc: 1.0000
+
+
+
+Epoch 4/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8662 - accuracy: 0.6559 - top5-acc: 1.0000 - val_loss: 0.8574 - val_accuracy: 0.6410 - val_top5-acc: 1.0000
+[[  23 1654  120]
+ [  23 5548   54]
+ [  16 1481   99]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.8968 - accuracy: 0.6287 - top5-acc: 1.0000
+
+
+
+Epoch 5/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8606 - accuracy: 0.6558 - top5-acc: 1.0000 - val_loss: 0.8498 - val_accuracy: 0.6451 - val_top5-acc: 1.0000
+[[  40 1621  136]
+ [  56 5496   73]
+ [  39 1443  114]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.8978 - accuracy: 0.6265 - top5-acc: 1.0000
+
+
+
+Epoch 6/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8553 - accuracy: 0.6567 - top5-acc: 1.0000 - val_loss: 0.8446 - val_accuracy: 0.6471 - val_top5-acc: 1.0000
+[[  58 1582  157]
+ [  62 5461  102]
+ [  42 1422  132]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9024 - accuracy: 0.6266 - top5-acc: 1.0000
+
+
+
+Epoch 7/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8533 - accuracy: 0.6578 - top5-acc: 1.0000 - val_loss: 0.8416 - val_accuracy: 0.6462 - val_top5-acc: 1.0000
+[[  59 1554  184]
+ [  63 5416  146]
+ [  48 1394  154]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9062 - accuracy: 0.6242 - top5-acc: 1.0000
+
+
+
+Epoch 8/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8468 - accuracy: 0.6578 - top5-acc: 1.0000 - val_loss: 0.8381 - val_accuracy: 0.6471 - val_top5-acc: 1.0000
+[[  66 1545  186]
+ [  73 5398  154]
+ [  51 1383  162]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9055 - accuracy: 0.6239 - top5-acc: 1.0000
+
+
+
+Epoch 9/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8436 - accuracy: 0.6593 - top5-acc: 1.0000 - val_loss: 0.8350 - val_accuracy: 0.6512 - val_top5-acc: 1.0000
+[[  61 1505  231]
+ [  71 5327  227]
+ [  51 1344  201]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9122 - accuracy: 0.6198 - top5-acc: 1.0000
+
+
+
+Epoch 10/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8421 - accuracy: 0.6566 - top5-acc: 1.0000 - val_loss: 0.8335 - val_accuracy: 0.6529 - val_top5-acc: 1.0000
+[[  72 1486  239]
+ [  74 5291  260]
+ [  53 1328  215]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9149 - accuracy: 0.6185 - top5-acc: 1.0000
+
+
+
+Epoch 11/500
+254/254 [==============================] - 8s 32ms/step - loss: 0.8421 - accuracy: 0.6560 - top5-acc: 1.0000 - val_loss: 0.8336 - val_accuracy: 0.6548 - val_top5-acc: 1.0000
+[[  93 1457  247]
+ [  96 5237  292]
+ [  61 1308  227]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9200 - accuracy: 0.6162 - top5-acc: 1.0000
+
+
+
+Epoch 12/500
+254/254 [==============================] - 8s 32ms/step - loss: 0.8393 - accuracy: 0.6578 - top5-acc: 1.0000 - val_loss: 0.8316 - val_accuracy: 0.6540 - val_top5-acc: 1.0000
+[[  96 1486  215]
+ [  97 5292  236]
+ [  63 1326  207]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9133 - accuracy: 0.6204 - top5-acc: 1.0000
+
+
+
+Epoch 13/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8384 - accuracy: 0.6574 - top5-acc: 1.0000 - val_loss: 0.8308 - val_accuracy: 0.6543 - val_top5-acc: 1.0000
+[[ 127 1461  209]
+ [ 119 5257  249]
+ [  86 1309  201]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9169 - accuracy: 0.6193 - top5-acc: 1.0000
+
+
+
+Epoch 14/500
+254/254 [==============================] - 8s 32ms/step - loss: 0.8364 - accuracy: 0.6570 - top5-acc: 1.0000 - val_loss: 0.8303 - val_accuracy: 0.6537 - val_top5-acc: 1.0000
+[[ 123 1438  236]
+ [ 119 5208  298]
+ [  85 1285  226]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9208 - accuracy: 0.6162 - top5-acc: 1.0000
+
+
+
+Epoch 15/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8359 - accuracy: 0.6581 - top5-acc: 1.0000 - val_loss: 0.8290 - val_accuracy: 0.6540 - val_top5-acc: 1.0000
+[[ 105 1442  250]
+ [ 100 5211  314]
+ [  69 1287  240]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9198 - accuracy: 0.6161 - top5-acc: 1.0000
+
+
+
+Epoch 16/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8337 - accuracy: 0.6574 - top5-acc: 1.0000 - val_loss: 0.8283 - val_accuracy: 0.6532 - val_top5-acc: 1.0000
+[[ 111 1436  250]
+ [ 114 5211  300]
+ [  74 1285  237]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9195 - accuracy: 0.6164 - top5-acc: 1.0000
+
+
+
+Epoch 17/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8328 - accuracy: 0.6586 - top5-acc: 1.0000 - val_loss: 0.8279 - val_accuracy: 0.6551 - val_top5-acc: 1.0000
+[[ 142 1431  224]
+ [ 132 5201  292]
+ [ 100 1277  219]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9203 - accuracy: 0.6168 - top5-acc: 1.0000
+
+
+
+Epoch 18/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8306 - accuracy: 0.6582 - top5-acc: 1.0000 - val_loss: 0.8269 - val_accuracy: 0.6551 - val_top5-acc: 1.0000
+[[ 127 1418  252]
+ [ 119 5172  334]
+ [  94 1265  237]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9214 - accuracy: 0.6139 - top5-acc: 1.0000
+
+
+
+Epoch 19/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8287 - accuracy: 0.6595 - top5-acc: 1.0000 - val_loss: 0.8266 - val_accuracy: 0.6546 - val_top5-acc: 1.0000
+[[ 150 1421  226]
+ [ 133 5180  312]
+ [ 107 1263  226]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9203 - accuracy: 0.6161 - top5-acc: 1.0000
+
+
+
+Epoch 20/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8294 - accuracy: 0.6586 - top5-acc: 1.0000 - val_loss: 0.8264 - val_accuracy: 0.6540 - val_top5-acc: 1.0000
+[[ 129 1420  248]
+ [ 118 5181  326]
+ [  93 1258  245]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9198 - accuracy: 0.6160 - top5-acc: 1.0000
+
+
+
+Epoch 21/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8283 - accuracy: 0.6595 - top5-acc: 1.0000 - val_loss: 0.8259 - val_accuracy: 0.6548 - val_top5-acc: 1.0000
+[[ 133 1377  287]
+ [ 115 5123  387]
+ [  91 1233  272]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9246 - accuracy: 0.6130 - top5-acc: 1.0000
+
+
+
+Epoch 22/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8276 - accuracy: 0.6586 - top5-acc: 1.0000 - val_loss: 0.8257 - val_accuracy: 0.6546 - val_top5-acc: 1.0000
+[[ 121 1401  275]
+ [ 115 5160  350]
+ [ 100 1242  254]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9213 - accuracy: 0.6138 - top5-acc: 1.0000
+
+
+
+Epoch 23/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8258 - accuracy: 0.6598 - top5-acc: 1.0000 - val_loss: 0.8249 - val_accuracy: 0.6548 - val_top5-acc: 1.0000
+[[ 108 1380  309]
+ [ 105 5134  386]
+ [  82 1234  280]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9226 - accuracy: 0.6123 - top5-acc: 1.0000
+
+
+
+Epoch 24/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8254 - accuracy: 0.6600 - top5-acc: 1.0000 - val_loss: 0.8246 - val_accuracy: 0.6546 - val_top5-acc: 1.0000
+[[ 115 1397  285]
+ [  99 5159  367]
+ [  97 1237  262]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9209 - accuracy: 0.6139 - top5-acc: 1.0000
+
+
+
+Epoch 25/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8246 - accuracy: 0.6600 - top5-acc: 1.0000 - val_loss: 0.8242 - val_accuracy: 0.6559 - val_top5-acc: 1.0000
+[[  95 1394  308]
+ [  94 5150  381]
+ [  77 1235  284]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9209 - accuracy: 0.6131 - top5-acc: 1.0000
+
+
+
+Epoch 26/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8247 - accuracy: 0.6600 - top5-acc: 1.0000 - val_loss: 0.8248 - val_accuracy: 0.6565 - val_top5-acc: 1.0000
+[[ 134 1375  288]
+ [ 135 5109  381]
+ [ 118 1222  256]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9246 - accuracy: 0.6098 - top5-acc: 1.0000
+
+
+
+Epoch 27/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8237 - accuracy: 0.6607 - top5-acc: 1.0000 - val_loss: 0.8244 - val_accuracy: 0.6546 - val_top5-acc: 1.0000
+[[ 142 1371  284]
+ [ 132 5100  393]
+ [ 120 1217  259]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9242 - accuracy: 0.6100 - top5-acc: 1.0000
+
+
+
+Epoch 28/500
+254/254 [==============================] - 8s 32ms/step - loss: 0.8215 - accuracy: 0.6605 - top5-acc: 1.0000 - val_loss: 0.8243 - val_accuracy: 0.6568 - val_top5-acc: 1.0000
+[[ 123 1377  297]
+ [ 117 5103  405]
+ [ 111 1219  266]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9245 - accuracy: 0.6090 - top5-acc: 1.0000
+
+
+
+Epoch 29/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8204 - accuracy: 0.6610 - top5-acc: 1.0000 - val_loss: 0.8237 - val_accuracy: 0.6526 - val_top5-acc: 1.0000
+[[ 131 1396  270]
+ [ 119 5161  345]
+ [ 109 1239  248]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9196 - accuracy: 0.6143 - top5-acc: 1.0000
+
+
+
+Epoch 30/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8202 - accuracy: 0.6606 - top5-acc: 1.0000 - val_loss: 0.8235 - val_accuracy: 0.6551 - val_top5-acc: 1.0000
+[[ 131 1389  277]
+ [ 131 5137  357]
+ [ 103 1233  260]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9207 - accuracy: 0.6130 - top5-acc: 1.0000
+
+
+
+Epoch 31/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8216 - accuracy: 0.6597 - top5-acc: 1.0000 - val_loss: 0.8235 - val_accuracy: 0.6540 - val_top5-acc: 1.0000
+[[ 143 1391  263]
+ [ 138 5155  332]
+ [ 116 1239  241]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9202 - accuracy: 0.6142 - top5-acc: 1.0000
+
+
+
+Epoch 32/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8182 - accuracy: 0.6616 - top5-acc: 1.0000 - val_loss: 0.8229 - val_accuracy: 0.6573 - val_top5-acc: 1.0000
+[[ 141 1381  275]
+ [ 126 5137  362]
+ [ 122 1227  247]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9204 - accuracy: 0.6127 - top5-acc: 1.0000
+
+
+
+Epoch 33/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8187 - accuracy: 0.6634 - top5-acc: 1.0000 - val_loss: 0.8227 - val_accuracy: 0.6579 - val_top5-acc: 1.0000
+[[ 128 1373  296]
+ [ 127 5114  384]
+ [ 101 1224  271]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9213 - accuracy: 0.6113 - top5-acc: 1.0000
+
+
+
+Epoch 34/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8187 - accuracy: 0.6602 - top5-acc: 1.0000 - val_loss: 0.8230 - val_accuracy: 0.6543 - val_top5-acc: 1.0000
+[[ 124 1379  294]
+ [ 127 5111  387]
+ [ 106 1220  270]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9221 - accuracy: 0.6104 - top5-acc: 1.0000
+
+
+
+Epoch 35/500
+254/254 [==============================] - 8s 31ms/step - loss: 0.8188 - accuracy: 0.6611 - top5-acc: 1.0000 - val_loss: 0.8230 - val_accuracy: 0.6579 - val_top5-acc: 1.0000
+[[ 133 1354  310]
+ [ 148 5057  420]
+ [ 114 1203  279]]
+71/71 [==============================] - 1s 10ms/step - loss: 0.9253 - accuracy: 0.6065 - top5-acc: 1.0000
+
+
+
+Epoch 36/500
+161/254 [==================>...........] - ETA: 2s - loss: 0.7856 - accuracy: 0.6821 - top5-acc: 1.0000forrtl: error (200): program aborting due to control-C event
+Image              PC                Routine            Line        Source
+libifcoremd.dll    00007FFA83763B58  Unknown               Unknown  Unknown
+KERNELBASE.dll     00007FFAD06CB943  Unknown               Unknown  Unknown
+KERNEL32.DLL       00007FFAD19C7034  Unknown               Unknown  Unknown
+ntdll.dll          00007FFAD2EE2651  Unknown               Unknown  Unknown
+165/254 [==================>...........] - ETA: 2s - loss: 0.7909 - accuracy: 0.6775 - top5-acc: 1.0000forrtl: error (200): program aborting due to control-C event
+Image              PC                Routine            Line        Source
+libifcoremd.dll    00007FFA83763B58  Unknown               Unknown  Unknown
+KERNELBASE.dll     00007FFAD06CB943  Unknown               Unknown  Unknown
+KERNEL32.DLL       00007FFAD19C7034  Unknown               Unknown  Unknown
+ntdll.dll          00007FFAD2EE2651  Unknown               Unknown  Unknown

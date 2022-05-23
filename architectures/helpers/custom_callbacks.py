@@ -22,10 +22,9 @@ class CustomCallback(tf.keras.callbacks.Callback):
     def on_epoch_end(self, epoch, logs=None):
         predictions = self.model.predict(self.test_dataset)
         classes = np.argmax(predictions, axis=1)
-        print(f"\n{confusion_matrix(self.y_test, classes)}\n")
-        loss, accuracy, *anything_else = self.model.evaluate(self.test_dataset)
-        print(
-            f"Test accuracy: {round(accuracy * 100, 2)}%, Test loss: {round(loss, 4)}")
+        print(f"{confusion_matrix(self.y_test, classes)}")
+        self.model.evaluate(self.test_dataset)
+        print(f"\n\n")
         export_path_keras = ""
         if selected_model == "convmixer":
             export_path_keras = f"saved_models/{selected_model}/{threshold}/{int(self.time)}-{hyperparameters['filters']}x{hyperparameters['depth']}-k{hyperparameters['kernel_size']}p{hyperparameters['patch_size']}-e{self.epoch_counter}.h5"

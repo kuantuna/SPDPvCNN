@@ -1,0 +1,313 @@
+PS C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN> C:/ProgramData/Anaconda3/envs/tf/python.exe c:/Users/Tuna/Desktop/2022-spring/CS402/SPDPvCNN/training.py
+wandb: Currently logged in as: kuantuna (spdpvcnn). Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.12.16
+wandb: Run data is saved locally in C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220523_223655-1gvsyq1g
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run divine-violet-113
+wandb:  View project at https://wandb.ai/spdpvcnn/convmixer
+wandb:  View run at https://wandb.ai/spdpvcnn/convmixer/runs/1gvsyq1g
+Training data samples: 32465
+Validation data samples: 3607
+Test data samples: 9018
+2022-05-23 22:37:02.935727: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX AVX2
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2022-05-23 22:37:03.303856: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 3495 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 3060 Laptop GPU, pci bus id: 0000:01:00.0, compute capability: 8.6
+2022-05-23 22:37:03.306584: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 1165883080 exceeds 10% of free system memory.
+2022-05-23 22:38:55.083494: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 1165883080 exceeds 10% of free system memory.
+Getting the ConvMixer model...
+wandb: WARNING The save_model argument by default saves the model in the HDF5 format that cannot save custom objects like subclassed models and custom layers. This behavior will be deprecated in a future release in favor of the SavedModel format. Meanwhile, the HDF5 model is saved as W&B files and the SavedModel as W&B Artifacts.
+2022-05-23 22:39:37.917565: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 1165883080 exceeds 10% of free system memory.
+2022-05-23 22:39:38.161083: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 1165883080 exceeds 10% of free system memory.
+Epoch 1/500
+2022-05-23 22:39:40.166809: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:185] None of the MLIR Optimization Passes are enabled (registered 2)
+2022-05-23 22:39:41.416479: I tensorflow/stream_executor/cuda/cuda_dnn.cc:369] Loaded cuDNN version 8201
+2022-05-23 22:39:43.981950: I tensorflow/stream_executor/cuda/cuda_blas.cc:1760] TensorFloat-32 will be used for the matrix multiplication. This will only be logged once.
+   6/1015 [..............................] - ETA: 1:54 - loss: 1.1106 - accuracy: 0.3177WARNING:tensorflow:Callback method `on_train_batch_end` is slow compared to the batch time (batch time: 0.0376s vs `on_train_batch_end` time: 0.0630s). Check your callbacks.
+1015/1015 [==============================] - 121s 113ms/step - loss: 1.0952 - accuracy: 0.3546 - val_loss: 1.0797 - val_accuracy: 0.3879
+[[ 749 1622 1093]
+ [ 363 1609  719]
+ [ 617 1387  859]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.2071 - accuracy: 0.3567
+
+
+
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+2022-05-23 22:41:55.799028: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 1165883080 exceeds 10% of free system memory.
+Epoch 2/500
+1015/1015 [==============================] - 115s 113ms/step - loss: 1.0884 - accuracy: 0.3707 - val_loss: 1.0701 - val_accuracy: 0.3951
+[[ 527 1362 1575]
+ [ 226 1419 1046]
+ [ 483 1155 1225]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.2958 - accuracy: 0.3516
+
+
+
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+Epoch 3/500
+1015/1015 [==============================] - 115s 114ms/step - loss: 1.0847 - accuracy: 0.3819 - val_loss: 1.0682 - val_accuracy: 0.4028
+[[ 594 1416 1454]
+ [ 305 1450  936]
+ [ 531 1196 1136]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.2761 - accuracy: 0.3526
+
+
+
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+Epoch 4/500
+1015/1015 [==============================] - 115s 114ms/step - loss: 1.0817 - accuracy: 0.3879 - val_loss: 1.0663 - val_accuracy: 0.4012
+[[ 661 1416 1387]
+ [ 339 1463  889]
+ [ 587 1186 1090]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.2597 - accuracy: 0.3564
+
+
+
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+Epoch 5/500
+1015/1015 [==============================] - 115s 113ms/step - loss: 1.0799 - accuracy: 0.3948 - val_loss: 1.0637 - val_accuracy: 0.4017
+[[ 795 1302 1367]
+ [ 462 1322  907]
+ [ 725 1093 1045]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.2372 - accuracy: 0.3506
+
+
+
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+Epoch 6/500
+1015/1015 [==============================] - 115s 114ms/step - loss: 1.0772 - accuracy: 0.4032 - val_loss: 1.0653 - val_accuracy: 0.3989
+[[ 846 1398 1220]
+ [ 479 1421  791]
+ [ 758 1175  930]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.1824 - accuracy: 0.3545
+
+
+
+Epoch 7/500
+1015/1015 [==============================] - 115s 114ms/step - loss: 1.0759 - accuracy: 0.4074 - val_loss: 1.0654 - val_accuracy: 0.3959
+[[ 907 1306 1251]
+ [ 552 1366  773]
+ [ 777 1121  965]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.2092 - accuracy: 0.3591
+
+
+
+Epoch 8/500
+1015/1015 [==============================] - 115s 113ms/step - loss: 1.0730 - accuracy: 0.4109 - val_loss: 1.0652 - val_accuracy: 0.3984
+[[ 853 1514 1097]
+ [ 445 1569  677]
+ [ 764 1290  809]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.1647 - accuracy: 0.3583
+
+
+
+Epoch 9/500
+1015/1015 [==============================] - 115s 113ms/step - loss: 1.0714 - accuracy: 0.4173 - val_loss: 1.0626 - val_accuracy: 0.4056
+[[ 748 1387 1329]
+ [ 409 1453  829]
+ [ 674 1176 1013]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.2482 - accuracy: 0.3564
+
+
+
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+Epoch 10/500
+1015/1015 [==============================] - 115s 114ms/step - loss: 1.0691 - accuracy: 0.4205 - val_loss: 1.0633 - val_accuracy: 0.4001
+[[ 688 1390 1386]
+ [ 326 1462  903]
+ [ 625 1183 1055]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.2334 - accuracy: 0.3554
+
+
+
+Epoch 11/500
+1015/1015 [==============================] - 115s 114ms/step - loss: 1.0680 - accuracy: 0.4237 - val_loss: 1.0624 - val_accuracy: 0.3967
+[[ 785 1265 1414]
+ [ 435 1360  896]
+ [ 703 1081 1079]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.2681 - accuracy: 0.3575
+
+
+
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+Epoch 12/500
+1015/1015 [==============================] - 115s 114ms/step - loss: 1.0654 - accuracy: 0.4276 - val_loss: 1.0617 - val_accuracy: 0.3965
+[[ 756 1268 1440]
+ [ 363 1370  958]
+ [ 686 1088 1089]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.2423 - accuracy: 0.3565
+
+
+
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+Epoch 13/500
+1015/1015 [==============================] - 115s 114ms/step - loss: 1.0638 - accuracy: 0.4323 - val_loss: 1.0608 - val_accuracy: 0.4034
+[[ 853 1232 1379]
+ [ 480 1321  890]
+ [ 766 1040 1057]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.2583 - accuracy: 0.3583
+
+
+
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+Epoch 14/500
+1015/1015 [==============================] - 115s 114ms/step - loss: 1.0613 - accuracy: 0.4371 - val_loss: 1.0649 - val_accuracy: 0.3992
+[[ 761 1251 1452]
+ [ 363 1373  955]
+ [ 687 1088 1088]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.2488 - accuracy: 0.3573
+
+
+
+Epoch 15/500
+1015/1015 [==============================] - 115s 113ms/step - loss: 1.0600 - accuracy: 0.4386 - val_loss: 1.0647 - val_accuracy: 0.4059
+[[ 834 1267 1363]
+ [ 407 1389  895]
+ [ 764 1093 1006]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.2262 - accuracy: 0.3581
+
+
+
+Epoch 16/500
+1015/1015 [==============================] - 115s 113ms/step - loss: 1.0583 - accuracy: 0.4425 - val_loss: 1.0653 - val_accuracy: 0.4031
+[[1063 1249 1152]
+ [ 606 1352  733]
+ [ 957 1067  839]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.2049 - accuracy: 0.3608
+
+
+
+Epoch 17/500
+1015/1015 [==============================] - 115s 113ms/step - loss: 1.0563 - accuracy: 0.4481 - val_loss: 1.0667 - val_accuracy: 0.4009
+[[ 929 1320 1215]
+ [ 447 1463  781]
+ [ 846 1113  904]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.2081 - accuracy: 0.3655
+
+
+
+Epoch 18/500
+1015/1015 [==============================] - 115s 113ms/step - loss: 1.0533 - accuracy: 0.4499 - val_loss: 1.0637 - val_accuracy: 0.4045
+[[1013 1116 1335]
+ [ 586 1258  847]
+ [ 905  984  974]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.2535 - accuracy: 0.3598
+
+
+
+Epoch 19/500
+1015/1015 [==============================] - 115s 113ms/step - loss: 1.0516 - accuracy: 0.4535 - val_loss: 1.0681 - val_accuracy: 0.4012
+[[ 988 1296 1180]
+ [ 522 1443  726]
+ [ 876 1090  897]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.2441 - accuracy: 0.3690
+
+
+
+Epoch 20/500
+1015/1015 [==============================] - 115s 113ms/step - loss: 1.0496 - accuracy: 0.4562 - val_loss: 1.0653 - val_accuracy: 0.4023
+[[ 896 1156 1412]
+ [ 458 1300  933]
+ [ 802  988 1073]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.2689 - accuracy: 0.3625
+
+
+
+Epoch 21/500
+1015/1015 [==============================] - 115s 113ms/step - loss: 1.0471 - accuracy: 0.4609 - val_loss: 1.0721 - val_accuracy: 0.4020
+[[1179 1045 1240]
+ [ 684 1162  845]
+ [1047  901  915]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.1938 - accuracy: 0.3611
+
+
+
+Epoch 22/500
+1015/1015 [==============================] - 115s 113ms/step - loss: 1.0450 - accuracy: 0.4616 - val_loss: 1.0692 - val_accuracy: 0.3987
+[[ 879 1289 1296]
+ [ 408 1451  832]
+ [ 792 1098  973]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.2413 - accuracy: 0.3663
+
+
+
+Epoch 23/500
+1015/1015 [==============================] - 115s 113ms/step - loss: 1.0421 - accuracy: 0.4644 - val_loss: 1.0724 - val_accuracy: 0.4012
+[[1151 1147 1166]
+ [ 656 1287  748]
+ [1000  981  882]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.1904 - accuracy: 0.3682
+
+
+
+Epoch 24/500
+1015/1015 [==============================] - 115s 114ms/step - loss: 1.0397 - accuracy: 0.4682 - val_loss: 1.0668 - val_accuracy: 0.4034
+[[1001 1008 1455]
+ [ 564 1149  978]
+ [ 894  883 1086]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.2540 - accuracy: 0.3588
+
+
+
+Epoch 25/500
+1015/1015 [==============================] - 115s 114ms/step - loss: 1.0387 - accuracy: 0.4684 - val_loss: 1.0726 - val_accuracy: 0.4075
+[[1044 1009 1411]
+ [ 617 1174  900]
+ [ 914  898 1051]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.2753 - accuracy: 0.3625
+
+
+
+Epoch 26/500
+1015/1015 [==============================] - 115s 114ms/step - loss: 1.0353 - accuracy: 0.4740 - val_loss: 1.0687 - val_accuracy: 0.4081
+[[1177  967 1320]
+ [ 717 1094  880]
+ [1025  852  986]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.2291 - accuracy: 0.3612
+
+
+
+Epoch 27/500
+1015/1015 [==============================] - 115s 114ms/step - loss: 1.0335 - accuracy: 0.4751 - val_loss: 1.0751 - val_accuracy: 0.4009
+[[1074 1378 1012]
+ [ 583 1503  605]
+ [ 927 1193  743]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.2459 - accuracy: 0.3682
+
+
+
+Epoch 28/500
+1015/1015 [==============================] - 115s 113ms/step - loss: 1.0299 - accuracy: 0.4817 - val_loss: 1.0779 - val_accuracy: 0.4037
+[[1267 1192 1005]
+ [ 745 1327  619]
+ [1094 1044  725]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.2123 - accuracy: 0.3680
+
+
+
+Epoch 29/500
+1015/1015 [==============================] - 115s 113ms/step - loss: 1.0276 - accuracy: 0.4809 - val_loss: 1.0712 - val_accuracy: 0.4045
+[[1059 1081 1324]
+ [ 635 1234  822]
+ [ 924  936 1003]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.2579 - accuracy: 0.3655
+
+
+
+Epoch 30/500
+1015/1015 [==============================] - 115s 113ms/step - loss: 1.0251 - accuracy: 0.4851 - val_loss: 1.0759 - val_accuracy: 0.4012
+[[ 954 1104 1406]
+ [ 547 1266  878]
+ [ 839  948 1076]]
+282/282 [==============================] - 8s 29ms/step - loss: 1.3014 - accuracy: 0.3655
+
+
+19 -> %36.90

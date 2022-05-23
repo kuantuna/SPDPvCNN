@@ -69,11 +69,11 @@ def get_finalized_datasets(new_x_train, new_y_train, x_val, y_val, x_test, y_tes
 
 
 def run_experiment(model, test_dataset):
-    early_stopping = tf.keras.callbacks.EarlyStopping(
-        monitor="val_loss", patience=10, restore_best_weights=True
-    )
+    # early_stopping = tf.keras.callbacks.EarlyStopping(
+    #     monitor="val_loss", patience=10, restore_best_weights=True
+    # )
     callback_list = [CustomCallback(
-        test_dataset, epoch_counter, t, y_test), WandbCallback(), early_stopping]
+        test_dataset, epoch_counter, t, y_test), WandbCallback()]
     # if hyperparameters["learning_rate_type"] != "WarmUpCosine" and hyperparameters["learning_rate_type"] != "Not found":
     #     callback_list.append(hyperparameters["learning_rate_scheduler"])
 

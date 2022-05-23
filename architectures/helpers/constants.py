@@ -10,18 +10,18 @@ selected_model = "convmixer"
 # selected_model = "cnn_ta"
 
 etf_list = ['XLF', 'XLU', 'QQQ', 'SPY', 'XLP', 'EWZ', 'EWH', 'XLY', 'XLE']
-threshold = "01"
+threshold = "0038"
 
 hyperparameters = {
     "convmixer": {
         "learning_rate_type": "Not found",  # "WarmUpCosine"
         "weight_decay": 0.0001,
-        "batch_size": 32,
+        "batch_size": 128,
         "num_epochs": 500,
         "filters": 256,
         "depth": 8,
-        "kernel_size": 9,
-        "patch_size": 3,
+        "kernel_size": 5,
+        "patch_size": 5,
         "image_size": 67,
     },
     "convmixer_tf": {
@@ -63,7 +63,7 @@ hyperparameters = {
     "cnn_ta": {
         "learning_rate_type": "Not found",
         "batch_size": 128,
-        "num_epochs": 3,
+        "num_epochs": 500,
         "first_dropout_rate": 0.25,
         "second_dropout_rate": 0.5,
         "kernel_size": 5,

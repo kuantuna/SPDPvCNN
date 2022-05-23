@@ -17,7 +17,7 @@ hyperparameters = {
         "learning_rate_type": "Not found",  # "WarmUpCosine"
         "weight_decay": 0.0001,
         "batch_size": 32,
-        "num_epochs": 200,
+        "num_epochs": 500,
         "filters": 256,
         "depth": 8,
         "kernel_size": 9,
@@ -25,26 +25,26 @@ hyperparameters = {
         "image_size": 67,
     },
     "convmixer_tf": {
-        "learning_rate_type": 0.1,  # "WarmUpCosine"
+        "learning_rate_type": "Not found",  # "WarmUpCosine"
         "weight_decay": 0.0001,
         "batch_size": 128,
         "num_epochs": 500,
         "filters": 256,
         "depth": 8,
-        "kernel_size": 7,
-        "patch_size": 7,
+        "kernel_size": 5,
+        "patch_size": 5,
         "image_size": 67,
     },
     "vision_transformer": {
         "learning_rate_type": "Not found",  # 0.001
         "weight_decay": 0.0001,
         "batch_size": 128,
-        "num_epochs": 150,
+        "num_epochs": 300,
         "image_size": 67,  # We'll resize input images to this size
-        "patch_size": 5,  # Size of the patches to be extract from the input images
-        "projection_dim": 64,  # 128
+        "patch_size": 7,  # Size of the patches to be extract from the input images
+        "projection_dim": 128,  # 128
         "num_heads": 4,
-        "transformer_layers": 8,  # 6, 8, 10
+        "transformer_layers": 6,  # 6, 8, 10
         "mlp_head_units": [2048, 1024],
         "num_classes": 3,
     },
@@ -63,7 +63,7 @@ hyperparameters = {
     "cnn_ta": {
         "learning_rate_type": "Not found",
         "batch_size": 128,
-        "num_epochs": 500,
+        "num_epochs": 3,
         "first_dropout_rate": 0.25,
         "second_dropout_rate": 0.5,
         "kernel_size": 5,

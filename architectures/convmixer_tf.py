@@ -65,9 +65,7 @@ def ConvMixer(dim, depth, kernel_size, patch_size, n_classes):
 
 
 def compile_model_optimizer(model):
-    optimizer = tfa.optimizers.AdamW(
-        learning_rate=hyperparameters["learning_rate"], weight_decay=hyperparameters["weight_decay"]
-    )
+    optimizer = keras.optimizers.Adadelta()
 
     model.compile(
         optimizer=optimizer,

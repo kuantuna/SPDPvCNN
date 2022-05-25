@@ -10,7 +10,7 @@ selected_model = "convmixer"
 # selected_model = "cnn_ta"
 
 etf_list = ['XLF', 'XLU', 'QQQ', 'SPY', 'XLP', 'EWZ', 'EWH', 'XLY', 'XLE']
-threshold = "0038"
+threshold = "01"
 
 hyperparameters = {
     "convmixer": {
@@ -20,8 +20,8 @@ hyperparameters = {
         "num_epochs": 500,
         "filters": 256,
         "depth": 8,
-        "kernel_size": 5,
-        "patch_size": 5,
+        "kernel_size": 9,
+        "patch_size": 3,
         "image_size": 67,
     },
     "convmixer_tf": {

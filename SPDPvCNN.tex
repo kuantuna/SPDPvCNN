@@ -61,18 +61,19 @@ The background will be covered in the second chapter, where we will discuss the 
 \begin{center}
     \item\section{Background}
 \end{center}
-In this project, many different techniques, methods, tools, data and indicators were used.\vspace{0.25cm} \\*
-\textbf{Nvidia CUDA:} Nvidia Cuda is a set of development tools that enable algorithms to run on the GPU. We used Nvidia Cuda with PyTorch to train the model faster.\vspace{0.1cm}\\*
-\textbf{S\&P:} The S\&P 500 includes major American companies. It covers about 75\% of the American stock market. We used data from the last 20 years of S\&P.\vspace{0.1cm}\\*
-\textbf{Yahoo Finance:} Yahoo Finance provides financial news, data and commentary including stock quotes, press releases, financial reports, and original content. We downloaded the S\&P 500 dataset from here. In addition, we will consider companies individually in the future and we plan to download their data from Yahoo Finance.\vspace{0.1cm}\\*
+The tools, technologies and various techniques used in our project are explained in detail below.\vspace{0.25cm}
+
+\subsection{Technologies}
+\textbf{Nvidia CUDA:} Nvidia Cuda is a set of development tools that enable algorithms to run on the GPU. We used Nvidia Cuda with Keras to train our models faster on GPU rather than CPU.\vspace{0.1cm}\\*
 \textbf{Pandas:} Pandas is a software library written in the Python programming language for data manipulation and analysis. We processed numerical data and tables with using this library.\vspace{0.1cm}\\*
 \textbf{Numpy:} NumPy is a library for the Python programming language that supports large, multidimensional arrays and matrices, adding high-level mathematical functions to operate on these arrays.\vspace{0.1cm}\\*
 \textbf{TA-Lib:} TA-Lib is a library that contains 150 different indicators, especially used for trading algorithms. We also used 11 different indicators thanks to this library.\vspace{0.1cm}\\*
 \textbf{TensorFlow:} TensorFlow is a free \& open source software library for machine learning. The architectures in the articles we compared used TensorFlow because they were implemented in TensorFlow.\vspace{0.1cm}\\*
 \textbf{Keras:} Keras is an open source neural network library written in Python. Our architectures are implemented using Keras.\vspace{0.1cm}\\*
 \textbf{Sklearn:} Scikit-learn is a free software machine learning library for the Python programming language. It is used to separate data, scale, and measure metrics as a result of the architecture.\vspace{0.1cm}\\*
-\textbf{Matplotlib:} Matplotlib is a plotting library for the Python programming language and numerical math extension NumPy. We used it to visualize the results from our data.\vspace{0.5cm}\\*
-\textbf{\large Indicators} \vspace{0.1cm}\\*
+\textbf{Matplotlib:} Matplotlib is a plotting library for the Python programming language and numerical math extension NumPy. We used it to visualize the results from our data.\vspace{0.5cm}
+
+\subsection{Indicators}
 We got the data of S\&P 500 from Yahoo Finance from 2001 to 2021. We have turned these data into pictures by adhering to 11 economic technical indicators. In this part, we will talk about the indicators we have used.\vspace{0.3cm}\\*
 \textbf{RSI: Relative Strength Index}\\*
 The Relative Strength Index (RSI) is an indicator that provides predictions about the direction of the short and medium-term trend calculated by comparing the closing values of the relevant period with the previous closing values of the period.
@@ -174,11 +175,33 @@ The Moving Average Convergence and Divergence (MACD) indicator is a technical in
     \caption{MACD Formula}
 \end{center}
 \end{figure}
+
+\subsection{ETFs}
+\textbf{Yahoo Finance:} Yahoo Finance provides financial news, data and commentary including stock quotes, press releases, financial reports, and original content. We downloaded the S\&P 500 dataset from here. In addition, we will consider companies individually in the future and we plan to download their data from Yahoo Finance.\vspace{0.1cm}\\*
+\textbf{S\&P:} The S\&P 500 includes major American companies. It covers about 75\% of the American stock market. We used data from the last 21 years of S\&P.\vspace{0.1cm}\\*
+\textbf{XLF:} \vspace{0.1cm}\\*
+\textbf{XLU:} \vspace{0.1cm}\\*
+\textbf{QQQ:} \vspace{0.1cm}\\*
+\textbf{XLP:} \vspace{0.1cm}\\*
+\textbf{EWZ:} \vspace{0.1cm}\\*
+\textbf{EWH:} \vspace{0.1cm}\\*
+\textbf{XLY:} \vspace{0.1cm}\\*
+\textbf{XLE:} \vspace{0.1cm}\\*
 \noindent
 
 \begin{center}
     \item\section{Problem Statement}
 \end{center}
+\subsection{Project Scope}
+Our problem was that today's machine learning models were inadequately effective in the area of finance since the majority of today's models struggled with time-series data because time introduces a new piece of information that must be monitored. In addition, many successful studies have been carried out in the world of deep learning in recent years, and these studies have led to successful results in the literature. Our goal was to see if advanced deep learning techniques like patch embedding and self-attention, which have just recently been introduced, can achieve the anticipated results when applied to finance.
+The majority of the strategies we employ in our project may be found in the article Algorithmic Financial Trading. In addition to this research, we included the following in our project: While the AFT paper produced findings using a single form of CNN, we acquired results with two additional freshly designed alternative architectures and compared them to the results in the article. Also, we explored how various topologies of these architectures would operate in our problem. Moreover, while the AFT article employed 15 technical indicators, we added 67 technical indications to increase the size of our picture.
+
+\subsection{Engineering Problem}
+Although finance problems often deal with time-series data, we have transformed our problem into an image classification problem rather than a time-series forecasting problem by turning time-series data into images. One of the issues we encountered was the proper evaluation of our models. Because our dataset was distributed in an imbalanced manner in one of the configurations we employed, we had to seek several metrics in order to appropriately evaluate the success of our model. Furthermore, when we couldn't obtain the results we wanted with 11x11 images, we decided to increase the number of technical indicators and make our images 67x67 because the attention mechanism used in the vision transformer worked on the logic of focusing on the key elements of the large image. As a result, we sought to make our image as large as possible.
+
+\subsection{Assumptions and Constraints}
+Since only technical indicators are used in the data creation process in this project, we assume that stock prices can only be modeled with technical indicators. However, as is well known, today's stock values are heavily influenced by a variety of events such as wars, legislation, and tweets. As a result, cryptocurrency volatility is substantially higher than stock market index volatility. This is why we decided to focus our analysis on stocks rather than cryptocurrency.
+
 It is quite common to convert the image into neural networks and make predictions from it. In our case, it is based on taking financial data and converting them into images with the help of indicators and making predictions on these images. This is a method that has been used before, but our mission here is to show that with whichever model we make these predictions, we will achieve a more successful result. \vspace{0.2cm}\\*
 We decided to implement this project with our supervisor Assistant Prof. Emre Sefer to solve this problem. Afterward, we thoroughly researched the issue and discussed the improvements we could make. \vspace{0.0005cm}\\*
 While creating the images, it is necessary to choose the technical indicators well and to create the image according to the connection of these indicators with each other. In addition, if the number of data we pull increases, the images will increase, and if we use CPU when we want to train them, it will take a lot of time at high epoch values, so we plan to use Nvidia CUDA.

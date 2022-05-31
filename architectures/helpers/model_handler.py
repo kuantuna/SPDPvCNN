@@ -4,6 +4,7 @@ from architectures.convmixer import get_cm_model
 from architectures.vision_transformer import get_vit_model
 from architectures.mlp_mixer import get_mm_model
 from architectures.cnn_ta import get_ct_model
+from architectures.vit import get_vit
 
 
 def get_model():
@@ -17,3 +18,5 @@ def get_model():
         return get_mm_model()
     elif selected_model == "cnn_ta":
         return get_ct_model()
+    elif selected_model == "vit":
+        return get_vit()

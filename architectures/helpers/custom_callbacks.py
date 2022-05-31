@@ -61,5 +61,8 @@ class CustomCallback(tf.keras.callbacks.Callback):
             export_path_keras = f"saved_models/{selected_model}/{threshold}/{int(self.time)}-ed{hyperparameters['embedding_dim']}-nb{hyperparameters['num_blocks']}-p{hyperparameters['patch_size']}-e{self.epoch_counter}.h5"
         elif selected_model == "cnn_ta":
             export_path_keras = f"saved_models/{selected_model}/{threshold}/{int(self.time)}-fdr{hyperparameters['first_dropout_rate']}-sdr{hyperparameters['second_dropout_rate']}-k{hyperparameters['kernel_size']}-e{self.epoch_counter}.h5"
+        elif selected_model == "vit":
+            export_path_keras = f"saved_models/{selected_model}/{threshold}/{int(self.time)}-tl{hyperparameters['transformer_layers']}-pd{hyperparameters['projection_dim']}-p{hyperparameters['patch_size']}-e{self.epoch_counter}.h5"
+
         self.model.save_weights(export_path_keras)
         self.epoch_counter += 1

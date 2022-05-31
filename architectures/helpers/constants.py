@@ -3,11 +3,12 @@ from architectures.helpers.one_cycle import OneCycleLRScheduler
 from tensorflow import keras
 import matplotlib.pyplot as plt
 
-selected_model = "convmixer"
+# selected_model = "convmixer"
 # selected_model = "convmixer_tf"
 # selected_model = "vision_transformer"
 # selected_model = "mlp_mixer"
-# selected_model = "cnn_ta"
+selected_model = "cnn_ta"
+# selected_model = "vit"
 
 etf_list = ['XLF', 'XLU', 'QQQ', 'SPY', 'XLP', 'EWZ', 'EWH', 'XLY', 'XLE']
 threshold = "01"
@@ -16,12 +17,12 @@ hyperparameters = {
     "convmixer": {
         "learning_rate_type": "Not found",  # "WarmUpCosine"
         "weight_decay": 0.0001,
-        "batch_size": 128,
+        "batch_size": 32,
         "num_epochs": 500,
-        "filters": 256,
+        "filters": 128,
         "depth": 8,
-        "kernel_size": 9,
-        "patch_size": 3,
+        "kernel_size": 7,
+        "patch_size": 2,
         "image_size": 67,
     },
     "convmixer_tf": {
@@ -36,15 +37,15 @@ hyperparameters = {
         "image_size": 67,
     },
     "vision_transformer": {
-        "learning_rate_type": "Not found",  # 0.001
+        "learning_rate_type": 0.001,  # 0.001
         "weight_decay": 0.0001,
         "batch_size": 128,
-        "num_epochs": 300,
+        "num_epochs": 100,
         "image_size": 67,  # We'll resize input images to this size
-        "patch_size": 7,  # Size of the patches to be extract from the input images
+        "patch_size": 11,  # Size of the patches to be extract from the input images
         "projection_dim": 128,  # 128
         "num_heads": 4,
-        "transformer_layers": 6,  # 6, 8, 10
+        "transformer_layers": 10,  # 6, 8, 10
         "mlp_head_units": [2048, 1024],
         "num_classes": 3,
     },
@@ -52,7 +53,7 @@ hyperparameters = {
         "learning_rate_type": "Not found",  # "WarmUpCosine", ReduceLROnPlateau
         "weight_decay": 0.0001,
         "batch_size": 128,
-        "num_epochs": 500,
+        "num_epochs": 100,
         "dropout_rate": 0.5,
         "image_size": 67,  # We'll resize input images to this size.
         "patch_size": 7,  # Size of the patches to be extract from the input images
@@ -69,21 +70,34 @@ hyperparameters = {
         "kernel_size": 5,
         "image_size": 67,  # We'll resize input images to this size.
         "num_classes": 3,
-    }
+    },
+    "vit": {
+        "learning_rate_type": "Not found",  # 0.001
+        "weight_decay": 0.0001,
+        "batch_size": 64,
+        "num_epochs": 500,
+        "image_size": 67,  # We'll resize input images to this size
+        "patch_size": 6,  # Size of the patches to be extract from the input images
+        "projection_dim": 64,  # 128
+        "num_heads": 4,
+        "transformer_layers": 8,  # 6, 8, 10
+        "mlp_head_units": [2048, 1024],
+        "num_classes": 3,
+        "layer_norm_eps": 1e-6
+    },
 }
 
 
 if hyperparameters[selected_model]["learning_rate_type"] == "WarmUpCosine":
+    LEARNING_RATE = 0.001
     TOTAL_STEPS = int(
-        (50000 / hyperparameters[selected_model]["batch_size"]) * hyperparameters[selected_model]["num_epochs"])
-    WARMUP_STEPS = 10000
-    INIT_LR = 0.001
-    WAMRUP_LR = 0.0001
-
+        (32465 / hyperparameters[selected_model]["batch_size"]) * hyperparameters[selected_model]["num_epochs"])
+    WARMUP_EPOCH_LR = 0.10
+    WARMUP_STEPS = int(TOTAL_STEPS * WARMUP_EPOCH_LR)
     scheduled_lrs = WarmUpCosine(
-        learning_rate_base=INIT_LR,
+        learning_rate_base=LEARNING_RATE,
         total_steps=TOTAL_STEPS,
-        warmup_learning_rate=WAMRUP_LR,
+        warmup_learning_rate=0.0,
         warmup_steps=WARMUP_STEPS,
     )
     hyperparameters[selected_model]["learning_rate"] = scheduled_lrs
@@ -96,7 +110,7 @@ if hyperparameters[selected_model]["learning_rate_type"] == "WarmUpCosine":
 else:
     hyperparameters[selected_model]["learning_rate"] = hyperparameters[selected_model]["learning_rate_type"]
     # reduce_lr = keras.callbacks.ReduceLROnPlateau(
-    #     monitor="val_loss", factor=0.6, patience=10, verbose=1
+    #     monitor="val_loss", factor=0.5, patience=10, verbose=1
     # )
     # hyperparameters[selected_model]["learning_rate_scheduler"] = reduce_lr
     # one_cycle_lr_scheduler = OneCycleLRScheduler(hyperparameters[selected_model]["num_epochs"], hyperparameters[selected_model]["learning_rate"],

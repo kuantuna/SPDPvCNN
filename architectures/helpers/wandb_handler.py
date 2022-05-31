@@ -79,3 +79,19 @@ def initialize_wandb():
                        "second_dropout_rate": hyperparameters["second_dropout_rate"],
                        "threshold": f"0.{threshold}",
                    })
+    elif selected_model == "vit":
+        wandb.init(project=f"{selected_model}", entity="spdpvcnn",
+                   config={
+                       "model": f"{selected_model}",
+                       "learning_rate": hyperparameters["learning_rate_type"],
+                       "epochs": hyperparameters["num_epochs"],
+                       "batch_size": hyperparameters["batch_size"],
+                       "weight_decay": hyperparameters["weight_decay"],
+                       "image_size": hyperparameters["image_size"],
+                       "projection_dim": hyperparameters["projection_dim"],
+                       "num_heads": hyperparameters["num_heads"],
+                       "patch_size": hyperparameters["patch_size"],
+                       "transformer_layers": hyperparameters["transformer_layers"],
+                       "layer_norm_eps": hyperparameters["layer_norm_eps"],
+                       "threshold": f"0.{threshold}",
+                   })

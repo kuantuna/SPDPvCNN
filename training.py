@@ -74,8 +74,8 @@ def run_experiment(model, test_dataset):
     # )
     callback_list = [CustomCallback(
         test_dataset, epoch_counter, t, y_test), WandbCallback()]
-    # if hyperparameters["learning_rate_type"] != "WarmUpCosine" and hyperparameters["learning_rate_type"] != "Not found":
-    #     callback_list.append(hyperparameters["learning_rate_scheduler"])
+    if hyperparameters["learning_rate_type"] != "WarmUpCosine" and hyperparameters["learning_rate_type"] != "Not found":
+        callback_list.append(hyperparameters["learning_rate_scheduler"])
 
     history = model.fit(
         train_dataset,

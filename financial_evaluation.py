@@ -9,7 +9,7 @@ import numpy as np
 import tensorflow as tf
 
 
-MODEL_PATH = "1650312655-256x8-k7p5e"
+MODEL_PATH = "1653498127-fdr0.25-sdr0.5-k5-e"
 THRESHOLD = threshold
 hyperparameters = hyperparameters[selected_model]
 
@@ -60,7 +60,7 @@ class Wallet:
     def print_values(self):
         # if(self.profit_percentage > 0):
         print(self.info)
-        print(f"Profit percentage: {self.profit_percentage}")
+        print(f"Profit percentage: {self.profit_percentage/4}")
 
     def update_values(self, stock_price: float):
         if self.info[self.stock_name] > 0:
@@ -111,10 +111,10 @@ datasets = make_dataset(x_test, y_test)
 
 profit_ranking = []
 
-for i in [178, 486, 16, 462, 368, 403, 325, 383, 394, 461, 389, 297]:
+for i in [7]:
     model = get_model()
     model.load_weights(
-        f"saved_models/{selected_model}/{THRESHOLD}/{MODEL_PATH}{i}.h5")
+        f"saved_models/{selected_model}/{THRESHOLD}/usual-dew-26/{MODEL_PATH}{i}.h5")
     listOfSignals = []
     for dataset in datasets:
         predictions = model.predict(dataset)
@@ -134,13 +134,30 @@ for i in [178, 486, 16, 462, 368, 403, 325, 383, 394, 461, 389, 297]:
                 wallet.sell(price, date)
         wallet.print_values()
         # print("\n")
-        profits.append(wallet.profit_percentage)
+        profits.append(wallet.profit_percentage/4)
     mpp = np.mean(profits)
-    print(f"Model profit percentage: {mpp}\n")
-    profit_ranking.append({"mpp": mpp, "model": i})
+    std_ = np.std(profits)
+    # calculate log return of the profits
+    log_returns = np.log(1 + np.array(profits))
+    # calculate the sharpe ratio
+    sharpe_ratio = np.mean(log_returns) / np.std(log_returns)
 
-sorted_pr = sorted(profit_ranking, key=lambda d: d['mpp'], reverse=True)
+    print(f"Model mean profit percentage: {mpp}")
+    print(f"Model sharpe ratio: {sharpe_ratio}\n")
+    print(f"std: {std_}")
+    profit_ranking.append(
+        {"mpp": mpp, "model": i, "sharpe_ratio": sharpe_ratio})
+
+sorted_pr = sorted(
+    profit_ranking, key=lambda d: d['sharpe_ratio'], reverse=True)
 print(sorted_pr)
 """create a list of model values from sorted_pr"""
 model_values = [d['model'] for d in sorted_pr]
 print(model_values)
+
+sorted_pr_ = sorted(
+    profit_ranking, key=lambda d: d['mpp'], reverse=True)
+print(sorted_pr_)
+"""create a list of model values from sorted_pr"""
+model_values_ = [d['model'] for d in sorted_pr_]
+print(model_values_)

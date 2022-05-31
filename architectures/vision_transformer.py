@@ -139,6 +139,9 @@ def create_vit_classifier():
 
 def compile_model(model):
     optimizer = keras.optimizers.Adadelta()
+    # optimizer = tfa.optimizers.AdamW(
+    #     learning_rate=hyperparameters["learning_rate"], weight_decay=hyperparameters["weight_decay"]
+    # )
 
     model.compile(
         optimizer=optimizer,

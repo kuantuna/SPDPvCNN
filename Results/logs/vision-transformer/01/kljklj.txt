@@ -1,0 +1,808 @@
+PS C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN> C:/ProgramData/Anaconda3/envs/tf/python.exe c:/Users/Tuna/Desktop/2022-spring/CS402/SPDPvCNN/training.py
+2022-05-30 01:47:27.365282: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX AVX2
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2022-05-30 01:47:27.750207: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 3495 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 3060 Laptop GPU, pci bus id: 0000:01:00.0, compute capability: 8.6
+wandb: Currently logged in as: kuantuna (spdpvcnn). Use `wandb login --relogin` to force relogin
+wandb: wandb version 0.12.17 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.12.16
+wandb: Run data is saved locally in C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_014729-2fcn2xin
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run crisp-plant-40
+wandb:  View project at https://wandb.ai/spdpvcnn/vision_transformer
+wandb:  View run at https://wandb.ai/spdpvcnn/vision_transformer/runs/2fcn2xin
+Training data samples: 32465
+Validation data samples: 3607
+Test data samples: 9018
+2022-05-30 01:47:35.395807: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 1165883080 exceeds 10% of free system memory.
+2022-05-30 01:49:18.607872: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 1165883080 exceeds 10% of free system memory.
+2022-05-30 01:49:30.469150: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 323854416 exceeds 10% of free system memory.
+2022-05-30 01:49:58.816562: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 323854416 exceeds 10% of free system memory.
+Getting the ViT model...
+wandb: WARNING The save_model argument by default saves the model in the HDF5 format that cannot save custom objects like subclassed models and custom layers. This behavior will be deprecated in a future release in favor of the SavedModel format. Meanwhile, the HDF5 model is saved as W&B files and the SavedModel as W&B Artifacts.
+2022-05-30 01:50:00.004640: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 1165883080 exceeds 10% of free system memory.
+Epoch 1/100
+2022-05-30 01:50:05.948396: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:185] None of the MLIR Optimization Passes are enabled (registered 2)
+2022-05-30 01:50:08.147209: I tensorflow/stream_executor/cuda/cuda_blas.cc:1760] TensorFloat-32 will be used for the matrix multiplication. This will only be logged once.
+254/254 [==============================] - 41s 129ms/step - loss: 1.9397 - accuracy: 0.4476 - top5-acc: 1.0000 - val_loss: 1.0306 - val_accuracy: 0.6243 - val_top5-acc: 1.0000
+[[  37 1760    0]
+ [ 131 5486    8]
+ [  44 1548    4]]
+f1 score: 0.4828588748785884
+71/71 [==============================] - 3s 42ms/step - loss: 1.0281 - accuracy: 0.6129 - top5-acc: 1.0000
+buy&sell test accuracy_t: 41 / 3393 = 0.0121
+buy&sell test accuracy_o: 41 / 224 = 0.183
+
+
+
+wandb: ERROR Can't save model in the h5py format. The model will be saved as W&B Artifacts in the SavedModel format.
+2022-05-30 01:50:51.954420: W tensorflow/python/util/util.cc:348] Sets are not currently considered sequences, but this may change in the future, so consider avoiding using them.
+WARNING:absl:Found untraced functions such as dense_layer_call_fn, dense_layer_call_and_return_conditional_losses, embedding_layer_call_fn, embedding_layer_call_and_return_conditional_losses, query_layer_call_fn while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_014729-2fcn2xin\files\model-best)... Done. 0.4s
+Epoch 2/100
+254/254 [==============================] - 32s 127ms/step - loss: 1.7488 - accuracy: 0.5122 - top5-acc: 1.0000 - val_loss: 0.9824 - val_accuracy: 0.6268 - val_top5-acc: 1.0000
+[[  30 1765    2]
+ [  82 5537    6]
+ [  40 1551    5]]
+f1 score: 0.48433311737492124
+71/71 [==============================] - 3s 43ms/step - loss: 1.0231 - accuracy: 0.6179 - top5-acc: 1.0000
+buy&sell test accuracy_t: 35 / 3393 = 0.0103
+buy&sell test accuracy_o: 35 / 165 = 0.2121
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_fn, dense_layer_call_and_return_conditional_losses, embedding_layer_call_fn, embedding_layer_call_and_return_conditional_losses, query_layer_call_fn while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_014729-2fcn2xin\files\model-best)... Done. 0.4s
+Epoch 3/100
+254/254 [==============================] - 33s 127ms/step - loss: 1.7090 - accuracy: 0.5207 - top5-acc: 1.0000 - val_loss: 0.9468 - val_accuracy: 0.6318 - val_top5-acc: 1.0000
+[[  53 1735    9]
+ [ 103 5509   13]
+ [  63 1525    8]]
+f1 score: 0.4896751173080323
+71/71 [==============================] - 3s 42ms/step - loss: 1.0145 - accuracy: 0.6177 - top5-acc: 1.0000
+buy&sell test accuracy_t: 61 / 3393 = 0.018
+buy&sell test accuracy_o: 61 / 249 = 0.245
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_fn, dense_layer_call_and_return_conditional_losses, embedding_layer_call_fn, embedding_layer_call_and_return_conditional_losses, query_layer_call_fn while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_014729-2fcn2xin\files\model-best)... Done. 0.4s
+Epoch 4/100
+254/254 [==============================] - 33s 127ms/step - loss: 1.6721 - accuracy: 0.5235 - top5-acc: 1.0000 - val_loss: 0.9281 - val_accuracy: 0.6382 - val_top5-acc: 1.0000
+[[  81 1698   18]
+ [ 149 5451   25]
+ [  83 1497   16]]
+f1 score: 0.4952224923527222
+71/71 [==============================] - 3s 43ms/step - loss: 1.0098 - accuracy: 0.6152 - top5-acc: 1.0000
+buy&sell test accuracy_t: 97 / 3393 = 0.0286
+buy&sell test accuracy_o: 97 / 372 = 0.2608
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_fn, dense_layer_call_and_return_conditional_losses, embedding_layer_call_fn, embedding_layer_call_and_return_conditional_losses, query_layer_call_fn while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_014729-2fcn2xin\files\model-best)... Done. 0.4s
+Epoch 5/100
+254/254 [==============================] - 33s 127ms/step - loss: 1.6086 - accuracy: 0.5320 - top5-acc: 1.0000 - val_loss: 0.9083 - val_accuracy: 0.6476 - val_top5-acc: 1.0000
+[[ 119 1651   27]
+ [ 204 5379   42]
+ [ 108 1462   26]]
+f1 score: 0.5020653526599519
+71/71 [==============================] - 3s 43ms/step - loss: 1.0006 - accuracy: 0.6126 - top5-acc: 1.0000
+buy&sell test accuracy_t: 145 / 3393 = 0.0427
+buy&sell test accuracy_o: 145 / 526 = 0.2757
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_fn, dense_layer_call_and_return_conditional_losses, embedding_layer_call_fn, embedding_layer_call_and_return_conditional_losses, query_layer_call_fn while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_014729-2fcn2xin\files\model-best)... Done. 0.4s
+Epoch 6/100
+254/254 [==============================] - 33s 127ms/step - loss: 1.5943 - accuracy: 0.5312 - top5-acc: 1.0000 - val_loss: 0.8944 - val_accuracy: 0.6485 - val_top5-acc: 1.0000
+[[ 152 1603   42]
+ [ 248 5308   69]
+ [ 131 1434   31]]
+f1 score: 0.5063330032091524
+71/71 [==============================] - 3s 43ms/step - loss: 0.9946 - accuracy: 0.6089 - top5-acc: 1.0000
+buy&sell test accuracy_t: 183 / 3393 = 0.0539
+buy&sell test accuracy_o: 183 / 673 = 0.2719
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_fn, dense_layer_call_and_return_conditional_losses, embedding_layer_call_fn, embedding_layer_call_and_return_conditional_losses, query_layer_call_fn while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_014729-2fcn2xin\files\model-best)... Done. 0.4s
+Epoch 7/100
+254/254 [==============================] - 32s 127ms/step - loss: 1.5511 - accuracy: 0.5337 - top5-acc: 1.0000 - val_loss: 0.8870 - val_accuracy: 0.6479 - val_top5-acc: 1.0000
+[[ 172 1581   44]
+ [ 276 5267   82]
+ [ 144 1415   37]]
+f1 score: 0.5092527964412853
+71/71 [==============================] - 3s 43ms/step - loss: 0.9934 - accuracy: 0.6072 - top5-acc: 1.0000
+buy&sell test accuracy_t: 209 / 3393 = 0.0616
+buy&sell test accuracy_o: 209 / 755 = 0.2768
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_fn, dense_layer_call_and_return_conditional_losses, embedding_layer_call_fn, embedding_layer_call_and_return_conditional_losses, query_layer_call_fn while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_014729-2fcn2xin\files\model-best)... Done. 0.4s
+Epoch 8/100
+254/254 [==============================] - 33s 127ms/step - loss: 1.5283 - accuracy: 0.5374 - top5-acc: 1.0000 - val_loss: 0.8780 - val_accuracy: 0.6487 - val_top5-acc: 1.0000
+[[ 230 1507   60]
+ [ 373 5145  107]
+ [ 190 1361   45]]
+f1 score: 0.5148282224360652
+71/71 [==============================] - 3s 42ms/step - loss: 0.9899 - accuracy: 0.6010 - top5-acc: 1.0000
+buy&sell test accuracy_t: 275 / 3393 = 0.081
+buy&sell test accuracy_o: 275 / 1005 = 0.2736
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_fn, dense_layer_call_and_return_conditional_losses, embedding_layer_call_fn, embedding_layer_call_and_return_conditional_losses, query_layer_call_fn while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_014729-2fcn2xin\files\model-best)... Done. 0.4s
+Epoch 9/100
+254/254 [==============================] - 33s 127ms/step - loss: 1.4754 - accuracy: 0.5413 - top5-acc: 1.0000 - val_loss: 0.8717 - val_accuracy: 0.6482 - val_top5-acc: 1.0000
+[[ 247 1490   60]
+ [ 398 5115  112]
+ [ 198 1349   49]]
+f1 score: 0.516748588208759
+71/71 [==============================] - 3s 43ms/step - loss: 0.9872 - accuracy: 0.6000 - top5-acc: 1.0000
+buy&sell test accuracy_t: 296 / 3393 = 0.0872
+buy&sell test accuracy_o: 296 / 1064 = 0.2782
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_fn, dense_layer_call_and_return_conditional_losses, embedding_layer_call_fn, embedding_layer_call_and_return_conditional_losses, query_layer_call_fn while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_014729-2fcn2xin\files\model-best)... Done. 0.4s
+Epoch 10/100
+254/254 [==============================] - 33s 127ms/step - loss: 1.4566 - accuracy: 0.5441 - top5-acc: 1.0000 - val_loss: 0.8654 - val_accuracy: 0.6462 - val_top5-acc: 1.0000
+[[ 267 1459   71]
+ [ 448 5034  143]
+ [ 233 1308   55]]
+f1 score: 0.5169478743976098
+71/71 [==============================] - 3s 43ms/step - loss: 0.9853 - accuracy: 0.5939 - top5-acc: 1.0000
+buy&sell test accuracy_t: 322 / 3393 = 0.0949
+buy&sell test accuracy_o: 322 / 1217 = 0.2646
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_fn, dense_layer_call_and_return_conditional_losses, embedding_layer_call_fn, embedding_layer_call_and_return_conditional_losses, query_layer_call_fn while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_014729-2fcn2xin\files\model-best)... Done. 0.4s
+Epoch 11/100
+254/254 [==============================] - 33s 127ms/step - loss: 1.4247 - accuracy: 0.5463 - top5-acc: 1.0000 - val_loss: 0.8624 - val_accuracy: 0.6457 - val_top5-acc: 1.0000
+[[ 301 1434   62]
+ [ 530 4961  134]
+ [ 253 1289   54]]
+f1 score: 0.5170063428998851
+71/71 [==============================] - 3s 42ms/step - loss: 0.9840 - accuracy: 0.5895 - top5-acc: 1.0000
+buy&sell test accuracy_t: 355 / 3393 = 0.1046
+buy&sell test accuracy_o: 355 / 1334 = 0.2661
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_fn, dense_layer_call_and_return_conditional_losses, embedding_layer_call_fn, embedding_layer_call_and_return_conditional_losses, query_layer_call_fn while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_014729-2fcn2xin\files\model-best)... Done. 0.4s
+Epoch 12/100
+254/254 [==============================] - 33s 127ms/step - loss: 1.3984 - accuracy: 0.5460 - top5-acc: 1.0000 - val_loss: 0.8567 - val_accuracy: 0.6471 - val_top5-acc: 1.0000
+[[ 297 1430   70]
+ [ 509 4974  142]
+ [ 252 1289   55]]
+f1 score: 0.5178261480650079
+71/71 [==============================] - 3s 42ms/step - loss: 0.9777 - accuracy: 0.5906 - top5-acc: 1.0000
+buy&sell test accuracy_t: 352 / 3393 = 0.1037
+buy&sell test accuracy_o: 352 / 1325 = 0.2657
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_fn, dense_layer_call_and_return_conditional_losses, embedding_layer_call_fn, embedding_layer_call_and_return_conditional_losses, query_layer_call_fn while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_014729-2fcn2xin\files\model-best)... Done. 0.4s
+Epoch 13/100
+254/254 [==============================] - 33s 127ms/step - loss: 1.3813 - accuracy: 0.5457 - top5-acc: 1.0000 - val_loss: 0.8535 - val_accuracy: 0.6462 - val_top5-acc: 1.0000
+[[ 306 1413   78]
+ [ 505 4957  163]
+ [ 257 1279   60]]
+f1 score: 0.5196257617193415
+71/71 [==============================] - 3s 42ms/step - loss: 0.9743 - accuracy: 0.5903 - top5-acc: 1.0000
+buy&sell test accuracy_t: 366 / 3393 = 0.1079
+buy&sell test accuracy_o: 366 / 1369 = 0.2673
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_fn, dense_layer_call_and_return_conditional_losses, embedding_layer_call_fn, embedding_layer_call_and_return_conditional_losses, query_layer_call_fn while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_014729-2fcn2xin\files\model-best)... Done. 0.4s
+Epoch 14/100
+254/254 [==============================] - 33s 127ms/step - loss: 1.3482 - accuracy: 0.5493 - top5-acc: 1.0000 - val_loss: 0.8514 - val_accuracy: 0.6479 - val_top5-acc: 1.0000
+[[ 296 1421   80]
+ [ 467 4994  164]
+ [ 242 1289   65]]
+f1 score: 0.5215831373220782
+71/71 [==============================] - 3s 43ms/step - loss: 0.9676 - accuracy: 0.5938 - top5-acc: 1.0000
+buy&sell test accuracy_t: 361 / 3393 = 0.1064
+buy&sell test accuracy_o: 361 / 1314 = 0.2747
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_fn, dense_layer_call_and_return_conditional_losses, embedding_layer_call_fn, embedding_layer_call_and_return_conditional_losses, query_layer_call_fn while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_014729-2fcn2xin\files\model-best)... Done. 0.4s
+Epoch 15/100
+254/254 [==============================] - 33s 127ms/step - loss: 1.3183 - accuracy: 0.5557 - top5-acc: 1.0000 - val_loss: 0.8511 - val_accuracy: 0.6465 - val_top5-acc: 1.0000
+[[ 305 1415   77]
+ [ 507 4956  162]
+ [ 254 1276   66]]
+f1 score: 0.5205861218616026
+71/71 [==============================] - 3s 43ms/step - loss: 0.9640 - accuracy: 0.5907 - top5-acc: 1.0000
+buy&sell test accuracy_t: 371 / 3393 = 0.1093
+buy&sell test accuracy_o: 371 / 1371 = 0.2706
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_fn, dense_layer_call_and_return_conditional_losses, embedding_layer_call_fn, embedding_layer_call_and_return_conditional_losses, query_layer_call_fn while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_014729-2fcn2xin\files\model-best)... Done. 0.4s
+Epoch 16/100
+254/254 [==============================] - 33s 127ms/step - loss: 1.3039 - accuracy: 0.5538 - top5-acc: 1.0000 - val_loss: 0.8512 - val_accuracy: 0.6449 - val_top5-acc: 1.0000
+[[ 322 1391   84]
+ [ 523 4925  177]
+ [ 257 1266   73]]
+f1 score: 0.5228595817481692
+71/71 [==============================] - 3s 43ms/step - loss: 0.9615 - accuracy: 0.5899 - top5-acc: 1.0000
+buy&sell test accuracy_t: 395 / 3393 = 0.1164
+buy&sell test accuracy_o: 395 / 1436 = 0.2751
+
+
+
+Epoch 17/100
+254/254 [==============================] - 32s 127ms/step - loss: 1.2637 - accuracy: 0.5556 - top5-acc: 1.0000 - val_loss: 0.8514 - val_accuracy: 0.6462 - val_top5-acc: 1.0000
+[[ 321 1396   80]
+ [ 529 4935  161]
+ [ 262 1269   65]]
+f1 score: 0.5215888364653625
+71/71 [==============================] - 3s 43ms/step - loss: 0.9564 - accuracy: 0.5900 - top5-acc: 1.0000
+buy&sell test accuracy_t: 386 / 3393 = 0.1138
+buy&sell test accuracy_o: 386 / 1418 = 0.2722
+
+
+
+Epoch 18/100
+254/254 [==============================] - 32s 127ms/step - loss: 1.2362 - accuracy: 0.5631 - top5-acc: 1.0000 - val_loss: 0.8538 - val_accuracy: 0.6457 - val_top5-acc: 1.0000
+[[ 322 1394   81]
+ [ 536 4916  173]
+ [ 264 1262   70]]
+f1 score: 0.5215746946623266
+71/71 [==============================] - 3s 43ms/step - loss: 0.9544 - accuracy: 0.5886 - top5-acc: 1.0000
+buy&sell test accuracy_t: 392 / 3393 = 0.1155
+buy&sell test accuracy_o: 392 / 1446 = 0.2711
+
+
+
+Epoch 19/100
+254/254 [==============================] - 32s 127ms/step - loss: 1.2109 - accuracy: 0.5643 - top5-acc: 1.0000 - val_loss: 0.8564 - val_accuracy: 0.6440 - val_top5-acc: 1.0000
+[[ 326 1393   78]
+ [ 537 4918  170]
+ [ 271 1256   69]]
+f1 score: 0.522166048241943
+71/71 [==============================] - 3s 43ms/step - loss: 0.9521 - accuracy: 0.5892 - top5-acc: 1.0000
+buy&sell test accuracy_t: 395 / 3393 = 0.1164
+buy&sell test accuracy_o: 395 / 1451 = 0.2722
+
+
+
+Epoch 20/100
+254/254 [==============================] - 32s 127ms/step - loss: 1.2068 - accuracy: 0.5615 - top5-acc: 1.0000 - val_loss: 0.8581 - val_accuracy: 0.6465 - val_top5-acc: 1.0000
+[[ 313 1402   82]
+ [ 516 4933  176]
+ [ 260 1267   69]]
+f1 score: 0.5211797179512153
+71/71 [==============================] - 3s 43ms/step - loss: 0.9487 - accuracy: 0.5894 - top5-acc: 1.0000
+buy&sell test accuracy_t: 382 / 3393 = 0.1126
+buy&sell test accuracy_o: 382 / 1416 = 0.2698
+
+
+
+Epoch 21/100
+254/254 [==============================] - 32s 127ms/step - loss: 1.1852 - accuracy: 0.5658 - top5-acc: 1.0000 - val_loss: 0.8589 - val_accuracy: 0.6479 - val_top5-acc: 1.0000
+[[ 313 1406   78]
+ [ 509 4958  158]
+ [ 256 1274   66]]
+f1 score: 0.5220415336188563
+71/71 [==============================] - 3s 43ms/step - loss: 0.9467 - accuracy: 0.5918 - top5-acc: 1.0000
+buy&sell test accuracy_t: 379 / 3393 = 0.1117
+buy&sell test accuracy_o: 379 / 1380 = 0.2746
+
+
+
+Epoch 22/100
+254/254 [==============================] - 32s 127ms/step - loss: 1.1591 - accuracy: 0.5682 - top5-acc: 1.0000 - val_loss: 0.8624 - val_accuracy: 0.6485 - val_top5-acc: 1.0000
+[[ 321 1405   71]
+ [ 531 4939  155]
+ [ 259 1273   64]]
+f1 score: 0.5212981101346023
+71/71 [==============================] - 3s 42ms/step - loss: 0.9473 - accuracy: 0.5904 - top5-acc: 1.0000
+buy&sell test accuracy_t: 385 / 3393 = 0.1135
+buy&sell test accuracy_o: 385 / 1401 = 0.2748
+
+
+
+Epoch 23/100
+254/254 [==============================] - 32s 127ms/step - loss: 1.1419 - accuracy: 0.5724 - top5-acc: 1.0000 - val_loss: 0.8651 - val_accuracy: 0.6490 - val_top5-acc: 1.0000
+[[ 313 1413   71]
+ [ 509 4964  152]
+ [ 254 1278   64]]
+f1 score: 0.521760488930337
+71/71 [==============================] - 3s 43ms/step - loss: 0.9461 - accuracy: 0.5923 - top5-acc: 1.0000
+buy&sell test accuracy_t: 377 / 3393 = 0.1111
+buy&sell test accuracy_o: 377 / 1363 = 0.2766
+
+
+
+Epoch 24/100
+254/254 [==============================] - 32s 127ms/step - loss: 1.1201 - accuracy: 0.5763 - top5-acc: 1.0000 - val_loss: 0.8668 - val_accuracy: 0.6490 - val_top5-acc: 1.0000
+[[ 313 1418   66]
+ [ 510 4977  138]
+ [ 250 1285   61]]
+f1 score: 0.5217202110322283
+71/71 [==============================] - 3s 43ms/step - loss: 0.9462 - accuracy: 0.5934 - top5-acc: 1.0000
+buy&sell test accuracy_t: 374 / 3393 = 0.1102
+buy&sell test accuracy_o: 374 / 1338 = 0.2795
+
+
+
+Epoch 25/100
+254/254 [==============================] - 32s 127ms/step - loss: 1.1105 - accuracy: 0.5791 - top5-acc: 1.0000 - val_loss: 0.8686 - val_accuracy: 0.6487 - val_top5-acc: 1.0000
+[[ 315 1419   63]
+ [ 505 4993  127]
+ [ 246 1290   60]]
+f1 score: 0.5227347882387389
+71/71 [==============================] - 3s 43ms/step - loss: 0.9461 - accuracy: 0.5953 - top5-acc: 1.0000
+buy&sell test accuracy_t: 375 / 3393 = 0.1105
+buy&sell test accuracy_o: 375 / 1316 = 0.285
+
+
+
+Epoch 26/100
+254/254 [==============================] - 32s 127ms/step - loss: 1.0903 - accuracy: 0.5806 - top5-acc: 1.0000 - val_loss: 0.8709 - val_accuracy: 0.6468 - val_top5-acc: 1.0000
+[[ 319 1418   60]
+ [ 508 5001  116]
+ [ 246 1294   56]]
+f1 score: 0.5228848348593202
+71/71 [==============================] - 3s 43ms/step - loss: 0.9463 - accuracy: 0.5961 - top5-acc: 1.0000
+buy&sell test accuracy_t: 375 / 3393 = 0.1105
+buy&sell test accuracy_o: 375 / 1305 = 0.2874
+
+
+
+Epoch 27/100
+254/254 [==============================] - 32s 127ms/step - loss: 1.0802 - accuracy: 0.5843 - top5-acc: 1.0000 - val_loss: 0.8707 - val_accuracy: 0.6460 - val_top5-acc: 1.0000
+[[ 308 1434   55]
+ [ 484 5031  110]
+ [ 239 1302   55]]
+f1 score: 0.5227778038651361
+71/71 [==============================] - 3s 43ms/step - loss: 0.9449 - accuracy: 0.5981 - top5-acc: 1.0000
+buy&sell test accuracy_t: 363 / 3393 = 0.107
+buy&sell test accuracy_o: 363 / 1251 = 0.2902
+
+
+
+Epoch 28/100
+254/254 [==============================] - 32s 128ms/step - loss: 1.0709 - accuracy: 0.5844 - top5-acc: 1.0000 - val_loss: 0.8716 - val_accuracy: 0.6462 - val_top5-acc: 1.0000
+[[ 296 1448   53]
+ [ 457 5068  100]
+ [ 233 1313   50]]
+f1 score: 0.5221498227148492
+71/71 [==============================] - 3s 43ms/step - loss: 0.9432 - accuracy: 0.6004 - top5-acc: 1.0000
+buy&sell test accuracy_t: 346 / 3393 = 0.102
+buy&sell test accuracy_o: 346 / 1189 = 0.291
+
+
+
+Epoch 29/100
+254/254 [==============================] - 32s 127ms/step - loss: 1.0610 - accuracy: 0.5860 - top5-acc: 1.0000 - val_loss: 0.8729 - val_accuracy: 0.6462 - val_top5-acc: 1.0000
+[[ 290 1450   57]
+ [ 439 5081  105]
+ [ 229 1314   53]]
+f1 score: 0.5228796256169324
+71/71 [==============================] - 3s 43ms/step - loss: 0.9436 - accuracy: 0.6015 - top5-acc: 1.0000
+buy&sell test accuracy_t: 343 / 3393 = 0.1011
+buy&sell test accuracy_o: 343 / 1173 = 0.2924
+
+
+
+Epoch 30/100
+254/254 [==============================] - 32s 128ms/step - loss: 1.0490 - accuracy: 0.5915 - top5-acc: 1.0000 - val_loss: 0.8727 - val_accuracy: 0.6465 - val_top5-acc: 1.0000
+[[ 285 1456   56]
+ [ 428 5099   98]
+ [ 231 1317   48]]
+f1 score: 0.5221798516267874
+71/71 [==============================] - 3s 43ms/step - loss: 0.9430 - accuracy: 0.6024 - top5-acc: 1.0000
+buy&sell test accuracy_t: 333 / 3393 = 0.0981
+buy&sell test accuracy_o: 333 / 1146 = 0.2906
+
+
+
+Epoch 31/100
+254/254 [==============================] - 32s 128ms/step - loss: 1.0456 - accuracy: 0.5934 - top5-acc: 1.0000 - val_loss: 0.8723 - val_accuracy: 0.6474 - val_top5-acc: 1.0000
+[[ 278 1467   52]
+ [ 414 5127   84]
+ [ 219 1333   44]]
+f1 score: 0.5216392634435728
+71/71 [==============================] - 3s 42ms/step - loss: 0.9412 - accuracy: 0.6042 - top5-acc: 1.0000
+buy&sell test accuracy_t: 322 / 3393 = 0.0949
+buy&sell test accuracy_o: 322 / 1091 = 0.2951
+
+
+
+Epoch 32/100
+254/254 [==============================] - 32s 127ms/step - loss: 1.0310 - accuracy: 0.5941 - top5-acc: 1.0000 - val_loss: 0.8717 - val_accuracy: 0.6468 - val_top5-acc: 1.0000
+[[ 269 1484   44]
+ [ 380 5167   78]
+ [ 211 1341   44]]
+f1 score: 0.5225559908417289
+71/71 [==============================] - 3s 43ms/step - loss: 0.9389 - accuracy: 0.6077 - top5-acc: 1.0000
+buy&sell test accuracy_t: 313 / 3393 = 0.0922
+buy&sell test accuracy_o: 313 / 1026 = 0.3051
+
+
+
+Epoch 33/100
+254/254 [==============================] - 32s 127ms/step - loss: 1.0231 - accuracy: 0.5995 - top5-acc: 1.0000 - val_loss: 0.8727 - val_accuracy: 0.6471 - val_top5-acc: 1.0000
+[[ 268 1484   45]
+ [ 381 5172   72]
+ [ 213 1346   37]]
+f1 score: 0.5211308923015388
+71/71 [==============================] - 3s 42ms/step - loss: 0.9399 - accuracy: 0.6073 - top5-acc: 1.0000
+buy&sell test accuracy_t: 305 / 3393 = 0.0899
+buy&sell test accuracy_o: 305 / 1016 = 0.3002
+
+
+
+Epoch 34/100
+254/254 [==============================] - 32s 127ms/step - loss: 1.0176 - accuracy: 0.5994 - top5-acc: 1.0000 - val_loss: 0.8729 - val_accuracy: 0.6468 - val_top5-acc: 1.0000
+[[ 264 1492   41]
+ [ 369 5189   67]
+ [ 205 1355   36]]
+f1 score: 0.5211053555306147
+71/71 [==============================] - 3s 42ms/step - loss: 0.9392 - accuracy: 0.6087 - top5-acc: 1.0000
+buy&sell test accuracy_t: 300 / 3393 = 0.0884
+buy&sell test accuracy_o: 300 / 982 = 0.3055
+
+
+
+Epoch 35/100
+254/254 [==============================] - 32s 128ms/step - loss: 0.9997 - accuracy: 0.6050 - top5-acc: 1.0000 - val_loss: 0.8731 - val_accuracy: 0.6471 - val_top5-acc: 1.0000
+[[ 260 1497   40]
+ [ 364 5191   70]
+ [ 204 1356   36]]
+f1 score: 0.5205469663337938
+71/71 [==============================] - 3s 43ms/step - loss: 0.9390 - accuracy: 0.6084 - top5-acc: 1.0000
+buy&sell test accuracy_t: 296 / 3393 = 0.0872
+buy&sell test accuracy_o: 296 / 974 = 0.3039
+
+
+
+Epoch 36/100
+254/254 [==============================] - 32s 127ms/step - loss: 0.9993 - accuracy: 0.6031 - top5-acc: 1.0000 - val_loss: 0.8735 - val_accuracy: 0.6482 - val_top5-acc: 1.0000
+[[ 256 1500   41]
+ [ 360 5196   69]
+ [ 201 1359   36]]
+f1 score: 0.5201782423010188
+71/71 [==============================] - 3s 43ms/step - loss: 0.9393 - accuracy: 0.6086 - top5-acc: 1.0000
+buy&sell test accuracy_t: 292 / 3393 = 0.0861
+buy&sell test accuracy_o: 292 / 963 = 0.3032
+
+
+
+Epoch 37/100
+254/254 [==============================] - 32s 128ms/step - loss: 0.9914 - accuracy: 0.6061 - top5-acc: 1.0000 - val_loss: 0.8744 - val_accuracy: 0.6460 - val_top5-acc: 1.0000
+[[ 243 1511   43]
+ [ 339 5219   67]
+ [ 196 1364   36]]
+f1 score: 0.5195018047827095
+71/71 [==============================] - 3s 43ms/step - loss: 0.9384 - accuracy: 0.6097 - top5-acc: 1.0000
+buy&sell test accuracy_t: 279 / 3393 = 0.0822
+buy&sell test accuracy_o: 279 / 924 = 0.3019
+
+
+
+Epoch 38/100
+254/254 [==============================] - 32s 128ms/step - loss: 0.9882 - accuracy: 0.6060 - top5-acc: 1.0000 - val_loss: 0.8748 - val_accuracy: 0.6468 - val_top5-acc: 1.0000
+[[ 245 1510   42]
+ [ 344 5217   64]
+ [ 197 1364   35]]
+f1 score: 0.5194330817593522
+71/71 [==============================] - 3s 43ms/step - loss: 0.9386 - accuracy: 0.6096 - top5-acc: 1.0000
+buy&sell test accuracy_t: 280 / 3393 = 0.0825
+buy&sell test accuracy_o: 280 / 927 = 0.302
+
+
+
+Epoch 39/100
+254/254 [==============================] - 32s 128ms/step - loss: 0.9848 - accuracy: 0.6086 - top5-acc: 1.0000 - val_loss: 0.8757 - val_accuracy: 0.6462 - val_top5-acc: 1.0000
+[[ 246 1511   40]
+ [ 348 5219   58]
+ [ 199 1364   33]]
+f1 score: 0.5191942809143423
+71/71 [==============================] - 3s 43ms/step - loss: 0.9393 - accuracy: 0.6097 - top5-acc: 1.0000
+buy&sell test accuracy_t: 279 / 3393 = 0.0822
+buy&sell test accuracy_o: 279 / 924 = 0.3019
+
+
+
+Epoch 40/100
+254/254 [==============================] - 32s 127ms/step - loss: 0.9829 - accuracy: 0.6114 - top5-acc: 1.0000 - val_loss: 0.8768 - val_accuracy: 0.6460 - val_top5-acc: 1.0000
+[[ 240 1514   43]
+ [ 345 5219   61]
+ [ 192 1368   36]]
+f1 score: 0.5188351778914291
+71/71 [==============================] - 3s 43ms/step - loss: 0.9395 - accuracy: 0.6093 - top5-acc: 1.0000
+buy&sell test accuracy_t: 276 / 3393 = 0.0813
+buy&sell test accuracy_o: 276 / 917 = 0.301
+
+
+
+Epoch 41/100
+254/254 [==============================] - 32s 128ms/step - loss: 0.9771 - accuracy: 0.6111 - top5-acc: 1.0000 - val_loss: 0.8776 - val_accuracy: 0.6454 - val_top5-acc: 1.0000
+[[ 232 1520   45]
+ [ 330 5232   63]
+ [ 184 1373   39]]
+f1 score: 0.5189656865734187
+71/71 [==============================] - 3s 43ms/step - loss: 0.9391 - accuracy: 0.6102 - top5-acc: 1.0000
+buy&sell test accuracy_t: 271 / 3393 = 0.0799
+buy&sell test accuracy_o: 271 / 893 = 0.3035
+
+
+
+Epoch 42/100
+254/254 [==============================] - 32s 127ms/step - loss: 0.9702 - accuracy: 0.6154 - top5-acc: 1.0000 - val_loss: 0.8801 - val_accuracy: 0.6454 - val_top5-acc: 1.0000
+[[ 232 1520   45]
+ [ 327 5233   65]
+ [ 185 1373   38]]
+f1 score: 0.5188430059089533
+71/71 [==============================] - 3s 43ms/step - loss: 0.9402 - accuracy: 0.6102 - top5-acc: 1.0000
+buy&sell test accuracy_t: 270 / 3393 = 0.0796
+buy&sell test accuracy_o: 270 / 892 = 0.3027
+
+
+
+Epoch 43/100
+254/254 [==============================] - 32s 128ms/step - loss: 0.9698 - accuracy: 0.6133 - top5-acc: 1.0000 - val_loss: 0.8797 - val_accuracy: 0.6457 - val_top5-acc: 1.0000
+[[ 224 1530   43]
+ [ 312 5248   65]
+ [ 179 1380   37]]
+f1 score: 0.5180592862221148
+71/71 [==============================] - 3s 43ms/step - loss: 0.9392 - accuracy: 0.6109 - top5-acc: 1.0000
+buy&sell test accuracy_t: 261 / 3393 = 0.0769
+buy&sell test accuracy_o: 261 / 860 = 0.3035
+
+
+
+Epoch 44/100
+254/254 [==============================] - 32s 128ms/step - loss: 0.9630 - accuracy: 0.6165 - top5-acc: 1.0000 - val_loss: 0.8817 - val_accuracy: 0.6468 - val_top5-acc: 1.0000
+[[ 227 1526   44]
+ [ 322 5238   65]
+ [ 185 1376   35]]
+f1 score: 0.5175772146224059
+71/71 [==============================] - 3s 43ms/step - loss: 0.9409 - accuracy: 0.6099 - top5-acc: 1.0000
+buy&sell test accuracy_t: 262 / 3393 = 0.0772
+buy&sell test accuracy_o: 262 / 878 = 0.2984
+
+
+
+Epoch 45/100
+254/254 [==============================] - 32s 128ms/step - loss: 0.9579 - accuracy: 0.6195 - top5-acc: 1.0000 - val_loss: 0.8814 - val_accuracy: 0.6460 - val_top5-acc: 1.0000
+[[ 226 1525   46]
+ [ 325 5237   63]
+ [ 185 1376   35]]
+f1 score: 0.5173699964932739
+71/71 [==============================] - 3s 43ms/step - loss: 0.9407 - accuracy: 0.6097 - top5-acc: 1.0000
+buy&sell test accuracy_t: 261 / 3393 = 0.0769
+buy&sell test accuracy_o: 261 / 880 = 0.2966
+
+
+
+Epoch 46/100
+254/254 [==============================] - 32s 128ms/step - loss: 0.9530 - accuracy: 0.6232 - top5-acc: 1.0000 - val_loss: 0.8816 - val_accuracy: 0.6465 - val_top5-acc: 1.0000
+[[ 231 1518   48]
+ [ 333 5226   66]
+ [ 187 1373   36]]
+f1 score: 0.5178478024127253
+71/71 [==============================] - 3s 43ms/step - loss: 0.9410 - accuracy: 0.6091 - top5-acc: 1.0000
+buy&sell test accuracy_t: 267 / 3393 = 0.0787
+buy&sell test accuracy_o: 267 / 901 = 0.2963
+
+
+
+Epoch 47/100
+254/254 [==============================] - 32s 127ms/step - loss: 0.9530 - accuracy: 0.6210 - top5-acc: 1.0000 - val_loss: 0.8840 - val_accuracy: 0.6474 - val_top5-acc: 1.0000
+[[ 228 1518   51]
+ [ 320 5231   74]
+ [ 181 1374   41]]
+f1 score: 0.5188739688888621
+71/71 [==============================] - 3s 42ms/step - loss: 0.9414 - accuracy: 0.6099 - top5-acc: 1.0000
+buy&sell test accuracy_t: 269 / 3393 = 0.0793
+buy&sell test accuracy_o: 269 / 895 = 0.3006
+
+
+
+Epoch 48/100
+254/254 [==============================] - 32s 127ms/step - loss: 0.9563 - accuracy: 0.6202 - top5-acc: 1.0000 - val_loss: 0.8866 - val_accuracy: 0.6487 - val_top5-acc: 1.0000
+[[ 229 1511   57]
+ [ 324 5221   80]
+ [ 182 1370   44]]
+f1 score: 0.5192915304240793
+71/71 [==============================] - 3s 43ms/step - loss: 0.9432 - accuracy: 0.6092 - top5-acc: 1.0000
+buy&sell test accuracy_t: 273 / 3393 = 0.0805
+buy&sell test accuracy_o: 273 / 916 = 0.298
+
+
+
+Epoch 49/100
+254/254 [==============================] - 32s 128ms/step - loss: 0.9517 - accuracy: 0.6238 - top5-acc: 1.0000 - val_loss: 0.8871 - val_accuracy: 0.6482 - val_top5-acc: 1.0000
+[[ 221 1517   59]
+ [ 309 5231   85]
+ [ 174 1373   49]]
+f1 score: 0.5196456750768249
+71/71 [==============================] - 3s 43ms/step - loss: 0.9420 - accuracy: 0.6100 - top5-acc: 1.0000
+buy&sell test accuracy_t: 270 / 3393 = 0.0796
+buy&sell test accuracy_o: 270 / 897 = 0.301
+
+
+
+Epoch 50/100
+254/254 [==============================] - 32s 128ms/step - loss: 0.9471 - accuracy: 0.6229 - top5-acc: 1.0000 - val_loss: 0.8887 - val_accuracy: 0.6487 - val_top5-acc: 1.0000
+[[ 214 1515   68]
+ [ 297 5236   92]
+ [ 167 1374   55]]
+f1 score: 0.520258910624816
+71/71 [==============================] - 3s 43ms/step - loss: 0.9432 - accuracy: 0.6104 - top5-acc: 1.0000
+buy&sell test accuracy_t: 269 / 3393 = 0.0793
+buy&sell test accuracy_o: 269 / 893 = 0.3012
+
+
+
+Epoch 51/100
+254/254 [==============================] - 32s 128ms/step - loss: 0.9441 - accuracy: 0.6252 - top5-acc: 1.0000 - val_loss: 0.8916 - val_accuracy: 0.6465 - val_top5-acc: 1.0000
+[[ 213 1510   74]
+ [ 299 5224  102]
+ [ 166 1369   61]]
+f1 score: 0.5207983084897343
+71/71 [==============================] - 3s 42ms/step - loss: 0.9447 - accuracy: 0.6097 - top5-acc: 1.0000
+buy&sell test accuracy_t: 274 / 3393 = 0.0808
+buy&sell test accuracy_o: 274 / 915 = 0.2995
+
+
+
+Epoch 52/100
+254/254 [==============================] - 32s 127ms/step - loss: 0.9416 - accuracy: 0.6280 - top5-acc: 1.0000 - val_loss: 0.8936 - val_accuracy: 0.6479 - val_top5-acc: 1.0000
+[[ 216 1499   82]
+ [ 305 5205  115]
+ [ 168 1366   62]]
+f1 score: 0.520591752842084
+71/71 [==============================] - 3s 43ms/step - loss: 0.9467 - accuracy: 0.6080 - top5-acc: 1.0000
+buy&sell test accuracy_t: 278 / 3393 = 0.0819
+buy&sell test accuracy_o: 278 / 948 = 0.2932
+
+
+
+Epoch 53/100
+254/254 [==============================] - 32s 128ms/step - loss: 0.9407 - accuracy: 0.6281 - top5-acc: 1.0000 - val_loss: 0.8970 - val_accuracy: 0.6476 - val_top5-acc: 1.0000
+[[ 220 1498   79]
+ [ 311 5206  108]
+ [ 167 1367   62]]
+f1 score: 0.5212263685953958
+71/71 [==============================] - 3s 43ms/step - loss: 0.9476 - accuracy: 0.6086 - top5-acc: 1.0000
+buy&sell test accuracy_t: 282 / 3393 = 0.0831
+buy&sell test accuracy_o: 282 / 947 = 0.2978
+
+
+
+Epoch 54/100
+254/254 [==============================] - 32s 128ms/step - loss: 0.9383 - accuracy: 0.6296 - top5-acc: 1.0000 - val_loss: 0.8989 - val_accuracy: 0.6476 - val_top5-acc: 1.0000
+[[ 217 1498   82]
+ [ 311 5205  109]
+ [ 171 1364   61]]
+f1 score: 0.5205698527656987
+71/71 [==============================] - 3s 43ms/step - loss: 0.9487 - accuracy: 0.6080 - top5-acc: 1.0000
+buy&sell test accuracy_t: 278 / 3393 = 0.0819
+buy&sell test accuracy_o: 278 / 951 = 0.2923
+
+
+
+Epoch 55/100
+254/254 [==============================] - 32s 128ms/step - loss: 0.9342 - accuracy: 0.6309 - top5-acc: 1.0000 - val_loss: 0.9002 - val_accuracy: 0.6474 - val_top5-acc: 1.0000
+[[ 218 1491   88]
+ [ 306 5201  118]
+ [ 167 1363   66]]
+f1 score: 0.5217150101217757
+71/71 [==============================] - 3s 43ms/step - loss: 0.9493 - accuracy: 0.6082 - top5-acc: 1.0000
+buy&sell test accuracy_t: 284 / 3393 = 0.0837
+buy&sell test accuracy_o: 284 / 963 = 0.2949
+
+
+
+Epoch 56/100
+254/254 [==============================] - 32s 128ms/step - loss: 0.9350 - accuracy: 0.6325 - top5-acc: 1.0000 - val_loss: 0.9030 - val_accuracy: 0.6485 - val_top5-acc: 1.0000
+[[ 217 1487   93]
+ [ 303 5207  115]
+ [ 163 1364   69]]
+f1 score: 0.5226435522047688
+71/71 [==============================] - 3s 43ms/step - loss: 0.9500 - accuracy: 0.6091 - top5-acc: 1.0000
+buy&sell test accuracy_t: 286 / 3393 = 0.0843
+buy&sell test accuracy_o: 286 / 960 = 0.2979
+
+
+
+Epoch 57/100
+254/254 [==============================] - 32s 128ms/step - loss: 0.9291 - accuracy: 0.6355 - top5-acc: 1.0000 - val_loss: 0.9055 - val_accuracy: 0.6496 - val_top5-acc: 1.0000
+[[ 212 1487   98]
+ [ 305 5196  124]
+ [ 162 1358   76]]
+f1 score: 0.5226451116190026
+71/71 [==============================] - 3s 43ms/step - loss: 0.9514 - accuracy: 0.6081 - top5-acc: 1.0000
+buy&sell test accuracy_t: 288 / 3393 = 0.0849
+buy&sell test accuracy_o: 288 / 977 = 0.2948
+
+
+
+Epoch 58/100
+254/254 [==============================] - 32s 128ms/step - loss: 0.9337 - accuracy: 0.6325 - top5-acc: 1.0000 - val_loss: 0.9088 - val_accuracy: 0.6482 - val_top5-acc: 1.0000
+[[ 196 1483  118]
+ [ 283 5195  147]
+ [ 153 1359   84]]
+f1 score: 0.5218112054905785
+71/71 [==============================] - 3s 43ms/step - loss: 0.9527 - accuracy: 0.6071 - top5-acc: 1.0000
+buy&sell test accuracy_t: 280 / 3393 = 0.0825
+buy&sell test accuracy_o: 280 / 981 = 0.2854
+
+
+
+Epoch 59/100
+254/254 [==============================] - 32s 128ms/step - loss: 0.9279 - accuracy: 0.6351 - top5-acc: 1.0000 - val_loss: 0.9135 - val_accuracy: 0.6482 - val_top5-acc: 1.0000
+[[ 202 1470  125]
+ [ 284 5181  160]
+ [ 151 1350   95]]
+f1 score: 0.5244296974263392
+71/71 [==============================] - 3s 43ms/step - loss: 0.9555 - accuracy: 0.6075 - top5-acc: 1.0000
+buy&sell test accuracy_t: 297 / 3393 = 0.0875
+buy&sell test accuracy_o: 297 / 1017 = 0.292
+
+
+
+Epoch 60/100
+ 43/254 [====>.........................] - ETA: 25s - loss: 0.8646 - accuracy: 0.6739 - top5-acc: 1.0000forrtl: error (200): program aborting due to control-C event
+Image              PC                Routine            Line        Source
+libifcoremd.dll    00007FFA788B3B58  Unknown               Unknown  Unknown
+KERNELBASE.dll     00007FFAD06CB943  Unknown               Unknown  Unknown
+KERNEL32.DLL       00007FFAD19C7034  Unknown               Unknown  Unknown
+ntdll.dll          00007FFAD2EE2651  Unknown               Unknown  Unknown
+forrtl: error (200): program aborting due to control-C event
+Image              PC                Routine            Line        Source
+libifcoremd.dll    00007FFA788B3B58  Unknown               Unknown  Unknown
+KERNELBASE.dll     00007FFAD06CB943  Unknown               Unknown  Unknown
+KERNEL32.DLL       00007FFAD19C7034  Unknown               Unknown  Unknown
+ntdll.dll          00007FFAD2EE2651  Unknown               Unknown  Unknown

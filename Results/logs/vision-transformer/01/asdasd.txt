@@ -1,0 +1,666 @@
+PS C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN> C:/ProgramData/Anaconda3/envs/tf/python.exe c:/Users/Tuna/Desktop/2022-spring/CS402/SPDPvCNN/training.py
+2022-05-30 01:08:16.681391: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX AVX2
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2022-05-30 01:08:17.066817: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 3495 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 3060 Laptop GPU, pci bus id: 0000:01:00.0, compute capability: 8.6
+wandb: Currently logged in as: kuantuna (spdpvcnn). Use `wandb login --relogin` to force relogin
+wandb: wandb version 0.12.17 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.12.16
+wandb: Run data is saved locally in C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run rosy-surf-39
+wandb:  View project at https://wandb.ai/spdpvcnn/vision_transformer
+wandb:  View run at https://wandb.ai/spdpvcnn/vision_transformer/runs/2ntalitd
+Training data samples: 32465
+Validation data samples: 3607
+Test data samples: 9018
+2022-05-30 01:08:24.316121: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 1165883080 exceeds 10% of free system memory.
+2022-05-30 01:10:07.126405: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 1165883080 exceeds 10% of free system memory.
+Getting the ViT model...
+wandb: WARNING The save_model argument by default saves the model in the HDF5 format that cannot save custom objects like subclassed models and custom layers. This behavior will be deprecated in a future release in favor of the SavedModel format. Meanwhile, the HDF5 model is saved as W&B files and the SavedModel as W&B Artifacts.
+2022-05-30 01:10:48.025434: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 1165883080 exceeds 10% of free system memory.
+2022-05-30 01:10:48.248539: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 1165883080 exceeds 10% of free system memory.
+Epoch 1/500
+lr at epoch 1: 0.0010000000474974513
+2022-05-30 01:10:53.749644: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:185] None of the MLIR Optimization Passes are enabled (registered 2)
+2022-05-30 01:10:55.955537: I tensorflow/stream_executor/cuda/cuda_blas.cc:1760] TensorFloat-32 will be used for the matrix multiplication. This will only be logged once.
+254/254 [==============================] - 41s 131ms/step - loss: 2.6262 - accuracy: 0.2830 - top5-acc: 1.0000 - val_loss: 1.5620 - val_accuracy: 0.2074 - val_top5-acc: 1.0000
+[[1298  307  192]
+ [3922 1200  503]
+ [1150  276  170]]
+f1 score: 0.2898705466727396
+71/71 [==============================] - 3s 42ms/step - loss: 1.2861 - accuracy: 0.2959 - top5-acc: 1.0000
+buy&sell test accuracy_t: 1468 / 3393 = 0.4327
+buy&sell test accuracy_o: 1468 / 7235 = 0.2029
+
+
+
+wandb: ERROR Can't save model in the h5py format. The model will be saved as W&B Artifacts in the SavedModel format.
+2022-05-30 01:11:40.335589: W tensorflow/python/util/util.cc:348] Sets are not currently considered sequences, but this may change in the future, so consider avoiding using them.
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+2022-05-30 01:11:56.653830: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 1165883080 exceeds 10% of free system memory.
+Epoch 2/500
+lr at epoch 2: 1.0007238415710162e-05
+254/254 [==============================] - 33s 128ms/step - loss: 2.6006 - accuracy: 0.2857 - top5-acc: 1.0000 - val_loss: 1.5176 - val_accuracy: 0.2168 - val_top5-acc: 1.0000
+[[1266  339  192]
+ [3795 1328  502]
+ [1104  317  175]]
+f1 score: 0.3062255326223276
+71/71 [==============================] - 3s 42ms/step - loss: 1.2649 - accuracy: 0.3071 - top5-acc: 1.0000
+buy&sell test accuracy_t: 1441 / 3393 = 0.4247
+buy&sell test accuracy_o: 1441 / 7034 = 0.2049
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+Epoch 3/500
+lr at epoch 3: 1.5007238289399538e-05
+254/254 [==============================] - 33s 128ms/step - loss: 2.5353 - accuracy: 0.2902 - top5-acc: 1.0000 - val_loss: 1.4596 - val_accuracy: 0.2257 - val_top5-acc: 1.0000
+[[1201  411  185]
+ [3593 1522  510]
+ [1050  367  179]]
+f1 score: 0.32787646897801737
+71/71 [==============================] - 3s 43ms/step - loss: 1.2387 - accuracy: 0.3218 - top5-acc: 1.0000
+buy&sell test accuracy_t: 1380 / 3393 = 0.4067
+buy&sell test accuracy_o: 1380 / 6718 = 0.2054
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+Epoch 4/500
+lr at epoch 4: 2.0007239072583616e-05
+254/254 [==============================] - 33s 128ms/step - loss: 2.4730 - accuracy: 0.2989 - top5-acc: 1.0000 - val_loss: 1.3914 - val_accuracy: 0.2445 - val_top5-acc: 1.0000
+[[1122  500  175]
+ [3347 1777  501]
+ [ 984  440  172]]
+f1 score: 0.35232886870281815
+71/71 [==============================] - 3s 43ms/step - loss: 1.2079 - accuracy: 0.3405 - top5-acc: 1.0000
+buy&sell test accuracy_t: 1294 / 3393 = 0.3814
+buy&sell test accuracy_o: 1294 / 6301 = 0.2054
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+Epoch 5/500
+lr at epoch 5: 2.500723894627299e-05
+254/254 [==============================] - 33s 128ms/step - loss: 2.3777 - accuracy: 0.3110 - top5-acc: 1.0000 - val_loss: 1.3184 - val_accuracy: 0.2686 - val_top5-acc: 1.0000
+[[1039  590  168]
+ [3070 2100  455]
+ [ 898  530  168]]
+f1 score: 0.3819557197574426
+71/71 [==============================] - 3s 43ms/step - loss: 1.1749 - accuracy: 0.3667 - top5-acc: 1.0000
+buy&sell test accuracy_t: 1207 / 3393 = 0.3557
+buy&sell test accuracy_o: 1207 / 5798 = 0.2082
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+Epoch 6/500
+lr at epoch 6: 3.0007238819962367e-05
+254/254 [==============================] - 33s 128ms/step - loss: 2.3155 - accuracy: 0.3216 - top5-acc: 1.0000 - val_loss: 1.2449 - val_accuracy: 0.3075 - val_top5-acc: 1.0000
+[[ 924  720  153]
+ [2748 2469  408]
+ [ 786  658  152]]
+f1 score: 0.40735178355254975
+71/71 [==============================] - 3s 43ms/step - loss: 1.1411 - accuracy: 0.3931 - top5-acc: 1.0000
+buy&sell test accuracy_t: 1076 / 3393 = 0.3171
+buy&sell test accuracy_o: 1076 / 5171 = 0.2081
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+Epoch 7/500
+lr at epoch 7: 3.500723687466234e-05
+254/254 [==============================] - 33s 128ms/step - loss: 2.2345 - accuracy: 0.3310 - top5-acc: 1.0000 - val_loss: 1.1760 - val_accuracy: 0.3535 - val_top5-acc: 1.0000
+[[ 797  863  137]
+ [2363 2915  347]
+ [ 663  796  137]]
+f1 score: 0.4349436704423081
+71/71 [==============================] - 3s 43ms/step - loss: 1.1087 - accuracy: 0.4268 - top5-acc: 1.0000
+buy&sell test accuracy_t: 934 / 3393 = 0.2753
+buy&sell test accuracy_o: 934 / 4444 = 0.2102
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+Epoch 8/500
+lr at epoch 8: 4.000723856734112e-05
+254/254 [==============================] - 33s 128ms/step - loss: 2.1443 - accuracy: 0.3561 - top5-acc: 1.0000 - val_loss: 1.1169 - val_accuracy: 0.4053 - val_top5-acc: 1.0000
+[[ 659 1015  123]
+ [1966 3375  284]
+ [ 557  919  120]]
+f1 score: 0.457823330929574
+71/71 [==============================] - 3s 43ms/step - loss: 1.0802 - accuracy: 0.4606 - top5-acc: 1.0000
+buy&sell test accuracy_t: 779 / 3393 = 0.2296
+buy&sell test accuracy_o: 779 / 3709 = 0.21
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+Epoch 9/500
+lr at epoch 9: 4.50072402600199e-05
+254/254 [==============================] - 33s 128ms/step - loss: 2.0505 - accuracy: 0.3740 - top5-acc: 1.0000 - val_loss: 1.0703 - val_accuracy: 0.4660 - val_top5-acc: 1.0000
+[[ 534 1151  112]
+ [1601 3796  228]
+ [ 449 1056   91]]
+f1 score: 0.4717204076345454
+71/71 [==============================] - 3s 43ms/step - loss: 1.0569 - accuracy: 0.4902 - top5-acc: 1.0000
+buy&sell test accuracy_t: 625 / 3393 = 0.1842
+buy&sell test accuracy_o: 625 / 3015 = 0.2073
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+Epoch 10/500
+lr at epoch 10: 5.000723831471987e-05
+254/254 [==============================] - 33s 128ms/step - loss: 1.9582 - accuracy: 0.3947 - top5-acc: 1.0000 - val_loss: 1.0376 - val_accuracy: 0.5176 - val_top5-acc: 1.0000
+[[ 415 1299   83]
+ [1285 4174  166]
+ [ 346 1178   72]]
+f1 score: 0.4804995345317565
+71/71 [==============================] - 3s 43ms/step - loss: 1.0395 - accuracy: 0.5169 - top5-acc: 1.0000
+buy&sell test accuracy_t: 487 / 3393 = 0.1435
+buy&sell test accuracy_o: 487 / 2367 = 0.2057
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+Epoch 11/500
+lr at epoch 11: 5.500724000739865e-05
+254/254 [==============================] - 33s 128ms/step - loss: 1.9257 - accuracy: 0.4129 - top5-acc: 1.0000 - val_loss: 1.0172 - val_accuracy: 0.5506 - val_top5-acc: 1.0000
+[[ 322 1410   65]
+ [ 985 4523  117]
+ [ 266 1271   59]]
+f1 score: 0.4892691391927922
+71/71 [==============================] - 3s 43ms/step - loss: 1.0278 - accuracy: 0.5438 - top5-acc: 1.0000
+buy&sell test accuracy_t: 381 / 3393 = 0.1123
+buy&sell test accuracy_o: 381 / 1814 = 0.21
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+Epoch 12/500
+lr at epoch 12: 6.000723806209862e-05
+254/254 [==============================] - 33s 128ms/step - loss: 1.8821 - accuracy: 0.4232 - top5-acc: 1.0000 - val_loss: 1.0075 - val_accuracy: 0.5778 - val_top5-acc: 1.0000
+[[ 258 1496   43]
+ [ 751 4792   82]
+ [ 187 1370   39]]
+f1 score: 0.4922499231351792
+71/71 [==============================] - 3s 43ms/step - loss: 1.0214 - accuracy: 0.5643 - top5-acc: 1.0000
+buy&sell test accuracy_t: 297 / 3393 = 0.0875
+buy&sell test accuracy_o: 297 / 1360 = 0.2184
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+Epoch 13/500
+lr at epoch 13: 6.50072397547774e-05
+254/254 [==============================] - 33s 128ms/step - loss: 1.8331 - accuracy: 0.4432 - top5-acc: 1.0000 - val_loss: 1.0046 - val_accuracy: 0.5936 - val_top5-acc: 1.0000
+[[ 208 1563   26]
+ [ 564 5006   55]
+ [ 142 1424   30]]
+f1 score: 0.4953831535446091
+71/71 [==============================] - 3s 43ms/step - loss: 1.0189 - accuracy: 0.5815 - top5-acc: 1.0000
+buy&sell test accuracy_t: 238 / 3393 = 0.0701
+buy&sell test accuracy_o: 238 / 1025 = 0.2322
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+Epoch 14/500
+lr at epoch 14: 7.000724144745618e-05
+254/254 [==============================] - 33s 128ms/step - loss: 1.8114 - accuracy: 0.4575 - top5-acc: 1.0000 - val_loss: 1.0061 - val_accuracy: 0.6077 - val_top5-acc: 1.0000
+[[ 161 1615   21]
+ [ 437 5145   43]
+ [ 110 1467   19]]
+f1 score: 0.4929764184678443
+71/71 [==============================] - 3s 43ms/step - loss: 1.0198 - accuracy: 0.5905 - top5-acc: 1.0000
+buy&sell test accuracy_t: 180 / 3393 = 0.0531
+buy&sell test accuracy_o: 180 / 791 = 0.2276
+
+
+
+Epoch 15/500
+lr at epoch 15: 7.500723586417735e-05
+254/254 [==============================] - 33s 131ms/step - loss: 1.7975 - accuracy: 0.4662 - top5-acc: 1.0000 - val_loss: 1.0094 - val_accuracy: 0.6169 - val_top5-acc: 1.0000
+[[ 119 1658   20]
+ [ 330 5267   28]
+ [  83 1501   12]]
+f1 score: 0.49055379018839135
+71/71 [==============================] - 3s 44ms/step - loss: 1.0230 - accuracy: 0.5986 - top5-acc: 1.0000
+buy&sell test accuracy_t: 131 / 3393 = 0.0386
+buy&sell test accuracy_o: 131 / 592 = 0.2213
+
+
+
+Epoch 16/500
+lr at epoch 16: 8.000723755685613e-05
+254/254 [==============================] - 33s 129ms/step - loss: 1.7678 - accuracy: 0.4830 - top5-acc: 1.0000 - val_loss: 1.0113 - val_accuracy: 0.6191 - val_top5-acc: 1.0000
+[[  90 1691   16]
+ [ 257 5351   17]
+ [  59 1526   11]]
+f1 score: 0.488986055898564
+71/71 [==============================] - 3s 44ms/step - loss: 1.0267 - accuracy: 0.6046 - top5-acc: 1.0000
+buy&sell test accuracy_t: 101 / 3393 = 0.0298
+buy&sell test accuracy_o: 101 / 450 = 0.2244
+
+
+
+Epoch 17/500
+lr at epoch 17: 8.50072392495349e-05
+254/254 [==============================] - 33s 130ms/step - loss: 1.7499 - accuracy: 0.4854 - top5-acc: 1.0000 - val_loss: 1.0135 - val_accuracy: 0.6238 - val_top5-acc: 1.0000
+[[  65 1716   16]
+ [ 203 5412   10]
+ [  50 1536   10]]
+f1 score: 0.4869131405127459
+71/71 [==============================] - 3s 43ms/step - loss: 1.0312 - accuracy: 0.6084 - top5-acc: 1.0000
+buy&sell test accuracy_t: 75 / 3393 = 0.0221
+buy&sell test accuracy_o: 75 / 354 = 0.2119
+
+
+
+Epoch 18/500
+lr at epoch 18: 9.000724094221368e-05
+254/254 [==============================] - 33s 130ms/step - loss: 1.7205 - accuracy: 0.4969 - top5-acc: 1.0000 - val_loss: 1.0136 - val_accuracy: 0.6238 - val_top5-acc: 1.0000
+[[  47 1736   14]
+ [ 163 5453    9]
+ [  39 1548    9]]
+f1 score: 0.4847676184334258
+71/71 [==============================] - 3s 44ms/step - loss: 1.0362 - accuracy: 0.6109 - top5-acc: 1.0000
+buy&sell test accuracy_t: 56 / 3393 = 0.0165
+buy&sell test accuracy_o: 56 / 281 = 0.1993
+
+
+
+Epoch 19/500
+lr at epoch 19: 9.500723535893485e-05
+254/254 [==============================] - 33s 130ms/step - loss: 1.7245 - accuracy: 0.4971 - top5-acc: 1.0000 - val_loss: 1.0133 - val_accuracy: 0.6243 - val_top5-acc: 1.0000
+[[  36 1748   13]
+ [ 130 5489    6]
+ [  32 1555    9]]
+f1 score: 0.4841171496824592
+71/71 [==============================] - 3s 43ms/step - loss: 1.0407 - accuracy: 0.6137 - top5-acc: 1.0000
+buy&sell test accuracy_t: 45 / 3393 = 0.0133
+buy&sell test accuracy_o: 45 / 226 = 0.1991
+
+
+
+Epoch 20/500
+lr at epoch 20: 0.00010000723705161363
+254/254 [==============================] - 33s 128ms/step - loss: 1.7336 - accuracy: 0.5032 - top5-acc: 1.0000 - val_loss: 1.0095 - val_accuracy: 0.6238 - val_top5-acc: 1.0000
+[[  29 1755   13]
+ [ 104 5515    6]
+ [  29 1558    9]]
+f1 score: 0.48388636218005715
+71/71 [==============================] - 3s 43ms/step - loss: 1.0433 - accuracy: 0.6158 - top5-acc: 1.0000
+buy&sell test accuracy_t: 38 / 3393 = 0.0112
+buy&sell test accuracy_o: 38 / 190 = 0.2
+
+
+
+Epoch 21/500
+lr at epoch 21: 0.00010500723874429241
+254/254 [==============================] - 33s 128ms/step - loss: 1.7142 - accuracy: 0.5087 - top5-acc: 1.0000 - val_loss: 1.0065 - val_accuracy: 0.6246 - val_top5-acc: 1.0000
+[[  24 1760   13]
+ [  93 5527    5]
+ [  26 1562    8]]
+f1 score: 0.48304480120318954
+71/71 [==============================] - 3s 43ms/step - loss: 1.0466 - accuracy: 0.6164 - top5-acc: 1.0000
+buy&sell test accuracy_t: 32 / 3393 = 0.0094
+buy&sell test accuracy_o: 32 / 169 = 0.1893
+
+
+
+Epoch 22/500
+lr at epoch 22: 0.00011000724043697119
+254/254 [==============================] - 33s 129ms/step - loss: 1.7053 - accuracy: 0.5113 - top5-acc: 1.0000 - val_loss: 0.9997 - val_accuracy: 0.6246 - val_top5-acc: 1.0000
+[[  23 1763   11]
+ [  83 5536    6]
+ [  24 1563    9]]
+f1 score: 0.48343700505644566
+71/71 [==============================] - 3s 43ms/step - loss: 1.0475 - accuracy: 0.6174 - top5-acc: 1.0000
+buy&sell test accuracy_t: 32 / 3393 = 0.0094
+buy&sell test accuracy_o: 32 / 156 = 0.2051
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+Epoch 23/500
+lr at epoch 23: 0.00011500724212964997
+254/254 [==============================] - 33s 128ms/step - loss: 1.7054 - accuracy: 0.5117 - top5-acc: 1.0000 - val_loss: 0.9952 - val_accuracy: 0.6243 - val_top5-acc: 1.0000
+[[  22 1764   11]
+ [  69 5550    6]
+ [  23 1564    9]]
+f1 score: 0.48394659868218404
+71/71 [==============================] - 3s 43ms/step - loss: 1.0488 - accuracy: 0.6189 - top5-acc: 1.0000
+buy&sell test accuracy_t: 31 / 3393 = 0.0091
+buy&sell test accuracy_o: 31 / 140 = 0.2214
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+Epoch 24/500
+lr at epoch 24: 0.00012000723654637113
+254/254 [==============================] - 33s 128ms/step - loss: 1.7119 - accuracy: 0.5135 - top5-acc: 1.0000 - val_loss: 0.9903 - val_accuracy: 0.6246 - val_top5-acc: 1.0000
+[[  22 1762   13]
+ [  63 5556    6]
+ [  21 1565   10]]
+f1 score: 0.48453147759568654
+71/71 [==============================] - 3s 43ms/step - loss: 1.0499 - accuracy: 0.6196 - top5-acc: 1.0000
+buy&sell test accuracy_t: 32 / 3393 = 0.0094
+buy&sell test accuracy_o: 32 / 135 = 0.237
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+Epoch 25/500
+lr at epoch 25: 0.0001250072382390499
+254/254 [==============================] - 33s 128ms/step - loss: 1.6852 - accuracy: 0.5174 - top5-acc: 1.0000 - val_loss: 0.9835 - val_accuracy: 0.6257 - val_top5-acc: 1.0000
+[[  22 1761   14]
+ [  56 5563    6]
+ [  20 1564   12]]
+f1 score: 0.4854188649598395
+71/71 [==============================] - 3s 43ms/step - loss: 1.0493 - accuracy: 0.6206 - top5-acc: 1.0000
+buy&sell test accuracy_t: 34 / 3393 = 0.01
+buy&sell test accuracy_o: 34 / 130 = 0.2615
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+Epoch 26/500
+lr at epoch 26: 0.00013000723265577108
+254/254 [==============================] - 33s 129ms/step - loss: 1.6882 - accuracy: 0.5159 - top5-acc: 1.0000 - val_loss: 0.9786 - val_accuracy: 0.6263 - val_top5-acc: 1.0000
+[[  21 1760   16]
+ [  51 5566    8]
+ [  20 1564   12]]
+f1 score: 0.48540813857946685
+71/71 [==============================] - 3s 43ms/step - loss: 1.0494 - accuracy: 0.6209 - top5-acc: 1.0000
+buy&sell test accuracy_t: 33 / 3393 = 0.0097
+buy&sell test accuracy_o: 33 / 128 = 0.2578
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+Epoch 27/500
+lr at epoch 27: 0.00013500724162440747
+254/254 [==============================] - 33s 128ms/step - loss: 1.6686 - accuracy: 0.5174 - top5-acc: 1.0000 - val_loss: 0.9723 - val_accuracy: 0.6271 - val_top5-acc: 1.0000
+[[  21 1758   18]
+ [  47 5570    8]
+ [  21 1563   12]]
+f1 score: 0.48572280544343394
+71/71 [==============================] - 3s 43ms/step - loss: 1.0490 - accuracy: 0.6213 - top5-acc: 1.0000
+buy&sell test accuracy_t: 33 / 3393 = 0.0097
+buy&sell test accuracy_o: 33 / 127 = 0.2598
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+Epoch 28/500
+lr at epoch 28: 0.00014000723604112864
+254/254 [==============================] - 33s 129ms/step - loss: 1.6682 - accuracy: 0.5231 - top5-acc: 1.0000 - val_loss: 0.9642 - val_accuracy: 0.6279 - val_top5-acc: 1.0000
+[[  23 1754   20]
+ [  50 5566    9]
+ [  21 1561   14]]
+f1 score: 0.48654256550974667
+71/71 [==============================] - 3s 43ms/step - loss: 1.0460 - accuracy: 0.6213 - top5-acc: 1.0000
+buy&sell test accuracy_t: 37 / 3393 = 0.0109
+buy&sell test accuracy_o: 37 / 137 = 0.2701
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+Epoch 29/500
+lr at epoch 29: 0.00014500724500976503
+254/254 [==============================] - 33s 128ms/step - loss: 1.6607 - accuracy: 0.5199 - top5-acc: 1.0000 - val_loss: 0.9594 - val_accuracy: 0.6282 - val_top5-acc: 1.0000
+[[  25 1750   22]
+ [  51 5564   10]
+ [  21 1555   20]]
+f1 score: 0.4884520668919529
+71/71 [==============================] - 3s 43ms/step - loss: 1.0436 - accuracy: 0.6220 - top5-acc: 1.0000
+buy&sell test accuracy_t: 45 / 3393 = 0.0133
+buy&sell test accuracy_o: 45 / 149 = 0.302
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+Epoch 30/500
+lr at epoch 30: 0.0001500072394264862
+254/254 [==============================] - 33s 128ms/step - loss: 1.6631 - accuracy: 0.5222 - top5-acc: 1.0000 - val_loss: 0.9545 - val_accuracy: 0.6291 - val_top5-acc: 1.0000
+[[  24 1750   23]
+ [  51 5561   13]
+ [  23 1553   20]]
+f1 score: 0.48813554198724274
+71/71 [==============================] - 3s 43ms/step - loss: 1.0420 - accuracy: 0.6215 - top5-acc: 1.0000
+buy&sell test accuracy_t: 44 / 3393 = 0.013
+buy&sell test accuracy_o: 44 / 154 = 0.2857
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+Epoch 31/500
+lr at epoch 31: 0.00015500723384320736
+254/254 [==============================] - 33s 128ms/step - loss: 1.6654 - accuracy: 0.5234 - top5-acc: 1.0000 - val_loss: 0.9485 - val_accuracy: 0.6299 - val_top5-acc: 1.0000
+[[  24 1750   23]
+ [  50 5561   14]
+ [  23 1550   23]]
+f1 score: 0.4888682442083756
+71/71 [==============================] - 3s 43ms/step - loss: 1.0394 - accuracy: 0.6219 - top5-acc: 1.0000
+buy&sell test accuracy_t: 47 / 3393 = 0.0139
+buy&sell test accuracy_o: 47 / 157 = 0.2994
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+Epoch 32/500
+lr at epoch 32: 0.00016000724281184375
+254/254 [==============================] - 33s 128ms/step - loss: 1.6406 - accuracy: 0.5260 - top5-acc: 1.0000 - val_loss: 0.9424 - val_accuracy: 0.6307 - val_top5-acc: 1.0000
+[[  25 1746   26]
+ [  50 5560   15]
+ [  23 1548   25]]
+f1 score: 0.48962945394160856
+71/71 [==============================] - 3s 43ms/step - loss: 1.0366 - accuracy: 0.6221 - top5-acc: 1.0000
+buy&sell test accuracy_t: 50 / 3393 = 0.0147
+buy&sell test accuracy_o: 50 / 164 = 0.3049
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+Epoch 33/500
+lr at epoch 33: 0.00016500723722856492
+254/254 [==============================] - 33s 129ms/step - loss: 1.6461 - accuracy: 0.5235 - top5-acc: 1.0000 - val_loss: 0.9382 - val_accuracy: 0.6310 - val_top5-acc: 1.0000
+[[  26 1741   30]
+ [  54 5556   15]
+ [  24 1546   26]]
+f1 score: 0.49003818661883125
+71/71 [==============================] - 3s 43ms/step - loss: 1.0343 - accuracy: 0.6219 - top5-acc: 1.0000
+buy&sell test accuracy_t: 52 / 3393 = 0.0153
+buy&sell test accuracy_o: 52 / 175 = 0.2971
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+Epoch 34/500
+lr at epoch 34: 0.00017000723164528608
+254/254 [==============================] - 33s 128ms/step - loss: 1.6417 - accuracy: 0.5223 - top5-acc: 1.0000 - val_loss: 0.9343 - val_accuracy: 0.6313 - val_top5-acc: 1.0000
+[[  27 1739   31]
+ [  63 5545   17]
+ [  27 1542   27]]
+f1 score: 0.4900219724044462
+71/71 [==============================] - 3s 43ms/step - loss: 1.0317 - accuracy: 0.6209 - top5-acc: 1.0000
+buy&sell test accuracy_t: 54 / 3393 = 0.0159
+buy&sell test accuracy_o: 54 / 192 = 0.2812
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+Epoch 35/500
+lr at epoch 35: 0.00017500724061392248
+254/254 [==============================] - 33s 131ms/step - loss: 1.6485 - accuracy: 0.5201 - top5-acc: 1.0000 - val_loss: 0.9320 - val_accuracy: 0.6321 - val_top5-acc: 1.0000
+[[  31 1732   34]
+ [  64 5542   19]
+ [  29 1538   29]]
+f1 score: 0.4914343214915391
+71/71 [==============================] - 3s 43ms/step - loss: 1.0303 - accuracy: 0.6212 - top5-acc: 1.0000
+buy&sell test accuracy_t: 60 / 3393 = 0.0177
+buy&sell test accuracy_o: 60 / 206 = 0.2913
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+Epoch 36/500
+lr at epoch 36: 0.00018000723503064364
+254/254 [==============================] - 33s 130ms/step - loss: 1.6155 - accuracy: 0.5284 - top5-acc: 1.0000 - val_loss: 0.9262 - val_accuracy: 0.6321 - val_top5-acc: 1.0000
+[[  37 1722   38]
+ [  68 5537   20]
+ [  30 1534   32]]
+f1 score: 0.4934346414362699
+71/71 [==============================] - 3s 43ms/step - loss: 1.0275 - accuracy: 0.6216 - top5-acc: 1.0000
+buy&sell test accuracy_t: 69 / 3393 = 0.0203
+buy&sell test accuracy_o: 69 / 225 = 0.3067
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+Epoch 37/500
+lr at epoch 37: 0.00018500724399928004
+254/254 [==============================] - 33s 129ms/step - loss: 1.5971 - accuracy: 0.5289 - top5-acc: 1.0000 - val_loss: 0.9220 - val_accuracy: 0.6329 - val_top5-acc: 1.0000
+[[  38 1720   39]
+ [  71 5528   26]
+ [  32 1530   34]]
+f1 score: 0.49371804775368533
+71/71 [==============================] - 3s 43ms/step - loss: 1.0243 - accuracy: 0.6210 - top5-acc: 1.0000
+buy&sell test accuracy_t: 72 / 3393 = 0.0212
+buy&sell test accuracy_o: 72 / 240 = 0.3
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.4s
+Epoch 38/500
+lr at epoch 38: 0.0001900072384160012
+254/254 [==============================] - 34s 131ms/step - loss: 1.6110 - accuracy: 0.5258 - top5-acc: 1.0000 - val_loss: 0.9189 - val_accuracy: 0.6329 - val_top5-acc: 1.0000
+[[  39 1718   40]
+ [  74 5524   27]
+ [  34 1526   36]]
+f1 score: 0.49428485527497523
+71/71 [==============================] - 3s 43ms/step - loss: 1.0223 - accuracy: 0.6209 - top5-acc: 1.0000
+buy&sell test accuracy_t: 75 / 3393 = 0.0221
+buy&sell test accuracy_o: 75 / 250 = 0.3
+
+
+
+WARNING:absl:Found untraced functions such as dense_layer_call_and_return_conditional_losses, dense_layer_call_fn, embedding_layer_call_and_return_conditional_losses, embedding_layer_call_fn, query_layer_call_and_return_conditional_losses while saving (showing 5 of 310). These functions will not be directly callable after loading.
+C:\ProgramData\Anaconda3\envs\tf\lib\site-packages\keras\utils\generic_utils.py:494: CustomMaskWarning: Custom mask layers require a config and must override get_config. When loading, the custom mask layer must be passed to the custom_objects argument.
+  warnings.warn('Custom mask layers require a config and must override '
+wandb: Adding directory to artifact (C:\Users\Tuna\Desktop\2022-spring\CS402\SPDPvCNN\wandb\run-20220530_010818-2ntalitd\files\model-best)... Done. 0.5s
+Epoch 39/500
+lr at epoch 39: 0.00019500723283272237
+254/254 [==============================] - 33s 129ms/step - loss: 1.5916 - accuracy: 0.5293 - top5-acc: 1.0000 - val_loss: 0.9153 - val_accuracy: 0.6349 - val_top5-acc: 1.0000
+[[  41 1714   42]
+ [  78 5517   30]
+ [  38 1519   39]]
+f1 score: 0.49523082516503714
+71/71 [==============================] - 3s 43ms/step - loss: 1.0199 - accuracy: 0.6206 - top5-acc: 1.0000
+buy&sell test accuracy_t: 80 / 3393 = 0.0236
+buy&sell test accuracy_o: 80 / 268 = 0.2985
+
+
+
+forrtl: error (200): program aborting due to control-C event
+Image              PC                Routine            Line        Source
+libifcoremd.dll    00007FFA788B3B58  Unknown               Unknown  Unknown
+KERNELBASE.dll     00007FFAD06CB943  Unknown               Unknown  Unknown
+KERNEL32.DLL       00007FFAD19C7034  Unknown               Unknown  Unknown
+ntdll.dll          00007FFAD2EE2651  Unknown               Unknown  Unknown
+forrtl: error (200): program aborting due to control-C event
+Image              PC                Routine            Line        Source
+libifcoremd.dll    00007FFA788B3B58  Unknown               Unknown  Unknown
+KERNELBASE.dll     00007FFAD06CB943  Unknown               Unknown  Unknown
+KERNEL32.DLL       00007FFAD19C7034  Unknown               Unknown  Unknown
+ntdll.dll          00007FFAD2EE2651  Unknown               Unknown  Unknown

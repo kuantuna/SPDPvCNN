@@ -71,6 +71,9 @@ def get_conv_mixer_model(
 
 def compile_model_optimizer(model):
     optimizer = keras.optimizers.Adadelta()
+    # optimizer = tfa.optimizers.AdamW(
+    #     learning_rate=hyperparameters["learning_rate"], weight_decay=hyperparameters["weight_decay"]
+    # )
 
     model.compile(
         optimizer=optimizer,
@@ -83,7 +86,7 @@ def compile_model_optimizer(model):
 
 
 def load_saved_model(path):
-    return keras.models.load_model(path, custom_objects={'MyOptimizer': keras.optimizers.Adadelta})
+    return keras.models.load_model(path, custom_objects={'MyOptimizer': tfa.optimizers.AdamW})
 
 
 def get_cm_model():

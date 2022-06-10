@@ -21,9 +21,11 @@
 git clone https://github.com/kuantuna/SPDPvCNN.git
 ```
 
-**_2. Run the `data_creation.py` to create images and labels for the specified range of dates.<br/>_**
+**_2.0 Make sure that your folder structure in the ETF folder looks exactly like the figure below. (By creating the necessary folders)<br/>_**
+![Figure](https://github.com/kuantuna/SPDPvCNN/blob/main/images/folder_structure.png?raw=true)<br/>
+**_2.1 Run the `data_creation.py` after setting the threshold value (default = 0.01) to create images and labels for the specified range of dates.<br/>_**
 **_3. Later, in the `architectures/helpers/constants.py` choose the architecture (selected_model) you want to use (by commenting others) and run the `training.py` to train the model using the images created on the previous phase.<br/>_**
-**_4. Finally, run the `financial_evaluation.py` to evaluate our model on the test data financially.<br/>_**
+**_4. Finally, run the `financial_evaluation.py` and `computational_evaluation.py` to evaluate our model on the test data both financially and computationally.<br/>_**
 
 ## **_Institution_**
 
@@ -31,10 +33,10 @@ git clone https://github.com/kuantuna/SPDPvCNN.git
 
 ## **_Project Members_**
 
-- **_[Onur Alaçam](https://github.com/Onralcm)_**<br/>
-- **_[Tuğcan Hoşer](https://github.com/Tugcannn)_**<br/>
+- **_[Tuna Tuncer](https://github.com/kuantuna)_**<br/>
 - **_[Uygar Kaya](https://github.com/UygarKAYA)_**<br/>
-- **_[Tuna Tuncer](https://github.com/kuantuna)_**
+- **_[Onur Alaçam](https://github.com/Onralcm)_**<br/>
+- **_[Tuğcan Hoşer](https://github.com/Tugcannn)_**
 
 ## **_Project Supervisor_**
 

@@ -274,9 +274,19 @@ for etf in etfList:
 
     imageList_copy = imageList[:]
     imageList_copy = imageList_copy.reshape(len(imageList), -1)
+    # df_before = pd.DataFrame(imageList_copy, columns=np.repeat(
+    #     np.array(headers), nIndicators))
+    # df_before.to_csv("df_before.csv", encoding='utf-8', index=False)
     mean = np.mean(imageList_copy, axis=0)
+    # mean_df = pd.DataFrame(mean)
+    # mean_df.to_csv("mean.csv", encoding='utf-8', index=False)
     std = np.std(imageList_copy, axis=0)
+    # std_df = pd.DataFrame(std)
+    # std_df.to_csv("std.csv", encoding='utf-8', index=False)
     imageList_copy = (imageList_copy - mean) / std
+    # df_after = pd.DataFrame(imageList_copy, columns=np.repeat(
+    #     np.array(headers), nIndicators))
+    # df_after.to_csv("df_after.csv", encoding='utf-8', index=False)
     imageList = imageList_copy.reshape(
         len(imageList), len(indicators), len(indicators), 1)
 

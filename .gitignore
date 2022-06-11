@@ -3,7 +3,5 @@ architectures/__pycache__
 architectures/wandb
 architectures/runs
 architectures/helpers/__pycache__
-ETF/01/TrainData/
-ETF/0038/TrainData/
-ETF/55/
+ETF/
 saved_models/

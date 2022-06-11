@@ -13,6 +13,18 @@ IMPLEMENTING THE VISION TRANSFORMER
 Reference: (https://github.com/keras-team/keras-io/blob/master/examples/vision/image_classification_with_vision_transformer.py)
 '''
 
+data_augmentation = keras.Sequential(
+    [
+        layers.Resizing(hyperparameters["image_size"],
+                        hyperparameters["image_size"]),
+        layers.RandomFlip("horizontal"),
+        layers.RandomRotation(factor=0.02),
+        layers.RandomZoom(height_factor=0.2, width_factor=0.2),
+    ],
+    name="data_augmentation",
+)
+
+
 """
 ## Implement multilayer perceptron (MLP)
 """

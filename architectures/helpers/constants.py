@@ -3,11 +3,11 @@ from architectures.helpers.one_cycle import OneCycleLRScheduler
 from tensorflow import keras
 import matplotlib.pyplot as plt
 
-# selected_model = "convmixer"
+selected_model = "convmixer"
 # selected_model = "convmixer_tf"
 # selected_model = "vision_transformer"
 # selected_model = "mlp_mixer"
-selected_model = "cnn_ta"
+# selected_model = "cnn_ta"
 # selected_model = "vit"
 
 etf_list = ['XLF', 'XLU', 'QQQ', 'SPY', 'XLP', 'EWZ', 'EWH', 'XLY', 'XLE']
@@ -23,7 +23,7 @@ hyperparameters = {
         "depth": 8,
         "kernel_size": 7,
         "patch_size": 2,
-        "image_size": 67,
+        "image_size": 65,
     },
     "convmixer_tf": {
         "learning_rate_type": "Not found",  # "WarmUpCosine"
@@ -113,9 +113,9 @@ else:
     #     monitor="val_loss", factor=0.5, patience=10, verbose=1
     # )
     # hyperparameters[selected_model]["learning_rate_scheduler"] = reduce_lr
-    # one_cycle_lr_scheduler = OneCycleLRScheduler(hyperparameters[selected_model]["num_epochs"], hyperparameters[selected_model]["learning_rate"],
-    #                                              32465 / hyperparameters[selected_model]["batch_size"])
-    # hyperparameters[selected_model]["learning_rate_scheduler"] = one_cycle_lr_scheduler
+    one_cycle_lr_scheduler = OneCycleLRScheduler(hyperparameters[selected_model]["num_epochs"], hyperparameters[selected_model]["learning_rate"],
+                                                 32465 / hyperparameters[selected_model]["batch_size"])
+    hyperparameters[selected_model]["learning_rate_scheduler"] = one_cycle_lr_scheduler
 
 
 hyperparameters["convmixer"]["input_shape"] = (

@@ -9,11 +9,11 @@ DEFINING SOME VARIABLES
 startDate = '2001-10-11'
 endDate = '2022-04-15'
 axes = ['Date', 'Value']
-headers = ['RSI', 'WMA', 'EMA', 'SMA', 'ROC', 'CMO', 'CCI', 'PPO', 'TEMA', 'WILLR', 'MACD', 'SAR', 'ADX', 'STDDEV', 'OBV', 'ADXR', 'APO', 'AROONDOWN', 'AROONUP', 'AROONOSC',
-           'BOP', 'DX', 'MACDEXT', 'MACDFİX', 'MFI', 'MINUS_DI', 'MINUS_DM', 'MOM', 'PLUS_DI', 'PLUS_DM', 'ROCP', 'ROCR', 'ROCR100', 'SLOWK', 'SLOWD', 'FASTK', 'FASTD',
-           'FASTKRSI', 'FASTDRSI', 'TRIX', 'ULTOSC',  'BBANDSU', 'BBANDSM', 'BBANDSL', 'DEMA',  'HT_TRENDLINE', 'KAMA', 'MA', 'MIDPOINT', 'MIDPRICE', 'SAREXT', 'TRIMA', 'AD',
-           'ADOSC', 'TRANGE', 'AVGPRICE', 'MEDPRICE', 'TYPPRICE', 'WCLPRICE',  'BETA', 'CORREL', 'LINEARREG', 'LINEARREG_ANGLE', 'LINEARREG_INTERCEPT',
-           'LINEARREG_SLOPE', 'TSF', 'VAR']
+headers = ['RSI', 'CMO', 'PLUS_DI', 'MINUS_DI', 'WILLR', 'CCI', 'ULTOSC', 'AROONOSC', 'MFI', 'MOM', 'MACD', 'MACDFIX', 'LINEARREG_ANGLE', 'LINEARREG_SLOPE', 'ROCP', 'ROC', 'ROCR', 'ROCR100', 'SLOWK',
+           'FASTD', 'SLOWD', 'AROONUP', 'AROONDOWN', 'APO', 'MACDEXT', 'FASTK', 'PPO', 'MINUS_DM', 'ADOSC', 'FASTDRSI', 'FASTKRSI', 'TRANGE', 'TRIX', 'STD', 'BOP', 'VAR', 'PLUS_DM', 'CORREL', 'AD',
+           'BETA', 'WCLPRICE', 'TSF', 'TYPPRICE', 'AVGPRICE', 'MEDPRICE', 'BBANDSL', 'LINEARREG', 'OBV', 'BBANDSM', 'TEMA', 'BBANDSU', 'DEMA', 'MIDPRICE', 'MIDPOINT', 'WMA', 'EMA',
+           'HT_TRENDLINE', 'KAMA', 'SMA', 'MA', 'ADXR', 'ADX', 'TRIMA', 'LINEARREG_INTERCEPT', 'DX']
+
 
 etfList = ['XLF', 'XLU', 'QQQ', 'SPY', 'XLP', 'EWZ', 'EWH', 'XLY', 'XLE']
 threshold = 0.01  # Re-arrange the Threshold Value
@@ -182,9 +182,9 @@ for etf in etfList:
     PREPROCESSING INDICATOR DATA
     '''
     # List of (indicators) DataFrames, size=n_indicators
-    indicators = [rsi, cmo, plus_di, minus_di, willr, cci, ultosc, aroonosc, mfi, mom, macd, macdfix, linearreg_angle, linearreg_slope, rocp, roc, rocr, rocr100, slowk, fastd, slowd, aroonup,
-                  aroondown, apo, macdext, fastk, ppo, minus_dm, adosc, fastdrsi, fastkrsi, trange, trix, std, bop, var, plus_dm, correl, ad, beta, wclprice, tsf, typprice, avgprice, medprice, bbands_lowerband,
-                  linearreg, obv, bbands_middleband, tema, bbands_upperband, dema, midprice, midpoint, sarext, wma, ema, ht_trendline, kama, sma, ma, sar, adxr, adx, trima, linearreg_intercept, dx]
+    indicators = [rsi, cmo, plus_di, minus_di, willr, cci, ultosc, aroonosc, mfi, mom, macd, macdfix, linearreg_angle, linearreg_slope, rocp, roc, rocr, rocr100, slowk, fastd, slowd, aroonup, aroondown, apo,
+                  macdext, fastk, ppo, minus_dm, adosc, fastdrsi, fastkrsi, trange, trix, std, bop, var, plus_dm, correl, ad, beta, wclprice, tsf, typprice, avgprice, medprice, bbands_lowerband, linearreg, obv,
+                  bbands_middleband, tema, bbands_upperband, dema, midprice, midpoint, wma, ema, ht_trendline, kama, sma, ma, adxr, adx, trima, linearreg_intercept, dx]
     # 15x15 matrix of indicators
     # [rsi, cmo, willr, cci, macd, roc, ppo, std, tema, obv, wma, ema, sma, adx, sar]
 
@@ -220,13 +220,23 @@ for etf in etfList:
     '''
     CREATING THE IMAGES
     '''
+    # nDays = len(indicatorValues[0])
+    # for idx in range(nDays-nIndicators):
+    #     # List, size=n_indicators, contains imageRows of size (n_indicators, 1)
+    #     image = []
+    #     for indicatorValue in indicatorValues:
+    #         # NumPy Array, size=(n_indicators, 1)
+    #         imageRow = indicatorValue[idx:idx+nIndicators][..., np.newaxis]
+    #         image.append(imageRow)
+    #     imageList.append(np.array(image))
+
     nDays = len(indicatorValues[0])
-    for idx in range(nDays-nIndicators):
+    for idx in range(nDays-2*nIndicators):
         # List, size=n_indicators, contains imageRows of size (n_indicators, 1)
         image = []
         for indicatorValue in indicatorValues:
             # NumPy Array, size=(n_indicators, 1)
-            imageRow = indicatorValue[idx:idx+nIndicators][..., np.newaxis]
+            imageRow = indicatorValue[idx:idx+2*nIndicators].values
             image.append(imageRow)
         imageList.append(np.array(image))
 
@@ -234,7 +244,7 @@ for etf in etfList:
     CREATING THE LABELS
     '''
     # Pandas Series, size=n_days-(maxNullVal+nIndicators-1) -> Check this, size is imageList+1, might be a bug.
-    data_close = data[maxNullVal+nIndicators-1:]["Close"]
+    data_close = data[maxNullVal+2*nIndicators-1:]["Close"]
 
     # Buy : 0
     # Hold: 1
@@ -266,29 +276,35 @@ for etf in etfList:
     print(len(labelList))
     print(len(data_close[:-1]))
 
-    imageList = np.array(imageList)
-    labelList = np.array(labelList)
+    # imageList = np.array(imageList)
+    # labelList = np.array(labelList)
 
-    unique, counts = np.unique(labelList, return_counts=True)
-    print(np.asarray((unique, counts)).T)
+    # unique, counts = np.unique(labelList, return_counts=True)
+    # print(np.asarray((unique, counts)).T)
 
-    imageList_copy = imageList[:]
-    imageList_copy = imageList_copy.reshape(len(imageList), -1)
-    # df_before = pd.DataFrame(imageList_copy, columns=np.repeat(
-    #     np.array(headers), nIndicators))
-    # df_before.to_csv("df_before.csv", encoding='utf-8', index=False)
-    mean = np.mean(imageList_copy, axis=0)
-    # mean_df = pd.DataFrame(mean)
-    # mean_df.to_csv("mean.csv", encoding='utf-8', index=False)
-    std = np.std(imageList_copy, axis=0)
-    # std_df = pd.DataFrame(std)
-    # std_df.to_csv("std.csv", encoding='utf-8', index=False)
-    imageList_copy = (imageList_copy - mean) / std
-    # df_after = pd.DataFrame(imageList_copy, columns=np.repeat(
-    #     np.array(headers), nIndicators))
-    # df_after.to_csv("df_after.csv", encoding='utf-8', index=False)
-    imageList = imageList_copy.reshape(
-        len(imageList), len(indicators), len(indicators), 1)
+    # imageList_copy = imageList[:]
+    # imageList_copy = imageList_copy.reshape(len(imageList), -1)
+    # # df_before = pd.DataFrame(imageList_copy, columns=np.repeat(
+    # #     np.array(headers), nIndicators))
+    # # df_before.to_csv("df_before.csv", encoding='utf-8', index=False)
+    # mean = np.mean(imageList_copy, axis=0)
+    # # mean_df = pd.DataFrame(mean)
+    # # mean_df.to_csv("mean.csv", encoding='utf-8', index=False)
+    # std = np.std(imageList_copy, axis=0)
+    # # std_df = pd.DataFrame(std)
+    # # std_df.to_csv("std.csv", encoding='utf-8', index=False)
+    # imageList_copy = (imageList_copy - mean) / std
+    # # df_after = pd.DataFrame(imageList_copy, columns=np.repeat(
+    # #     np.array(headers), nIndicators))
+    # # df_after.to_csv("df_after.csv", encoding='utf-8', index=False)
+    # imageList = imageList_copy.reshape(
+    #     len(imageList), len(indicators), len(indicators), 1)
+    standartized_image_list = []
+    for img in imageList:
+        m = np.mean(img, axis=1, keepdims=True)
+        s = np.std(img, axis=1, keepdims=True)
+        standartized_image = np.expand_dims((img - m) / s, axis=-1)
+        standartized_image_list.append(standartized_image)
 
     x_train = []
     y_train = []
@@ -302,24 +318,24 @@ for etf in etfList:
     train_price = []
     test_price = []
 
-    for index in range(len(imageList)):
-        if(index < (len(imageList) * 0.8)):
-            x_train.append(imageList[index])
+    for index in range(len(standartized_image_list)):
+        if(index < (len(standartized_image_list) * 0.8)):
+            x_train.append(standartized_image_list[index])
             y_train.append(labelList[index])
             train_date.append(data_close.index[index])
             train_price.append(data_close.iloc[index])
         else:
-            x_test.append(imageList[index])
+            x_test.append(standartized_image_list[index])
             y_test.append(labelList[index])
             test_date.append(data_close.index[index])
             test_price.append(data_close.iloc[index])
 
-    np.save(f"./ETF/01/TrainData/x_{etf}.npy", x_train)
-    np.save(f"./ETF/01/TrainData/y_{etf}.npy", y_train)
-    np.save(f"./ETF/01/TestData/x_{etf}.npy", x_test)
-    np.save(f"./ETF/01/TestData/y_{etf}.npy", y_test)
+    np.save(f"./ETF/rectangle/01/TrainData/x_{etf}.npy", x_train)
+    np.save(f"./ETF/rectangle/01/TrainData/y_{etf}.npy", y_train)
+    np.save(f"./ETF/rectangle/01/TestData/x_{etf}.npy", x_test)
+    np.save(f"./ETF/rectangle/01/TestData/y_{etf}.npy", y_test)
 
-    np.save(f"./ETF/01/Date/TrainDate/{etf}.npy", train_date)
-    np.save(f"./ETF/01/Date/TestDate/{etf}.npy", test_date)
-    np.save(f'./ETF/01/Price/TrainPrice/{etf}.npy', train_price)
-    np.save(f'./ETF/01/Price/TestPrice/{etf}.npy', test_price)
+    np.save(f"./ETF/rectangle/01/Date/TrainDate/{etf}.npy", train_date)
+    np.save(f"./ETF/rectangle/01/Date/TestDate/{etf}.npy", test_date)
+    np.save(f'./ETF/rectangle/01/Price/TrainPrice/{etf}.npy', train_price)
+    np.save(f'./ETF/rectangle/01/Price/TestPrice/{etf}.npy', test_price)

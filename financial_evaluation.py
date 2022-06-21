@@ -9,7 +9,7 @@ import numpy as np
 import tensorflow as tf
 
 
-MODEL_PATH = "1653498127-fdr0.25-sdr0.5-k5-e"
+MODEL_PATH = "1655761185-tl8-pd64-p8-e"
 THRESHOLD = threshold
 hyperparameters = hyperparameters[selected_model]
 
@@ -111,10 +111,10 @@ datasets = make_dataset(x_test, y_test)
 
 profit_ranking = []
 
-for i in [7]:
+for i in [99]:
     model = get_model()
     model.load_weights(
-        f"saved_models/{selected_model}/{THRESHOLD}/usual-dew-26/{MODEL_PATH}{i}.h5")
+        f"saved_models/{selected_model}/{THRESHOLD}/drawn-sky-108/{MODEL_PATH}{i}.h5")
     listOfSignals = []
     for dataset in datasets:
         predictions = model.predict(dataset)
@@ -123,8 +123,10 @@ for i in [7]:
     print(f"MODEL{i}")
     """Main algorithm"""
     profits = []
+    daily_moneys = []
     for signals, etf, price, dates in zip(listOfSignals, etf_list, listOfPrices, listOfDates):
         wallet = Wallet("USD", etf, 10000)
+        daily_money = []
         for signal, price, date in zip(signals, price, dates):
             if signal == 0:
                 wallet.buy(price, date)
@@ -132,9 +134,11 @@ for i in [7]:
                 wallet.hold(price)
             elif signal == 2:
                 wallet.sell(price, date)
+            daily_money.append(wallet.info[f"v_{wallet.base_currency_name}"])
         wallet.print_values()
         # print("\n")
         profits.append(wallet.profit_percentage/4)
+        daily_moneys.append(daily_money)
     mpp = np.mean(profits)
     std_ = np.std(profits)
     # calculate log return of the profits
@@ -143,10 +147,12 @@ for i in [7]:
     sharpe_ratio = np.mean(log_returns) / np.std(log_returns)
 
     print(f"Model mean profit percentage: {mpp}")
-    print(f"Model sharpe ratio: {sharpe_ratio}\n")
-    print(f"std: {std_}")
+    print(f"Model sharpe ratio: {sharpe_ratio}")
+    print(f"std: {std_}\n")
     profit_ranking.append(
         {"mpp": mpp, "model": i, "sharpe_ratio": sharpe_ratio})
+    # for pr in profits:
+    #     print(pr)
 
 sorted_pr = sorted(
     profit_ranking, key=lambda d: d['sharpe_ratio'], reverse=True)
@@ -161,3 +167,6 @@ print(sorted_pr_)
 """create a list of model values from sorted_pr"""
 model_values_ = [d['model'] for d in sorted_pr_]
 print(model_values_)
+
+# for dm in daily_moneys:
+#     print(dm)

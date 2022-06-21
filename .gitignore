@@ -5,3 +5,4 @@ architectures/runs
 architectures/helpers/__pycache__
 ETF/
 saved_models/
+Results/logs

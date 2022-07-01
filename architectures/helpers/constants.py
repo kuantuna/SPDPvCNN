@@ -5,9 +5,9 @@ import matplotlib.pyplot as plt
 
 # selected_model = "convmixer"
 # selected_model = "convmixer_tf"
-selected_model = "vision_transformer"
+# selected_model = "vision_transformer"
 # selected_model = "mlp_mixer"
-# selected_model = "cnn_ta"
+selected_model = "cnn_ta"
 # selected_model = "vit"
 
 etf_list = ['XLF', 'XLU', 'QQQ', 'SPY', 'XLP', 'EWZ', 'EWH', 'XLY', 'XLE']

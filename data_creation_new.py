@@ -16,7 +16,7 @@ headers = ['RSI', 'CMO', 'PLUS_DI', 'MINUS_DI', 'WILLR', 'CCI', 'ULTOSC', 'AROON
 
 
 etfList = ['XLF', 'XLU', 'QQQ', 'SPY', 'XLP', 'EWZ', 'EWH', 'XLY', 'XLE']
-threshold = 0.0038  # Re-arrange the Threshold Value
+threshold = 0.01  # Re-arrange the Threshold Value
 
 pd.set_option('display.max_rows', None)
 
@@ -342,12 +342,12 @@ for etf in etfList:
             test_date.append(data_close.index[index])
             test_price.append(data_close.iloc[index])
 
-    np.save(f"./ETF/strategy/0038/TrainData/x_{etf}.npy", x_train)
-    np.save(f"./ETF/strategy/0038/TrainData/y_{etf}.npy", y_train)
-    np.save(f"./ETF/strategy/0038/TestData/x_{etf}.npy", x_test)
-    np.save(f"./ETF/strategy/0038/TestData/y_{etf}.npy", y_test)
+    np.save(f"./ETF/strategy/{threshold}/TrainData/x_{etf}.npy", x_train)
+    np.save(f"./ETF/strategy/{threshold}/TrainData/y_{etf}.npy", y_train)
+    np.save(f"./ETF/strategy/{threshold}/TestData/x_{etf}.npy", x_test)
+    np.save(f"./ETF/strategy/{threshold}/TestData/y_{etf}.npy", y_test)
 
-    np.save(f"./ETF/strategy/0038/Date/TrainDate/{etf}.npy", train_date)
-    np.save(f"./ETF/strategy/0038/Date/TestDate/{etf}.npy", test_date)
-    np.save(f'./ETF/strategy/0038/Price/TrainPrice/{etf}.npy', train_price)
-    np.save(f'./ETF/strategy/0038/Price/TestPrice/{etf}.npy', test_price)
+    np.save(f"./ETF/strategy/{threshold}/Date/TrainDate/{etf}.npy", train_date)
+    np.save(f"./ETF/strategy/{threshold}/Date/TestDate/{etf}.npy", test_date)
+    np.save(f'./ETF/strategy/{threshold}/Price/TrainPrice/{etf}.npy', train_price)
+    np.save(f'./ETF/strategy/{threshold}/Price/TestPrice/{etf}.npy', test_price)

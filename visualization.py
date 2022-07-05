@@ -6,10 +6,10 @@ from architectures.helpers.constants import threshold
 
 
 def load_dataset():
-    x_train = np.load(f"ETF/{threshold}/TrainData/x_SPY.npy")
-    y_train = np.load(f"ETF/{threshold}/TrainData/y_SPY.npy")
+    x_train = np.load(f"ETF/strategy/{threshold}/TrainData/x_SPY.npy")
+    y_train = np.load(f"ETF/strategy/{threshold}/TrainData/y_SPY.npy")
     dates = np.load(
-        f"ETF/{threshold}/Date/TrainDate/SPY.npy", allow_pickle=True)
+        f"ETF/strategy/{threshold}/Date/TrainDate/SPY.npy", allow_pickle=True)
     return x_train, y_train, dates
 
 

@@ -42,10 +42,10 @@ for ETF_NAME in etf_list:
     # calling the formatter for the x-axis
     ax.xaxis.set_major_formatter(formatter)
     ax.xaxis.set_major_locator(locator)  # calling the locator for the x-axis
-    plt.plot(vit_spy["date"], vit_spy["value"], label="ViT")
-    plt.plot(cm_spy["date"], cm_spy["value"], label="ConvMixer")
-    plt.plot(cnn_spy["date"], cnn_spy["value"], label="CNN-TA")
-    plt.plot(bh_spy["date"], bh_spy["value"], label="B&H")
+    plt.plot(vit_spy["date"], vit_spy["value"], label="DAPP")
+    plt.plot(cm_spy["date"], cm_spy["value"], label="DPPP")
+    plt.plot(cnn_spy["date"], cnn_spy["value"], label="Enhanced CNN-TA")
+    plt.plot(bh_spy["date"], bh_spy["value"], label="Buy & Hold")
     # plt.plot(lb_spy["date"], lb_spy["value"], label="Label")
 
     fig.autofmt_xdate()  # optional if you want to tilt the date labels - just try it

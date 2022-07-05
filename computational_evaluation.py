@@ -12,20 +12,21 @@ from sklearn.metrics import confusion_matrix
 import numpy as np
 import tensorflow as tf
 
-
-MODEL_PATH = "1653380853-fdr0.25-sdr0.5-k5-e"
+MODEL_PATH = "1656067205-128x8-k7p2-e"
 THRESHOLD = threshold
 hyperparameters = hyperparameters[selected_model]
-i = 80
-run = "neat-planet-23"
+i = 18
+run = "glowing-deluge-208"
 
 
 def load_dataset():
     x_test = []
     y_test = []
     for etf in etf_list:
-        x_test.extend(np.load(f"ETF/{threshold}/TestData/x_{etf}.npy"))
-        y_test.extend(np.load(f"ETF/{threshold}/TestData/y_{etf}.npy"))
+        x_test.extend(
+            np.load(f"ETF/strategy/{threshold}/TestData/x_{etf}.npy"))
+        y_test.extend(
+            np.load(f"ETF/strategy/{threshold}/TestData/y_{etf}.npy"))
     return x_test, y_test
 
 

@@ -40,17 +40,17 @@ def load_dataset():
             np.load(f"ETF/strategy/{threshold}/TestData/x_{etf}.npy"))
         y_test.extend(
             np.load(f"ETF/strategy/{threshold}/TestData/y_{etf}.npy"))
-    x_train_new = []
-    y_train_new = []
-    for x_t, y_t in zip(x_train, y_train):
-        if y_t != 1:
-            x_train_new.append(x_t)
-            y_train_new.append(y_t)
-            x_train_new.append(x_t)
-            y_train_new.append(y_t)
+    # x_train_new = []
+    # y_train_new = []
+    # for x_t, y_t in zip(x_train, y_train):
+    #     if y_t != 1:
+    #         x_train_new.append(x_t)
+    #         y_train_new.append(y_t)
+    #         x_train_new.append(x_t)
+    #         y_train_new.append(y_t)
 
-    x_train.extend(x_train_new)
-    y_train.extend(y_train_new)
+    # x_train.extend(x_train_new)
+    # y_train.extend(y_train_new)
     unique, counts = np.unique(y_train, return_counts=True)
     print(np.asarray((unique, counts)).T)
     return x_train, y_train, x_test, y_test

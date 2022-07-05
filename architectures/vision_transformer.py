@@ -148,24 +148,25 @@ def create_vit_classifier():
 
 
 def compile_model(model):
-    # optimizer = keras.optimizers.Adadelta()
+    optimizer = keras.optimizers.Adadelta()
     # optimizer = tfa.optimizers.AdamW(
     #     learning_rate=hyperparameters["learning_rate"], weight_decay=hyperparameters["weight_decay"]
     # )
     # optimizer = tf.optimizers.Adam(epsilon=0.1)
-    optimizer = tf.keras.optimizers.SGD(learning_rate=0.001)
+    # optimizer = tf.keras.optimizers.SGD(
+    #     learning_rate=hyperparameters["learning_rate"])
 
     # tf.config.run_functions_eagerly(False)
 
-    sam_model = SAMModel(model)
+    # sam_model = SAMModel(model)
 
-    sam_model.compile(
+    model.compile(
         optimizer=optimizer,
         loss=keras.losses.SparseCategoricalCrossentropy(from_logits=True),
         metrics=[keras.metrics.SparseCategoricalAccuracy(name="accuracy"),
                  keras.metrics.SparseTopKCategoricalAccuracy(5, name="top5-acc"), ],
     )
-    return sam_model
+    return model
 
     # history = model.fit(
     #     x=x_train,
@@ -219,7 +220,7 @@ def get_vit_model():
 
 
 class SAMModel(tf.keras.Model):
-    def __init__(self, inner_model, rho=0.2):
+    def __init__(self, inner_model, rho=0.15):
         """
         p, q = 2 for optimal results as suggested in the paper
         (Section 2)

@@ -11,12 +11,12 @@ hyperparameters = constants.hyperparameters["cnn_ta"]
 
 
 def get_ct_model():
-    # optimizer = keras.optimizers.Adadelta()
+    optimizer = keras.optimizers.Adadelta()
     # optimizer = tfa.optimizers.AdamW(
     #     learning_rate=hyperparameters["learning_rate"], weight_decay=0.0001
     # )
-    optimizer = tf.keras.optimizers.SGD(
-        learning_rate=0.001)
+    # optimizer = tf.keras.optimizers.SGD(
+    #     learning_rate=0.001)
 
     print("Getting the CNN_TA model...")
     model = Sequential()
@@ -30,18 +30,18 @@ def get_ct_model():
     model.add(Dropout(hyperparameters["second_dropout_rate"]))
     model.add(Dense(hyperparameters["num_classes"], activation='softmax'))
 
-    sam_model = SAMModel(model)
+    # sam_model = SAMModel(model)
 
-    sam_model.compile(loss="sparse_categorical_crossentropy",
-                      optimizer=optimizer,
-                      metrics=[
-                          keras.metrics.SparseCategoricalAccuracy(
-                              name="accuracy"),
-                          keras.metrics.SparseTopKCategoricalAccuracy(
-                              5, name="top5-acc"),
-                      ],
-                      )
-    return sam_model
+    model.compile(loss="sparse_categorical_crossentropy",
+                  optimizer=optimizer,
+                  metrics=[
+                      keras.metrics.SparseCategoricalAccuracy(
+                          name="accuracy"),
+                      keras.metrics.SparseTopKCategoricalAccuracy(
+                          5, name="top5-acc"),
+                  ],
+                  )
+    return model
 
 
 class SAMModel(tf.keras.Model):

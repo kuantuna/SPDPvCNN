@@ -7,10 +7,13 @@ from architectures.helpers.constants import selected_model
 
 import numpy as np
 import tensorflow as tf
+import csv
 
 
-MODEL_PATH = "1655761185-tl8-pd64-p8-e"
+MODEL_PATH = "1656067205-128x8-k7p2-e"
+MODEL_NAME = "glowing-deluge-208"
 THRESHOLD = threshold
+CSV_FILE_NAME = "convmixer-bsr-0038"
 hyperparameters = hyperparameters[selected_model]
 
 
@@ -22,12 +25,15 @@ class Wallet:
         self.info: dict = {base_currency_name: initial_money, stock_name: 0, f"v_{base_currency_name}": initial_money, f"v_{stock_name}": 0,
                            "buy_count": 0, "hold_count": 0, "sell_count": 0}
         self.profit_percentage: float = 0
+        self.own = False
         #self.transactions: list = []
 
     def buy(self, stock_price: float, date: str):
         if self.info[self.base_currency_name] == 0:
+            self.update_values(stock_price)
             return
         self.info["buy_count"] += 1
+        self.own = True
         v_base = (self.info[self.base_currency_name] - 1)
         stock = v_base / stock_price
         # print(
@@ -45,8 +51,10 @@ class Wallet:
 
     def sell(self, stock_price: float, date: str):
         if self.info[self.stock_name] == 0:
+            self.update_values(stock_price)
             return
         self.info["sell_count"] += 1
+        self.own = False
         base = self.info[self.stock_name] * stock_price - 1
         v_stock = base / stock_price
         # print(
@@ -77,8 +85,10 @@ def load_dataset():
     x_test = []
     y_test = []
     for etf in etf_list:
-        x_test.append(np.load(f"ETF/{THRESHOLD}/TestData/x_{etf}.npy"))
-        y_test.append(np.load(f"ETF/{THRESHOLD}/TestData/y_{etf}.npy"))
+        x_test.append(
+            np.load(f"ETF/strategy/{THRESHOLD}/TestData/x_{etf}.npy"))
+        y_test.append(
+            np.load(f"ETF/strategy/{THRESHOLD}/TestData/y_{etf}.npy"))
     return x_test, y_test
 
 
@@ -101,9 +111,9 @@ listOfPrices: list[np.ndarray] = []
 
 for etf in etf_list:
     listOfDates.append(
-        np.load(f"ETF/{THRESHOLD}/Date/TestDate/{etf}.npy", allow_pickle=True))
+        np.load(f"ETF/strategy/{THRESHOLD}/Date/TestDate/{etf}.npy", allow_pickle=True))
     listOfPrices.append(
-        np.load(f"ETF/{THRESHOLD}/Price/TestPrice/{etf}.npy", allow_pickle=True))
+        np.load(f"ETF/strategy/{THRESHOLD}/Price/TestPrice/{etf}.npy", allow_pickle=True))
 
 
 x_test, y_test = load_dataset()
@@ -111,10 +121,10 @@ datasets = make_dataset(x_test, y_test)
 
 profit_ranking = []
 
-for i in [99]:
+for i in [19]:
     model = get_model()
     model.load_weights(
-        f"saved_models/{selected_model}/{THRESHOLD}/drawn-sky-108/{MODEL_PATH}{i}.h5")
+        f"saved_models/{selected_model}/{THRESHOLD}/{MODEL_NAME}/{MODEL_PATH}{i}.h5")
     listOfSignals = []
     for dataset in datasets:
         predictions = model.predict(dataset)
@@ -123,10 +133,13 @@ for i in [99]:
     print(f"MODEL{i}")
     """Main algorithm"""
     profits = []
-    daily_moneys = []
+    daily_moneys = {}
+    daily_owns = {}
     for signals, etf, price, dates in zip(listOfSignals, etf_list, listOfPrices, listOfDates):
         wallet = Wallet("USD", etf, 10000)
+        # 1D list keeps, the value of the money at hand for each day
         daily_money = []
+        daily_own = []
         for signal, price, date in zip(signals, price, dates):
             if signal == 0:
                 wallet.buy(price, date)
@@ -135,10 +148,13 @@ for i in [99]:
             elif signal == 2:
                 wallet.sell(price, date)
             daily_money.append(wallet.info[f"v_{wallet.base_currency_name}"])
+            daily_own.append(wallet.own)
         wallet.print_values()
         # print("\n")
         profits.append(wallet.profit_percentage/4)
-        daily_moneys.append(daily_money)
+        daily_moneys[etf] = daily_money
+        daily_owns[etf] = daily_own
+
     mpp = np.mean(profits)
     std_ = np.std(profits)
     # calculate log return of the profits
@@ -151,8 +167,13 @@ for i in [99]:
     print(f"std: {std_}\n")
     profit_ranking.append(
         {"mpp": mpp, "model": i, "sharpe_ratio": sharpe_ratio})
-    # for pr in profits:
-    #     print(pr)
+    with open(f"{CSV_FILE_NAME}.csv", "w", newline="") as csv_file:
+        csv_writer = csv.writer(csv_file)
+        csv_writer.writerow(
+            ["etf", "index", "date", "value", "is_owned", "signal"])
+        for (etf, dm_list), (_, ow_list), signals in zip(daily_moneys.items(), daily_owns.items(), listOfSignals):
+            for idx, (dm, ow, signal, dt) in enumerate(zip(dm_list, ow_list, signals, listOfDates[0])):
+                csv_writer.writerow([etf, idx, dt, round(dm, 2), ow, signal])
 
 sorted_pr = sorted(
     profit_ranking, key=lambda d: d['sharpe_ratio'], reverse=True)

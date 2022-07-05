@@ -72,26 +72,28 @@ def get_conv_mixer_model(
 
 
 def compile_model_optimizer(model):
-    # optimizer = keras.optimizers.Adadelta()
-    optimizer = tfa.optimizers.AdamW(
-        learning_rate=hyperparameters["learning_rate"], weight_decay=hyperparameters["weight_decay"]
-    )
+    optimizer = keras.optimizers.Adadelta()
+    # optimizer = tfa.optimizers.AdamW(
+    #     learning_rate=hyperparameters["learning_rate"], weight_decay=hyperparameters["weight_decay"]
+    # )
+    # optimizer = tf.keras.optimizers.SGD(
+    #     learning_rate=hyperparameters["learning_rate"])
 
-    sam_model = SAMModel(model)
+    # sam_model = SAMModel(model)
 
-    sam_model.compile(
+    model.compile(
         optimizer=optimizer,
         loss=keras.losses.SparseCategoricalCrossentropy(),
         metrics=[keras.metrics.SparseCategoricalAccuracy(name="accuracy"),
                  keras.metrics.SparseTopKCategoricalAccuracy(5, name="top5-acc"), ]
     )
-    return sam_model
+    return model
 
 # Used to load a saved model to train and/or evaluate
 
 
-def load_saved_model(path):
-    return keras.models.load_model(path, custom_objects={'MyOptimizer': tfa.optimizers.AdamW})
+# def load_saved_model(path):
+#     return keras.models.load_model(path, custom_objects={'MyOptimizer': tf.keras.optimizers.SGD})
 
 
 def get_cm_model():
@@ -101,7 +103,7 @@ def get_cm_model():
 
 
 class SAMModel(tf.keras.Model):
-    def __init__(self, inner_model, rho=0.1):
+    def __init__(self, inner_model, rho=0.4):
         """
         p, q = 2 for optimal results as suggested in the paper
         (Section 2)
